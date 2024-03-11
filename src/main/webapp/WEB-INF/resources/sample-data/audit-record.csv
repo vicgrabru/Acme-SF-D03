@@ -1,0 +1,5 @@
+key,code,period-start,period-end,mark,link,key:audit
+audit-record-01,"AU-0000-000","2022/02/22 10:10","2022/02/22 22:22",A,"https://example.com",audit-01
+audit-record-02,"AU-9999-999","2022/02/22 10:10","2022/02/22 22:22",A,"",audit-02
+audit-record-03,"AU-5555-555","2020/02/22 10:10","2022/02/22 22:22",C,"https://www.informatica.us.es/",audit-03
+audit-record-04,"AU-1234-123","2022/02/22 10:10","2022/07/29 23:59",A,"https://example.com",audit-04
