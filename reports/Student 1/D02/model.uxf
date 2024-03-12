@@ -39,12 +39,15 @@ Elicited by &gt;</panel_attributes>
       <x>470</x>
       <y>220</y>
       <w>400</w>
-      <h>200</h>
+      <h>240</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Form&gt;&gt;
 ManagerDashboard
 --
-+ totalNumberOfUserStoriesPerPriority: Map&lt;Priority, Integer&gt;
++ totalNumberOfUserStoriesWithMustPriority: Integer
++ totalNumberOfUserStoriesWithShouldPriority: Integer
++ totalNumberOfUserStoriesWithCouldPriority: Integer
++ totalNumberOfUserStoriesWithWontPriority: Integer
 + avgEstimatedCostOfUserStories: Double
 + minEstimatedCostOfUserStories: Double
 + maxEstimatedCostOfUserStories: Double
