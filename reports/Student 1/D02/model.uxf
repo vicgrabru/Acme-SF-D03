@@ -36,15 +36,18 @@ Elicited by &gt;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>470</x>
-      <y>220</y>
+      <x>480</x>
+      <y>170</y>
       <w>400</w>
-      <h>190</h>
+      <h>240</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Form&gt;&gt;
 ManagerDashboard
 --
-+ totalNumberOfUserStoriesPerPriority: Map&lt;Priority,Integer&gt;
++ totalNumberOfUserStoriesWithMustPriority: Integer
++ totalNumberOfUserStoriesWithShouldPriority: Integer
++ totalNumberOfUserStoriesWithCouldPriority: Integer
++ totalNumberOfUserStoriesWithWontPriority: Integer
 + avgEstimatedCostOfUserStories: Double
 + minEstimatedCostOfUserStories: Integer
 + maxEstimatedCostOfUserStories: Integer
@@ -198,8 +201,8 @@ bg=yellow
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>630</x>
-      <y>130</y>
+      <x>640</x>
+      <y>80</y>
       <w>140</w>
       <h>50</h>
     </coordinates>
@@ -212,8 +215,8 @@ bg=white
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>700</x>
-      <y>170</y>
+      <x>710</x>
+      <y>120</y>
       <w>30</w>
       <h>70</h>
     </coordinates>
