@@ -46,13 +46,13 @@ ManagerDashboard
 --
 + totalNumberOfUserStoriesPerPriority: Map&lt;Priority,Integer&gt;
 + avgEstimatedCostOfUserStories: Double
-+ minEstimatedCostOfUserStories: Double
-+ maxEstimatedCostOfUserStories: Double
++ minEstimatedCostOfUserStories: Integer
++ maxEstimatedCostOfUserStories: Integer
 + stdEstimatedCostOfUserStories: Double
-+ avgEstimatedCostOfProjects: Double
-+ minEstimatedCostOfProjects: Double
-+ maxEstimatedCostOfProjects: Double
-+ stdEstimatedCostOfProjects: Double
++ avgEstimatedCostOfProjects: Money
++ minEstimatedCostOfProjects: Money
++ maxEstimatedCostOfProjects: Money
++ stdEstimatedCostOfProjects: Money
 bg=green</panel_attributes>
     <additional_attributes/>
   </element>

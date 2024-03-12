@@ -15,6 +15,7 @@ package acme.forms;
 import java.util.Map;
 
 import acme.client.data.AbstractForm;
+import acme.client.data.datatypes.Money;
 import acme.entities.project.Priority;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,14 +32,14 @@ public class ManagerDashboard extends AbstractForm {
 
 	private Map<Priority, Integer>	totalNumberOfUserStoriesPerPriority;
 	private Double					avgEstimatedCostOfUserStories;
-	private Double					minEstimatedCostOfUserStories;
-	private Double					maxEstimatedCostOfUserStories;
+	private Integer					minEstimatedCostOfUserStories;
+	private Integer					maxEstimatedCostOfUserStories;
 	private Double					stdEstimatedCostOfUserStories;
 
-	private Double					avgEstimatedCostOfProjects;
-	private Double					minEstimatedCostOfProjects;
-	private Double					maxEstimatedCostOfProjects;
-	private Double					stdEstimatedCostOfProjects;
+	private Money					avgEstimatedCostOfProjects;
+	private Money					minEstimatedCostOfProjects;
+	private Money					maxEstimatedCostOfProjects;
+	private Money					stdEstimatedCostOfProjects;
 
 	// Derived attributes -----------------------------------------------------
 
