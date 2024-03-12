@@ -36,10 +36,10 @@ public class ManagerDashboard extends AbstractForm {
 	private Integer					maxEstimatedCostOfUserStories;
 	private Double					stdEstimatedCostOfUserStories;
 
-	private Money					avgEstimatedCostOfProjects;
-	private Money					minEstimatedCostOfProjects;
-	private Money					maxEstimatedCostOfProjects;
-	private Money					stdEstimatedCostOfProjects;
+	private Money					avgCostOfProjects;
+	private Money					minCostOfProjects;
+	private Money					maxCostOfProjects;
+	private Money					stdCostOfProjects;
 
 	// Derived attributes -----------------------------------------------------
 

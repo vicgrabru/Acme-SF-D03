@@ -49,10 +49,10 @@ ManagerDashboard
 + minEstimatedCostOfUserStories: Integer
 + maxEstimatedCostOfUserStories: Integer
 + stdEstimatedCostOfUserStories: Double
-+ avgEstimatedCostOfProjects: Money
-+ minEstimatedCostOfProjects: Money
-+ maxEstimatedCostOfProjects: Money
-+ stdEstimatedCostOfProjects: Money
++ avgCostOfProjects: Money
++ minCostOfProjects: Money
++ maxCostOfProjects: Money
++ stdCostOfProjects: Money
 bg=green</panel_attributes>
     <additional_attributes/>
   </element>
