@@ -21,3 +21,5 @@
 	<acme:list-column code="manager.project.list.label.abstract" path="abstractField" width="60%"/>
 	<acme:list-column code="manager.project.list.label.draft-mode" path="isDraftMode" width="10%"/>
 </acme:list>
+
+<acme:button code="manager.project.list.button.create" action="/manager/project/create"/>

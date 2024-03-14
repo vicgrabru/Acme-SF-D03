@@ -24,5 +24,14 @@ manager.project.form.label.cost = Coste
 manager.project.form.label.optional-link = Enlace opcional
 manager.project.form.label.draft-mode = Borrador
 
+manager.project.list.button.create = Crear
 manager.project.form.button.update = Actualizar
+manager.project.form.button.delete = Borrar
+manager.project.form.button.publish = Publicar
+manager.project.form.button.create = Crear
 
+manager.project.form.error.cost.invalid-currency = La moneda introducida no es una moneda válida
+manager.project.form.error.cost.negative = El coste no puede tener una cantidad negativa
+manager.project.form.error.no-user-stories = El proyecto no tiene historias de usuario asociadas
+manager.project.form.error.has-draft-user-story = El proyecto todavía tiene historias de usuario en borrador
+manager.project.form.error.has-fatal-errors = Un proyecto con errores graves no se puede publicar

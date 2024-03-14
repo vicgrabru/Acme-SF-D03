@@ -12,16 +12,19 @@
 
 package acme.features.manager.project;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import acme.client.data.models.Dataset;
 import acme.client.services.AbstractService;
 import acme.entities.project.Project;
+import acme.entities.project.UserStory;
 import acme.roles.Manager;
 
 @Service
-public class ManagerProjectUpdateService extends AbstractService<Manager, Project> {
+public class ManagerProjectPublishService extends AbstractService<Manager, Project> {
 
 	// Internal state ---------------------------------------------------------
 
@@ -67,19 +70,33 @@ public class ManagerProjectUpdateService extends AbstractService<Manager, Projec
 	@Override
 	public void validate(final Project object) {
 		assert object != null;
-		String currencies;
 
 		if (!super.getBuffer().getErrors().hasErrors("cost")) {
+			String currencies;
 			currencies = this.repository.findAcceptedCurrenciesInSystem();
 			super.state(currencies.contains(object.getCost().getCurrency()), "cost", "manager.project.form.error.cost.invalid-currency");
 
 			super.state(object.getCost().getAmount() >= 0., "cost", "manager.project.form.error.cost.negative");
 		}
+		if (!super.getBuffer().getErrors().hasErrors("abstractField")) {
+			int projectId;
+
+			projectId = super.getRequest().getData("id", int.class);
+			Collection<UserStory> userStories;
+			userStories = this.repository.findManyUserStoriesByProjectId(projectId);
+			super.state(!userStories.isEmpty(), "abstractField", "manager.project.form.error.no-user-stories");
+			if (!userStories.isEmpty())
+				super.state(userStories.stream().allMatch(x -> !x.isDraftMode()), "abstractField", "manager.project.form.error.has-draft-user-story");
+		}
+		if (!super.getBuffer().getErrors().hasErrors("hasFatalErrors"))
+			super.state(!object.isHasFatalErrors(), "hasFatalErrors", "manager.project.form.error.has-fatal-errors");
 	}
 
 	@Override
 	public void perform(final Project object) {
 		assert object != null;
+
+		object.setDraftMode(false);
 
 		this.repository.save(object);
 	}

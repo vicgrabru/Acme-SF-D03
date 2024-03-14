@@ -21,7 +21,7 @@ import acme.entities.project.Project;
 import acme.roles.Manager;
 
 @Service
-public class ManagerProjectUpdateService extends AbstractService<Manager, Project> {
+public class ManagerProjectCreateService extends AbstractService<Manager, Project> {
 
 	// Internal state ---------------------------------------------------------
 
@@ -33,26 +33,20 @@ public class ManagerProjectUpdateService extends AbstractService<Manager, Projec
 
 	@Override
 	public void authorise() {
-		boolean status;
-		int projectId;
-		Project project;
 
-		projectId = super.getRequest().getData("id", int.class);
-		project = this.repository.findOneProjectById(projectId);
-		status = project != null && //
-			project.isDraftMode() && //
-			super.getRequest().getPrincipal().hasRole(project.getManager());
-
-		super.getResponse().setAuthorised(status);
+		super.getResponse().setAuthorised(true);
 	}
 
 	@Override
 	public void load() {
 		Project object;
-		int id;
+		Manager manager;
 
-		id = super.getRequest().getData("id", int.class);
-		object = this.repository.findOneProjectById(id);
+		manager = this.repository.findOneManagerById(super.getRequest().getPrincipal().getActiveRoleId());
+
+		object = new Project();
+		object.setManager(manager);
+		object.setDraftMode(true);
 
 		super.getBuffer().addData(object);
 	}

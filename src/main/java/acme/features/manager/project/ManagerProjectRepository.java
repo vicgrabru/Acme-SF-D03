@@ -19,6 +19,8 @@ import org.springframework.stereotype.Repository;
 
 import acme.client.repositories.AbstractRepository;
 import acme.entities.project.Project;
+import acme.entities.project.UserStory;
+import acme.roles.Manager;
 
 @Repository
 public interface ManagerProjectRepository extends AbstractRepository {
@@ -28,5 +30,14 @@ public interface ManagerProjectRepository extends AbstractRepository {
 
 	@Query("select p from Project p where p.id = :id")
 	Project findOneProjectById(int id);
+
+	@Query("select m from Manager m where m.id = :id")
+	Manager findOneManagerById(int id);
+
+	@Query("select sc.acceptedCurrencies from SystemConfiguration sc")
+	String findAcceptedCurrenciesInSystem();
+
+	@Query("select us from UserStory us where us.project.id = :id")
+	Collection<UserStory> findManyUserStoriesByProjectId(int id);
 
 }

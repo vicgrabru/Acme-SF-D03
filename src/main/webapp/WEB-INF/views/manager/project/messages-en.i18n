@@ -24,4 +24,14 @@ manager.project.form.label.cost = Cost
 manager.project.form.label.optional-link = Optional Link
 manager.project.form.label.draft-mode = Draft Mode?
 
+manager.project.list.button.create = Create
 manager.project.form.button.update = Update
+manager.project.form.button.delete = Delete
+manager.project.form.button.publish = Publish
+manager.project.form.button.create = Create
+
+manager.project.form.error.cost.invalid-currency = The introduced currency is not a valid currency
+manager.project.form.error.cost.negative = The cost amount can't be negative
+manager.project.form.error.no-user-stories = The project has no user stories
+manager.project.form.error.has-draft-user-story = The project has user stories in draft mode
+manager.project.form.error.has-fatal-errors = A project with fatal errors can't be published

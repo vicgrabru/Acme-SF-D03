@@ -16,19 +16,23 @@
 <%@taglib prefix="acme" uri="http://acme-framework.org/"%>
 
 <acme:form>
-	<acme:input-textbox code="manager.project.form.label.code" path="code" readonly="true" />
-	<acme:input-textbox code="manager.project.form.label.title" path="title" readonly="true" />
-	<acme:input-textarea code="manager.project.form.label.abstract-field" path="abstractField" readonly="true" />
-	<acme:input-textarea code="manager.project.form.label.has-fatal-errors" path="hasFatalErrors" readonly="true" />
-	<acme:input-textarea code="manager.project.form.label.cost" path="cost" readonly="true" />
-	<acme:input-textarea code="manager.project.form.label.optional-link" path="optionalLink" readonly="true" />
-	<acme:input-textarea code="manager.project.form.label.draft-mode" path="draftMode" readonly="true" />
+	<acme:input-textbox code="manager.project.form.label.code" path="code"/>
+	<acme:input-textbox code="manager.project.form.label.title" path="title"/>
+	<acme:input-textarea code="manager.project.form.label.abstract-field" path="abstractField"/>
+	<acme:input-checkbox code="manager.project.form.label.has-fatal-errors" path="hasFatalErrors"/>
+	<acme:input-money code="manager.project.form.label.cost" path="cost"/>
+	<acme:input-textbox code="manager.project.form.label.optional-link" path="optionalLink"/>
+	<acme:input-checkbox code="manager.project.form.label.draft-mode" path="draftMode" readonly="true"/>
 	
 	
-	<acme:submit
-		test="${acme:anyOf(_command, 'show|update') && draftMode}"
-		code="manager.project.form.button.update"
-		action="/manager/project/update" />
+	<jstl:if test="${acme:anyOf(_command, 'show|update|delete') && draftMode == true}">
+		<acme:submit code="manager.project.form.button.update" action="/manager/project/update"/>
+		<acme:submit code="manager.project.form.button.delete" action="/manager/project/delete"/>
+		<acme:submit code="manager.project.form.button.publish" action="/manager/project/publish"/>
+	</jstl:if>
+	<jstl:if test="${acme:matches(_command, 'create')}">
+		<acme:submit code="manager.project.form.button.create" action="/manager/project/create"/>
+	</jstl:if>
 </acme:form>
 
 
