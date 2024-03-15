@@ -60,8 +60,6 @@ public class ManagerUserStoryDeleteService extends AbstractService<Manager, User
 	@Override
 	public void bind(final UserStory object) {
 		assert object != null;
-
-		super.bind(object, "title", "description", "estimatedCost", "acceptanceCriteria", "priority", "optionalLink", "draftMode");
 	}
 
 	@Override
