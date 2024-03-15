@@ -29,6 +29,7 @@ manager.project.form.button.update = Update
 manager.project.form.button.delete = Delete
 manager.project.form.button.publish = Publish
 manager.project.form.button.create = Create
+manager.project.form.button.user-story.list = User Stories
 
 manager.project.form.error.cost.invalid-currency = The introduced currency is not a valid currency
 manager.project.form.error.cost.negative = The cost amount can't be negative

@@ -21,7 +21,7 @@
 	<acme:input-textarea code="manager.project.form.label.abstract-field" path="abstractField"/>
 	<acme:input-checkbox code="manager.project.form.label.has-fatal-errors" path="hasFatalErrors"/>
 	<acme:input-money code="manager.project.form.label.cost" path="cost"/>
-	<acme:input-textbox code="manager.project.form.label.optional-link" path="optionalLink"/>
+	<acme:input-url code="manager.project.form.label.optional-link" path="optionalLink"/>
 	<acme:input-checkbox code="manager.project.form.label.draft-mode" path="draftMode" readonly="true"/>
 	
 	
@@ -33,6 +33,8 @@
 	<jstl:if test="${acme:matches(_command, 'create')}">
 		<acme:submit code="manager.project.form.button.create" action="/manager/project/create"/>
 	</jstl:if>
+	
+	<acme:button code="manager.project.form.button.user-story.list" action="/manager/user-story/list?masterId=${masterId}"/>
 </acme:form>
 
 
