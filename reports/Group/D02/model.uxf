@@ -211,8 +211,8 @@ AdministratorDashboard
 +maxRiskValue: Double
 +stdRiskValue: Double
 +avgNumberOfClaims: Double
-+minNumberOfClaims: Double
-+maxNumberOfClaims: Double
++minNumberOfClaims: Integer
++maxNumberOfClaims: Integer
 +stdNumberOfClaims: Double
 
 bg=green</panel_attributes>
