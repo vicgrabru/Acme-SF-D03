@@ -25,16 +25,19 @@
 	<acme:input-checkbox code="manager.project.form.label.draft-mode" path="draftMode" readonly="true"/>
 	
 	
-	<jstl:if test="${acme:anyOf(_command, 'show|update|delete') && draftMode == true}">
+	<jstl:if test="${acme:anyOf(_command, 'show|update|delete|publish') && draftMode == true}">
 		<acme:submit code="manager.project.form.button.update" action="/manager/project/update"/>
 		<acme:submit code="manager.project.form.button.delete" action="/manager/project/delete"/>
 		<acme:submit code="manager.project.form.button.publish" action="/manager/project/publish"/>
 	</jstl:if>
-	<jstl:if test="${acme:matches(_command, 'create')}">
-		<acme:submit code="manager.project.form.button.create" action="/manager/project/create"/>
-	</jstl:if>
-	
-	<acme:button code="manager.project.form.button.user-story.list" action="/manager/user-story/list?masterId=${masterId}"/>
+	<jstl:choose>
+		<jstl:when test="${acme:matches(_command, 'create')}">
+			<acme:submit code="manager.project.form.button.create" action="/manager/project/create"/>
+		</jstl:when>
+		<jstl:otherwise>
+			<acme:button code="manager.project.form.button.user-story.list" action="/manager/user-story/list?masterId=${masterId}"/>
+		</jstl:otherwise>
+	</jstl:choose>
 </acme:form>
 
 

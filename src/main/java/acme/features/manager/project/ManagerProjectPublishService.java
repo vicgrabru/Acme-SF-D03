@@ -84,9 +84,9 @@ public class ManagerProjectPublishService extends AbstractService<Manager, Proje
 			projectId = super.getRequest().getData("id", int.class);
 			Collection<UserStory> userStories;
 			userStories = this.repository.findManyUserStoriesByProjectId(projectId);
-			super.state(!userStories.isEmpty(), "abstractField", "manager.project.form.error.no-user-stories");
+			super.state(!userStories.isEmpty(), "draftMode", "manager.project.form.error.no-user-stories");
 			if (!userStories.isEmpty())
-				super.state(userStories.stream().allMatch(x -> !x.isDraftMode()), "abstractField", "manager.project.form.error.has-draft-user-story");
+				super.state(userStories.stream().allMatch(x -> !x.isDraftMode()), "draftMode", "manager.project.form.error.has-draft-user-story");
 		}
 		if (!super.getBuffer().getErrors().hasErrors("hasFatalErrors"))
 			super.state(!object.isHasFatalErrors(), "hasFatalErrors", "manager.project.form.error.has-fatal-errors");

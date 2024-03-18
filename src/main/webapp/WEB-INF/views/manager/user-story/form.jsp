@@ -27,7 +27,7 @@
 	<acme:input-textbox code="manager.user-story.form.label.project-title" path="projectTitle" readonly="true"/>
 	
 	
-	<jstl:if test="${acme:anyOf(_command, 'show|update|delete') && draftMode == true}">
+	<jstl:if test="${acme:anyOf(_command, 'show|update|delete|publish') && draftMode == true}">
 		<acme:submit code="manager.user-story.form.button.update" action="/manager/user-story/update"/>
 		<acme:submit code="manager.user-story.form.button.delete" action="/manager/user-story/delete"/>
 		<acme:submit code="manager.user-story.form.button.publish" action="/manager/user-story/publish"/>
