@@ -28,8 +28,8 @@ public class AdministratorDashboard extends AbstractForm {
 	private Double					stdRiskValue;
 
 	private Double					avgNumberOfClaims;
-	private Double					minNumberOfClaims;
-	private Double					maxNumberOfClaims;
+	private Integer					minNumberOfClaims;
+	private Integer					maxNumberOfClaims;
 	private Double					stdNumberOfClaims;
 
 }
