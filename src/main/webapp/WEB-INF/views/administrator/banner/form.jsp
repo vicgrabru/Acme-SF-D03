@@ -29,7 +29,7 @@
 		<acme:submit code="administrator.banner.form.button.delete" action="/administrator/banner/delete"/>
 	</jstl:if>
 	<jstl:if test="${acme:matches(_command, 'create')}">
-		<acme:submit code="administrator.banner.form.button.create" action="/administrator/project/create"/>
+		<acme:submit code="administrator.banner.form.button.create" action="/administrator/banner/create"/>
 	</jstl:if>
 </acme:form>
 
