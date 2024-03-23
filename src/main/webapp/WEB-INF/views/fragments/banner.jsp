@@ -21,7 +21,6 @@
 			<div class="rounded" style="background: <acme:message code='master.banner.background'/>">
 				<img src="${bannerToDisplay.pictureLink}" id="imagenBanner" style="width: 100% !important;max-height: 300px"
 					alt="<acme:message code='master.banner.alt'/>" class="img-fluid mx-auto d-block rounded" />
-				<acme:message code="${bannerToDisplay.slogan}"/>
 			</div>
 		</jstl:when>
 		<jstl:otherwise>
