@@ -71,6 +71,8 @@ public class ManagerProjectPublishService extends AbstractService<Manager, Proje
 	public void validate(final Project object) {
 		assert object != null;
 
+		int projectId;
+
 		if (!super.getBuffer().getErrors().hasErrors("cost")) {
 			String currencies;
 			currencies = this.repository.findAcceptedCurrenciesInSystem();
@@ -78,16 +80,14 @@ public class ManagerProjectPublishService extends AbstractService<Manager, Proje
 
 			super.state(object.getCost().getAmount() >= 0., "cost", "manager.project.form.error.cost.negative");
 		}
-		if (!super.getBuffer().getErrors().hasErrors("abstractField")) {
-			int projectId;
 
-			projectId = super.getRequest().getData("id", int.class);
-			Collection<UserStory> userStories;
-			userStories = this.repository.findManyUserStoriesByProjectId(projectId);
-			super.state(!userStories.isEmpty(), "draftMode", "manager.project.form.error.no-user-stories");
-			if (!userStories.isEmpty())
-				super.state(userStories.stream().allMatch(x -> !x.isDraftMode()), "draftMode", "manager.project.form.error.has-draft-user-story");
-		}
+		projectId = super.getRequest().getData("id", int.class);
+		Collection<UserStory> userStories;
+		userStories = this.repository.findManyUserStoriesByProjectId(projectId);
+		super.state(!userStories.isEmpty(), "*", "manager.project.form.error.no-user-stories");
+		if (!userStories.isEmpty())
+			super.state(userStories.stream().allMatch(x -> !x.isDraftMode()), "*", "manager.project.form.error.has-draft-user-story");
+
 		if (!super.getBuffer().getErrors().hasErrors("hasFatalErrors"))
 			super.state(!object.isHasFatalErrors(), "hasFatalErrors", "manager.project.form.error.has-fatal-errors");
 	}
@@ -108,6 +108,7 @@ public class ManagerProjectPublishService extends AbstractService<Manager, Proje
 		Dataset dataset;
 
 		dataset = super.unbind(object, "code", "title", "abstractField", "hasFatalErrors", "cost", "optionalLink", "draftMode");
+		dataset.put("masterId", object.getId());
 
 		super.getResponse().addData(dataset);
 	}
