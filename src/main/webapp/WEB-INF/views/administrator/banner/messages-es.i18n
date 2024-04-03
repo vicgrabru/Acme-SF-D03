@@ -11,12 +11,12 @@
 administrator.banner.form.title = Detalles de banner
 administrator.banner.list.title = Lista de banners
 
-administrator.banner.list.label.slogan = Eslógan
+administrator.banner.list.label.slogan = Eslogan
 administrator.banner.list.label.instantiation-moment = Momento de Creación/Actualización
 administrator.banner.list.label.period-start = Inicio del Período de Exhibición
 administrator.banner.list.label.period-end = Fin del Período de Exhibición
 
-administrator.banner.form.label.slogan = Eslógan
+administrator.banner.form.label.slogan = Eslogan
 administrator.banner.form.label.picture-link = Enlace a la Imagen
 administrator.banner.form.label.period-start = Inicio del Período de Exhibición
 administrator.banner.form.label.period-end = Fin del Período de Exhibición
