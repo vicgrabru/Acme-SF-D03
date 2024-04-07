@@ -19,7 +19,7 @@
 	<acme:input-textbox code="authenticated.manager.form.label.degree" path="degree"/>
 	<acme:input-textbox code="authenticated.manager.form.label.overview" path="overview"/>
 	<acme:input-textbox code="authenticated.manager.form.label.certifications" path="certifications"/>
-	<acme:input-textbox code="authenticated.manager.form.label.optional-link" path="optionalLink"/>
+	<acme:input-url code="authenticated.manager.form.label.optional-link" path="optionalLink"/>
 	
 	<acme:submit test="${_command == 'create'}" code="authenticated.manager.form.button.create" action="/authenticated/manager/create"/>
 	<acme:submit test="${_command == 'update'}" code="authenticated.manager.form.button.update" action="/authenticated/manager/update"/>
