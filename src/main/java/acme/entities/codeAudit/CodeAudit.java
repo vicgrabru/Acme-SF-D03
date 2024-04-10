@@ -1,5 +1,5 @@
 
-package acme.entities.audit;
+package acme.entities.codeAudit;
 
 import java.util.Date;
 
@@ -26,7 +26,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Audit extends AbstractEntity {
+public class CodeAudit extends AbstractEntity {
 
 	// Serialisation identifier -----------------------------------------------
 

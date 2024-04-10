@@ -1,5 +1,5 @@
 
-package acme.entities.audit;
+package acme.entities.codeAudit;
 
 import java.util.Date;
 
@@ -59,6 +59,5 @@ public class AuditRecord extends AbstractEntity {
 	@NotNull
 	@Valid
 	@ManyToOne(optional = false)
-	protected Audit				audit;
-
+	protected CodeAudit			codeAudit;
 }
