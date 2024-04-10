@@ -1,7 +1,6 @@
 
 package acme.entities.audit;
 
-
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -18,7 +17,6 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.URL;
 
 import acme.client.data.AbstractEntity;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,7 +24,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AuditRecord extends AbstractEntity {
-
 
 	// Serialisation identifier -----------------------------------------------
 
@@ -55,6 +52,7 @@ public class AuditRecord extends AbstractEntity {
 	@URL
 	private String				link;
 
+	private boolean				draftMode;
 
 	// Relationships ----------------------------------------------------------
 
