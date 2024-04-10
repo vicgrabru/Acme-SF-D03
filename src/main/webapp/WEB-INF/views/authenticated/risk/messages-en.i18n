@@ -15,7 +15,7 @@ authenticated.risk.form.label.reference = Reference
 authenticated.risk.form.label.identificationDate = Identification date
 authenticated.risk.form.label.impact = Impact
 authenticated.risk.form.label.probability = Probability
-authenticated.risk.form.label.descriptio = Description
+authenticated.risk.form.label.description = Description
 authenticated.risk.form.label.link = More info (optional)
 authenticated.risk.form.label.value = Value
 
