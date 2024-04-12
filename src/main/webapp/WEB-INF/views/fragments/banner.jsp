@@ -15,6 +15,18 @@
 <%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="acme" uri="http://acme-framework.org/"%>
 
-<div class="rounded" style="background: <acme:message code='master.banner.background'/>">
-	<img src="images/banner.png" alt="<acme:message code='master.banner.alt'/>" class="img-fluid rounded"/>
-</div>
+
+<jstl:choose>
+		<jstl:when test="${nAvailableBanners>0}">
+			<div class="rounded" style="background: <acme:message code='master.banner.background'/>">
+				<img src="${bannerToDisplay.pictureLink}" id="imagenBanner" style="width: 100% !important;max-height: 300px"
+					alt="<acme:message code='master.banner.alt'/>" class="img-fluid mx-auto d-block rounded" />
+			</div>
+		</jstl:when>
+		<jstl:otherwise>
+			<div class="rounded" style="background: <acme:message code='master.banner.background'/>">
+				<img src="images/banner.png" alt="<acme:message code='master.banner.alt'/>" class="img-fluid rounded"/>
+			</div>
+		</jstl:otherwise>
+</jstl:choose>
+
