@@ -28,9 +28,9 @@
 	
 	
 	<jstl:if test="${acme:anyOf(_command, 'show|update|delete|publish') && draftMode == true}">
-		<acme:submit code="manager.user-story.form.button.update" action="/manager/user-story/update"/>
-		<acme:submit code="manager.user-story.form.button.delete" action="/manager/user-story/delete"/>
-		<acme:submit code="manager.user-story.form.button.publish" action="/manager/user-story/publish"/>
+		<acme:submit code="manager.user-story.form.button.update" action="/manager/user-story/update?masterId=${masterId}"/>
+		<acme:submit code="manager.user-story.form.button.delete" action="/manager/user-story/delete?masterId=${masterId}"/>
+		<acme:submit code="manager.user-story.form.button.publish" action="/manager/user-story/publish?masterId=${masterId}"/>
 	</jstl:if>
 	<jstl:if test="${acme:matches(_command, 'create')}">
 		<acme:submit code="manager.user-story.form.button.create" action="/manager/user-story/create?masterId=${masterId}"/>

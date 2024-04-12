@@ -21,6 +21,7 @@ import acme.client.views.SelectChoices;
 import acme.entities.project.Priority;
 import acme.entities.project.Project;
 import acme.entities.project.UserStory;
+import acme.entities.project.UserStoryAssign;
 import acme.roles.Manager;
 
 @Service
@@ -42,7 +43,7 @@ public class ManagerUserStoryCreateService extends AbstractService<Manager, User
 
 		projectId = super.getRequest().getData("masterId", int.class);
 		project = this.repository.findOneProjectById(projectId);
-		status = project != null && super.getRequest().getPrincipal().hasRole(project.getManager());
+		status = project != null && project.isDraftMode() && super.getRequest().getPrincipal().hasRole(project.getManager());
 
 		super.getResponse().setAuthorised(status);
 	}
@@ -79,7 +80,20 @@ public class ManagerUserStoryCreateService extends AbstractService<Manager, User
 	public void perform(final UserStory object) {
 		assert object != null;
 
+		UserStoryAssign relationship;
+		int projectId;
+		Project project;
+
+		projectId = super.getRequest().getData("masterId", int.class);
+		project = this.repository.findOneProjectById(projectId);
+
+		relationship = new UserStoryAssign();
+
+		relationship.setProject(project);
+		relationship.setUserStory(object);
+
 		this.repository.save(object);
+		this.repository.save(relationship);
 	}
 
 	@Override

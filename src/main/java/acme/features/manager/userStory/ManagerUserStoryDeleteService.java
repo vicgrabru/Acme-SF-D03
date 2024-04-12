@@ -20,6 +20,7 @@ import acme.client.services.AbstractService;
 import acme.client.views.SelectChoices;
 import acme.entities.project.Priority;
 import acme.entities.project.UserStory;
+import acme.entities.project.UserStoryAssign;
 import acme.roles.Manager;
 
 @Service
@@ -36,12 +37,16 @@ public class ManagerUserStoryDeleteService extends AbstractService<Manager, User
 	@Override
 	public void authorise() {
 		boolean status;
-		int userStoryId;
+		int userStoryId, masterId;
 		UserStory userStory;
+		UserStoryAssign relationship;
 
 		userStoryId = super.getRequest().getData("id", int.class);
+		masterId = super.getRequest().getData("masterId", int.class);
+
+		relationship = this.repository.findOneUserStoryAssignByUserStoryAndProjectId(userStoryId, masterId);
 		userStory = this.repository.findOneUserStoryById(userStoryId);
-		status = userStory != null && userStory.isDraftMode() && super.getRequest().getPrincipal().hasRole(userStory.getProject().getManager());
+		status = userStory != null && userStory.isDraftMode() && super.getRequest().getPrincipal().hasRole(relationship.getProject().getManager());
 
 		super.getResponse().setAuthorised(status);
 	}
@@ -71,6 +76,13 @@ public class ManagerUserStoryDeleteService extends AbstractService<Manager, User
 	public void perform(final UserStory object) {
 		assert object != null;
 
+		int masterId;
+		UserStoryAssign relationship;
+
+		masterId = super.getRequest().getData("masterId", int.class);
+		relationship = this.repository.findOneUserStoryAssignByUserStoryAndProjectId(object.getId(), masterId);
+
+		this.repository.delete(relationship);
 		this.repository.delete(object);
 	}
 

@@ -37,7 +37,7 @@ public interface ManagerProjectRepository extends AbstractRepository {
 	@Query("select sc.acceptedCurrencies from SystemConfiguration sc")
 	String findAcceptedCurrenciesInSystem();
 
-	@Query("select us from UserStory us where us.project.id = :id")
+	@Query("select usa.userStory from UserStoryAssign usa where usa.project.id = :id")
 	Collection<UserStory> findManyUserStoriesByProjectId(int id);
 
 }
