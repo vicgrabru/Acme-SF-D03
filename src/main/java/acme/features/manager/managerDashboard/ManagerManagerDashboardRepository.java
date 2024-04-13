@@ -24,32 +24,32 @@ import acme.entities.configuration.SystemConfiguration;
 @Repository
 public interface ManagerManagerDashboardRepository extends AbstractRepository {
 
-	@Query("select count(us) from UserStory us where us.priority = acme.entities.project.Priority.MUST")
-	Long totalNumberOfUserStoriesWithMustPriority();
+	@Query("select count(us) from UserStory us where us.project.manager.id = :id and us.priority = acme.entities.project.Priority.MUST")
+	Long totalNumberOfUserStoriesWithMustPriorityByManagerId(int id);
 
-	@Query("select count(us) from UserStory us where us.priority = acme.entities.project.Priority.SHOULD")
-	Long totalNumberOfUserStoriesWithShouldPriority();
+	@Query("select count(us) from UserStory us where us.project.manager.id = :id and us.priority = acme.entities.project.Priority.SHOULD")
+	Long totalNumberOfUserStoriesWithShouldPriorityByManagerId(int id);
 
-	@Query("select count(us) from UserStory us where us.priority = acme.entities.project.Priority.COULD")
-	Long totalNumberOfUserStoriesWithCouldPriority();
+	@Query("select count(us) from UserStory us where us.project.manager.id = :id and us.priority = acme.entities.project.Priority.COULD")
+	Long totalNumberOfUserStoriesWithCouldPriorityByManagerId(int id);
 
-	@Query("select count(us) from UserStory us where us.priority = acme.entities.project.Priority.WONT")
-	Long totalNumberOfUserStoriesWithWontPriority();
+	@Query("select count(us) from UserStory us where us.project.manager.id = :id and us.priority = acme.entities.project.Priority.WONT")
+	Long totalNumberOfUserStoriesWithWontPriorityByManagerId(int id);
 
-	@Query("select avg(us.estimatedCost) from UserStory us")
-	Double avgEstimatedCostOfUserStories();
+	@Query("select avg(us.estimatedCost) from UserStory us where us.project.manager.id = :id")
+	Double avgEstimatedCostOfUserStoriesByManagerId(int id);
 
-	@Query("select min(us.estimatedCost) from UserStory us")
-	Integer minEstimatedCostOfUserStories();
+	@Query("select min(us.estimatedCost) from UserStory us where us.project.manager.id = :id")
+	Integer minEstimatedCostOfUserStoriesByManagerId(int id);
 
-	@Query("select max(us.estimatedCost) from UserStory us")
-	Integer maxEstimatedCostOfUserStories();
+	@Query("select max(us.estimatedCost) from UserStory us where us.project.manager.id = :id")
+	Integer maxEstimatedCostOfUserStoriesByManagerId(int id);
 
-	@Query("select stddev(us.estimatedCost) from UserStory us")
-	Double stdEstimatedCostOfUserStories();
+	@Query("select stddev(us.estimatedCost) from UserStory us where us.project.manager.id = :id")
+	Double stdEstimatedCostOfUserStoriesByManagerId(int id);
 
-	@Query("select p.cost from Project p")
-	Collection<Money> getCostOfAllProjects();
+	@Query("select p.cost from Project p where p.manager.id = :id")
+	Collection<Money> getCostOfAllProjectsByManagerId(int id);
 
 	@Query("select sc from SystemConfiguration sc")
 	SystemConfiguration getSystemConfiguration();

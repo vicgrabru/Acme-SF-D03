@@ -43,6 +43,8 @@ public class ManagerManagerDashboardShowService extends AbstractService<Manager,
 
 	@Override
 	public void load() {
+
+		int managerId;
 		ManagerDashboard dashboard;
 
 		Integer totalNumberOfUserStoriesWithMustPriority;
@@ -63,17 +65,19 @@ public class ManagerManagerDashboardShowService extends AbstractService<Manager,
 		Collection<Money> costOfProjects;
 		SystemConfiguration systemConfiguration;
 
-		totalNumberOfUserStoriesWithMustPriority = this.repository.totalNumberOfUserStoriesWithMustPriority().intValue();
-		totalNumberOfUserStoriesWithShouldPriority = this.repository.totalNumberOfUserStoriesWithShouldPriority().intValue();
-		totalNumberOfUserStoriesWithCouldPriority = this.repository.totalNumberOfUserStoriesWithCouldPriority().intValue();
-		totalNumberOfUserStoriesWithWontPriority = this.repository.totalNumberOfUserStoriesWithWontPriority().intValue();
+		managerId = super.getRequest().getPrincipal().getActiveRoleId();
 
-		avgEstimatedCostOfUserStories = this.repository.avgEstimatedCostOfUserStories();
-		minEstimatedCostOfUserStories = this.repository.minEstimatedCostOfUserStories();
-		maxEstimatedCostOfUserStories = this.repository.maxEstimatedCostOfUserStories();
-		stdEstimatedCostOfUserStories = this.repository.stdEstimatedCostOfUserStories();
+		totalNumberOfUserStoriesWithMustPriority = this.repository.totalNumberOfUserStoriesWithMustPriorityByManagerId(managerId).intValue();
+		totalNumberOfUserStoriesWithShouldPriority = this.repository.totalNumberOfUserStoriesWithShouldPriorityByManagerId(managerId).intValue();
+		totalNumberOfUserStoriesWithCouldPriority = this.repository.totalNumberOfUserStoriesWithCouldPriorityByManagerId(managerId).intValue();
+		totalNumberOfUserStoriesWithWontPriority = this.repository.totalNumberOfUserStoriesWithWontPriorityByManagerId(managerId).intValue();
 
-		costOfProjects = this.repository.getCostOfAllProjects();
+		avgEstimatedCostOfUserStories = this.repository.avgEstimatedCostOfUserStoriesByManagerId(managerId);
+		minEstimatedCostOfUserStories = this.repository.minEstimatedCostOfUserStoriesByManagerId(managerId);
+		maxEstimatedCostOfUserStories = this.repository.maxEstimatedCostOfUserStoriesByManagerId(managerId);
+		stdEstimatedCostOfUserStories = this.repository.stdEstimatedCostOfUserStoriesByManagerId(managerId);
+
+		costOfProjects = this.repository.getCostOfAllProjectsByManagerId(managerId);
 		systemConfiguration = this.repository.getSystemConfiguration();
 
 		avgCostOfProjects = MoneyUtils.getAvg(costOfProjects, systemConfiguration.getSystemCurrency());
