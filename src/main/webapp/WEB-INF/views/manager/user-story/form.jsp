@@ -30,9 +30,15 @@
 		<acme:submit code="manager.user-story.form.button.delete" action="/manager/user-story/delete"/>
 		<acme:submit code="manager.user-story.form.button.publish" action="/manager/user-story/publish"/>
 	</jstl:if>
-	<jstl:if test="${acme:matches(_command, 'create')}">
-		<acme:submit code="manager.user-story.form.button.create" action="/manager/user-story/create?masterId=${masterId}"/>
-	</jstl:if>
+	<jstl:choose>
+		<jstl:when test="${acme:matches(_command, 'create')}">
+			<acme:submit code="manager.user-story.form.button.create" action="/manager/user-story/create?masterId=${masterId}"/>
+		</jstl:when>
+		<jstl:otherwise>
+			<acme:button code="manager.user-story.form.button.assign" action="/manager/user-story-assign/create?userStoryId=${userStoryId}"/>
+			<acme:button code="manager.user-story.form.button.unassign" action="/manager/user-story-assign/delete?userStoryId=${userStoryId}"/>
+		</jstl:otherwise>
+	</jstl:choose>
 </acme:form>
 
 
