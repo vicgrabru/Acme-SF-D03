@@ -21,18 +21,22 @@ import acme.client.repositories.AbstractRepository;
 import acme.entities.project.Project;
 import acme.entities.project.UserStory;
 import acme.entities.project.UserStoryAssign;
+import acme.roles.Manager;
 
 @Repository
 public interface ManagerUserStoryRepository extends AbstractRepository {
 
-	@Query("select usa from UserStoryAssign usa where usa.userStory.id = :userStoryId and usa.project.id = :projectId")
-	UserStoryAssign findOneUserStoryAssignByUserStoryAndProjectId(int userStoryId, int projectId);
+	@Query("select usa from UserStoryAssign usa where usa.userStory.id = :id")
+	Collection<UserStoryAssign> findManyUserStoryAssignsByUserStoryId(int id);
 
 	@Query("select us from UserStory us where us.id = :id")
 	UserStory findOneUserStoryById(int id);
 
 	@Query("select p from Project p where p.id = :id")
 	Project findOneProjectById(int id);
+
+	@Query("select m from Manager m where m.id = :id")
+	Manager findOneManagerById(int id);
 
 	@Query("select usa.userStory from UserStoryAssign usa where usa.project.id = :id")
 	Collection<UserStory> findManyUserStoriesByProjectId(int id);

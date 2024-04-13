@@ -23,14 +23,12 @@
 	<acme:input-select code="manager.user-story.form.label.priority" path="priority" choices="${priorities}"/>
 	<acme:input-url code="manager.user-story.form.label.optional-link" path="optionalLink"/>
 	<acme:input-checkbox code="manager.user-story.form.label.draft-mode" path="draftMode" readonly="true"/>
-	<acme:input-textbox code="manager.user-story.form.label.project-code" path="projectCode" readonly="true"/>
-	<acme:input-textbox code="manager.user-story.form.label.project-title" path="projectTitle" readonly="true"/>
 	
 	
 	<jstl:if test="${acme:anyOf(_command, 'show|update|delete|publish') && draftMode == true}">
-		<acme:submit code="manager.user-story.form.button.update" action="/manager/user-story/update?masterId=${masterId}"/>
-		<acme:submit code="manager.user-story.form.button.delete" action="/manager/user-story/delete?masterId=${masterId}"/>
-		<acme:submit code="manager.user-story.form.button.publish" action="/manager/user-story/publish?masterId=${masterId}"/>
+		<acme:submit code="manager.user-story.form.button.update" action="/manager/user-story/update"/>
+		<acme:submit code="manager.user-story.form.button.delete" action="/manager/user-story/delete"/>
+		<acme:submit code="manager.user-story.form.button.publish" action="/manager/user-story/publish"/>
 	</jstl:if>
 	<jstl:if test="${acme:matches(_command, 'create')}">
 		<acme:submit code="manager.user-story.form.button.create" action="/manager/user-story/create?masterId=${masterId}"/>

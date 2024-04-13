@@ -43,7 +43,9 @@ public class ManagerUserStoryCreateService extends AbstractService<Manager, User
 
 		projectId = super.getRequest().getData("masterId", int.class);
 		project = this.repository.findOneProjectById(projectId);
-		status = project != null && project.isDraftMode() && super.getRequest().getPrincipal().hasRole(project.getManager());
+		status = project != null && //
+			project.isDraftMode() && //
+			super.getRequest().getPrincipal().hasRole(project.getManager());
 
 		super.getResponse().setAuthorised(status);
 	}
@@ -51,14 +53,12 @@ public class ManagerUserStoryCreateService extends AbstractService<Manager, User
 	@Override
 	public void load() {
 		UserStory object;
-		int projectId;
-		Project project;
+		Manager manager;
 
-		projectId = super.getRequest().getData("masterId", int.class);
-		project = this.repository.findOneProjectById(projectId);
+		manager = this.repository.findOneManagerById(super.getRequest().getPrincipal().getActiveRoleId());
 
 		object = new UserStory();
-		object.setProject(project);
+		object.setManager(manager);
 		object.setDraftMode(true);
 
 		super.getBuffer().addData(object);
@@ -68,7 +68,7 @@ public class ManagerUserStoryCreateService extends AbstractService<Manager, User
 	public void bind(final UserStory object) {
 		assert object != null;
 
-		super.bind(object, "title", "description", "estimatedCost", "acceptanceCriteria", "priority", "optionalLink", "draftMode");
+		super.bind(object, "title", "description", "estimatedCost", "acceptanceCriteria", "priority", "optionalLink");
 	}
 
 	@Override
@@ -80,19 +80,20 @@ public class ManagerUserStoryCreateService extends AbstractService<Manager, User
 	public void perform(final UserStory object) {
 		assert object != null;
 
-		UserStoryAssign relationship;
 		int projectId;
 		Project project;
+		UserStoryAssign relationship;
+
+		this.repository.save(object);
 
 		projectId = super.getRequest().getData("masterId", int.class);
 		project = this.repository.findOneProjectById(projectId);
 
 		relationship = new UserStoryAssign();
 
-		relationship.setProject(project);
 		relationship.setUserStory(object);
+		relationship.setProject(project);
 
-		this.repository.save(object);
 		this.repository.save(relationship);
 	}
 
@@ -100,16 +101,19 @@ public class ManagerUserStoryCreateService extends AbstractService<Manager, User
 	public void unbind(final UserStory object) {
 		assert object != null;
 
+		int projectId;
+
 		SelectChoices choices;
 		Dataset dataset;
 
 		choices = SelectChoices.from(Priority.class, object.getPriority());
 
 		dataset = super.unbind(object, "title", "description", "estimatedCost", "acceptanceCriteria", "priority", "optionalLink", "draftMode");
-		dataset.put("masterId", object.getProject().getId());
+
+		projectId = super.getRequest().getData("masterId", int.class);
+
+		dataset.put("masterId", projectId);
 		dataset.put("priorities", choices);
-		dataset.put("projectCode", object.getProject().getCode());
-		dataset.put("projectTitle", object.getProject().getTitle());
 
 		super.getResponse().addData(dataset);
 	}

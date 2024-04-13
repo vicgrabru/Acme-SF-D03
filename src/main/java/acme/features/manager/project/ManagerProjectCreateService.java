@@ -33,7 +33,6 @@ public class ManagerProjectCreateService extends AbstractService<Manager, Projec
 
 	@Override
 	public void authorise() {
-
 		super.getResponse().setAuthorised(true);
 	}
 
@@ -55,7 +54,7 @@ public class ManagerProjectCreateService extends AbstractService<Manager, Projec
 	public void bind(final Project object) {
 		assert object != null;
 
-		super.bind(object, "code", "title", "abstractField", "hasFatalErrors", "cost", "optionalLink", "draftMode");
+		super.bind(object, "code", "title", "abstractField", "hasFatalErrors", "cost", "optionalLink");
 	}
 
 	@Override

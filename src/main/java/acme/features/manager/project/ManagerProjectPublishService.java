@@ -21,6 +21,7 @@ import acme.client.data.models.Dataset;
 import acme.client.services.AbstractService;
 import acme.entities.project.Project;
 import acme.entities.project.UserStory;
+import acme.entities.project.UserStoryAssign;
 import acme.roles.Manager;
 
 @Service
@@ -63,8 +64,6 @@ public class ManagerProjectPublishService extends AbstractService<Manager, Proje
 	@Override
 	public void bind(final Project object) {
 		assert object != null;
-
-		super.bind(object, "code", "title", "abstractField", "hasFatalErrors", "cost", "optionalLink", "draftMode");
 	}
 
 	@Override
@@ -72,14 +71,6 @@ public class ManagerProjectPublishService extends AbstractService<Manager, Proje
 		assert object != null;
 
 		int projectId;
-
-		if (!super.getBuffer().getErrors().hasErrors("cost")) {
-			String currencies;
-			currencies = this.repository.findAcceptedCurrenciesInSystem();
-			super.state(currencies.contains(object.getCost().getCurrency()), "cost", "manager.project.form.error.cost.invalid-currency");
-
-			super.state(object.getCost().getAmount() >= 0., "cost", "manager.project.form.error.cost.negative");
-		}
 
 		projectId = super.getRequest().getData("id", int.class);
 		Collection<UserStory> userStories;
@@ -96,9 +87,17 @@ public class ManagerProjectPublishService extends AbstractService<Manager, Proje
 	public void perform(final Project object) {
 		assert object != null;
 
-		object.setDraftMode(false);
+		Collection<UserStoryAssign> relationships;
 
+		object.setDraftMode(false);
 		this.repository.save(object);
+
+		relationships = this.repository.findManyUserStoryAssignsByProjectId(object.getId());
+
+		for (UserStoryAssign rel : relationships) {
+			rel.setProject(object);
+			this.repository.save(rel);
+		}
 	}
 
 	@Override

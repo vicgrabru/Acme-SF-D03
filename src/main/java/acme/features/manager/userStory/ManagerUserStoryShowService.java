@@ -20,7 +20,6 @@ import acme.client.services.AbstractService;
 import acme.client.views.SelectChoices;
 import acme.entities.project.Priority;
 import acme.entities.project.UserStory;
-import acme.entities.project.UserStoryAssign;
 import acme.roles.Manager;
 
 @Service
@@ -39,11 +38,11 @@ public class ManagerUserStoryShowService extends AbstractService<Manager, UserSt
 		boolean status;
 		int userStoryId;
 		UserStory userStory;
-		UserStoryAssign relationship;
 
 		userStoryId = super.getRequest().getData("id", int.class);
 		userStory = this.repository.findOneUserStoryById(userStoryId);
-		status = userStory != null && super.getRequest().getPrincipal().hasRole(userStory.getProject().getManager());
+		status = userStory != null && //
+			super.getRequest().getPrincipal().hasRole(userStory.getManager());
 
 		super.getResponse().setAuthorised(status);
 	}
@@ -69,10 +68,7 @@ public class ManagerUserStoryShowService extends AbstractService<Manager, UserSt
 		choices = SelectChoices.from(Priority.class, object.getPriority());
 
 		dataset = super.unbind(object, "title", "description", "estimatedCost", "acceptanceCriteria", "priority", "optionalLink", "draftMode");
-		dataset.put("masterId", object.getProject().getId());
 		dataset.put("priorities", choices);
-		dataset.put("projectCode", object.getProject().getCode());
-		dataset.put("projectTitle", object.getProject().getTitle());
 
 		super.getResponse().addData(dataset);
 	}

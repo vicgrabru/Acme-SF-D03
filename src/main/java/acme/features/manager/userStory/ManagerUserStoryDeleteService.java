@@ -12,6 +12,8 @@
 
 package acme.features.manager.userStory;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,16 +39,19 @@ public class ManagerUserStoryDeleteService extends AbstractService<Manager, User
 	@Override
 	public void authorise() {
 		boolean status;
-		int userStoryId, masterId;
+		int userStoryId;
 		UserStory userStory;
-		UserStoryAssign relationship;
+		Collection<UserStoryAssign> relationships;
 
 		userStoryId = super.getRequest().getData("id", int.class);
-		masterId = super.getRequest().getData("masterId", int.class);
 
-		relationship = this.repository.findOneUserStoryAssignByUserStoryAndProjectId(userStoryId, masterId);
+		relationships = this.repository.findManyUserStoryAssignsByUserStoryId(userStoryId);
 		userStory = this.repository.findOneUserStoryById(userStoryId);
-		status = userStory != null && userStory.isDraftMode() && super.getRequest().getPrincipal().hasRole(relationship.getProject().getManager());
+
+		status = userStory != null && //
+			userStory.isDraftMode() && //
+			relationships.stream().allMatch(x -> x.getProject().isDraftMode()) && //
+			super.getRequest().getPrincipal().hasRole(userStory.getManager());
 
 		super.getResponse().setAuthorised(status);
 	}
@@ -76,13 +81,13 @@ public class ManagerUserStoryDeleteService extends AbstractService<Manager, User
 	public void perform(final UserStory object) {
 		assert object != null;
 
-		int masterId;
-		UserStoryAssign relationship;
+		Collection<UserStoryAssign> relationships;
 
-		masterId = super.getRequest().getData("masterId", int.class);
-		relationship = this.repository.findOneUserStoryAssignByUserStoryAndProjectId(object.getId(), masterId);
+		relationships = this.repository.findManyUserStoryAssignsByUserStoryId(object.getId());
 
-		this.repository.delete(relationship);
+		if (!relationships.isEmpty())
+			this.repository.deleteAll(relationships);
+
 		this.repository.delete(object);
 	}
 
@@ -96,10 +101,7 @@ public class ManagerUserStoryDeleteService extends AbstractService<Manager, User
 		choices = SelectChoices.from(Priority.class, object.getPriority());
 
 		dataset = super.unbind(object, "title", "description", "estimatedCost", "acceptanceCriteria", "priority", "optionalLink", "draftMode");
-		dataset.put("masterId", object.getProject().getId());
 		dataset.put("priorities", choices);
-		dataset.put("projectCode", object.getProject().getCode());
-		dataset.put("projectTitle", object.getProject().getTitle());
 
 		super.getResponse().addData(dataset);
 	}

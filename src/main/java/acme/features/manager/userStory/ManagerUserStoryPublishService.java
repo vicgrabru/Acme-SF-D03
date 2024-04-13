@@ -12,6 +12,8 @@
 
 package acme.features.manager.userStory;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ import acme.client.services.AbstractService;
 import acme.client.views.SelectChoices;
 import acme.entities.project.Priority;
 import acme.entities.project.UserStory;
+import acme.entities.project.UserStoryAssign;
 import acme.roles.Manager;
 
 @Service
@@ -40,8 +43,12 @@ public class ManagerUserStoryPublishService extends AbstractService<Manager, Use
 		UserStory userStory;
 
 		userStoryId = super.getRequest().getData("id", int.class);
+
 		userStory = this.repository.findOneUserStoryById(userStoryId);
-		status = userStory != null && userStory.isDraftMode() && super.getRequest().getPrincipal().hasRole(userStory.getProject().getManager());
+
+		status = userStory != null && //
+			userStory.isDraftMode() && //
+			super.getRequest().getPrincipal().hasRole(userStory.getManager());
 
 		super.getResponse().setAuthorised(status);
 	}
@@ -60,8 +67,6 @@ public class ManagerUserStoryPublishService extends AbstractService<Manager, Use
 	@Override
 	public void bind(final UserStory object) {
 		assert object != null;
-
-		super.bind(object, "title", "description", "estimatedCost", "acceptanceCriteria", "priority", "optionalLink", "draftMode");
 	}
 
 	@Override
@@ -73,8 +78,17 @@ public class ManagerUserStoryPublishService extends AbstractService<Manager, Use
 	public void perform(final UserStory object) {
 		assert object != null;
 
+		Collection<UserStoryAssign> relationships;
+
 		object.setDraftMode(false);
 		this.repository.save(object);
+
+		relationships = this.repository.findManyUserStoryAssignsByUserStoryId(object.getId());
+
+		for (UserStoryAssign rel : relationships) {
+			rel.setUserStory(object);
+			this.repository.save(rel);
+		}
 	}
 
 	@Override
@@ -87,10 +101,7 @@ public class ManagerUserStoryPublishService extends AbstractService<Manager, Use
 		choices = SelectChoices.from(Priority.class, object.getPriority());
 
 		dataset = super.unbind(object, "title", "description", "estimatedCost", "acceptanceCriteria", "priority", "optionalLink", "draftMode");
-		dataset.put("masterId", object.getProject().getId());
 		dataset.put("priorities", choices);
-		dataset.put("projectCode", object.getProject().getCode());
-		dataset.put("projectTitle", object.getProject().getTitle());
 
 		super.getResponse().addData(dataset);
 	}
