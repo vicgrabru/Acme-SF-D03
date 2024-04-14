@@ -63,8 +63,6 @@ public class ManagerProjectPublishService extends AbstractService<Manager, Proje
 	@Override
 	public void bind(final Project object) {
 		assert object != null;
-
-		super.bind(object, "code", "title", "abstractField", "hasFatalErrors", "cost", "optionalLink", "draftMode");
 	}
 
 	@Override
