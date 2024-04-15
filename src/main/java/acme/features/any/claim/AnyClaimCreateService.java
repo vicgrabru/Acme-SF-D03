@@ -12,13 +12,12 @@
 
 package acme.features.any.claim;
 
-import java.sql.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import acme.client.data.accounts.Any;
 import acme.client.data.models.Dataset;
+import acme.client.helpers.MomentHelper;
 import acme.client.services.AbstractService;
 import acme.entities.claim.Claim;
 
@@ -44,6 +43,7 @@ public class AnyClaimCreateService extends AbstractService<Any, Claim> {
 
 		object = new Claim();
 		object.setDraftMode(true);
+		object.setInstantiationMoment(MomentHelper.getCurrentMoment());
 
 		super.getBuffer().addData(object);
 	}
@@ -52,21 +52,13 @@ public class AnyClaimCreateService extends AbstractService<Any, Claim> {
 	public void bind(final Claim object) {
 		assert object != null;
 
-		super.bind(object, "code", "heading", "description", "department", "email", "link", "draftMode");
-		object.setInstantiationMoment(new Date(122, 6, 30));
+		super.bind(object, "code", "heading", "description", "department", "email", "link");
+
 	}
 
 	@Override
 	public void validate(final Claim object) {
 		assert object != null;
-
-		if (!super.getBuffer().getErrors().hasErrors("code")) {
-			Claim existing;
-
-			existing = this.repository.findOneClaimByCode(object.getCode());
-			super.state(existing == null, "code", "any.claim.form.error.duplicated");
-
-		}
 
 		if (!super.getBuffer().getErrors().hasErrors("confirmation"))
 			super.state(super.getRequest().getData("confirmation", boolean.class), "notConfirmed", "any.claim.form.error.not-confirmed");
