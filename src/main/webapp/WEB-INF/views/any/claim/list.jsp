@@ -19,8 +19,6 @@
 	<acme:list-column code="any.claim.list.label.code" path="code" width="20%"/>
 	<acme:list-column code="any.claim.list.label.instantiationMoment" path="instantiationMoment" width="20%"/>
 	<acme:list-column code="any.claim.list.label.heading" path="heading" width="20%"/>
-	<acme:list-column code="any.claim.list.label.description" path="description" width="20%"/>
-	<acme:list-column code="any.claim.list.label.department" path="department" width="20%"/>
-	<acme:list-column code="any.claim.list.label.email" path="email" width="20%"/>
-	<acme:list-column code="any.claim.list.label.link" path="link" width="20%"/>
 </acme:list>
+
+<acme:button code="any.claim.list.button.create" action="/any/claim/create"/>

@@ -35,6 +35,9 @@ public class AnyClaimController extends AbstractController<Any, Claim> {
 	@Autowired
 	private AnyClaimPublishService	publishService;
 
+	@Autowired
+	private AnyClaimCreateService	createService;
+
 	// Constructors -----------------------------------------------------------
 
 
@@ -42,6 +45,7 @@ public class AnyClaimController extends AbstractController<Any, Claim> {
 	protected void initialise() {
 		super.addBasicCommand("list", this.listService);
 		super.addBasicCommand("show", this.showService);
+		super.addBasicCommand("create", this.createService);
 		super.addCustomCommand("publish", "create", this.publishService);
 	}
 }

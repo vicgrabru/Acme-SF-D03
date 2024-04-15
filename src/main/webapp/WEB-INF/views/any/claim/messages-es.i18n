@@ -29,3 +29,5 @@ any.claim.list.label.email = Email
 any.claim.list.label.link = Enlace
 
 any.claim.form.button.publish = Publicar
+any.claim.form.button.create = Publicar nueva reclamación
+any.claim.list.button.create = Publicar nueva reclamación
