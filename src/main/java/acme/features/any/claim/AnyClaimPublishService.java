@@ -47,13 +47,15 @@ public class AnyClaimPublishService extends AbstractService<Any, Claim> {
 	public void validate(final Claim object) {
 		assert object != null;
 
+		if (!super.getBuffer().getErrors().hasErrors("confirmation"))
+			super.state(super.getRequest().getData("confirmation", boolean.class), "notConfirmed", "any.claim.form.error.not-confirmed");
 	}
 
 	@Override
 	public void perform(final Claim object) {
 		assert object != null;
-		if (super.getRequest().getData("confirmation", boolean.class))
-			object.setDraftMode(false);
+
+		object.setDraftMode(false);
 
 		this.repository.save(object);
 	}
