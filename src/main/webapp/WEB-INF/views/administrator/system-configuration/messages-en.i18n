@@ -8,15 +8,11 @@
 # purposes.  The copyright owner does not offer any warranties or representations, nor do
 # they accept any liabilities with respect to them.
 
-administrator.system-configuration.form.title = System Configuration form
-administrator.system-configuration.list.title = System Configuration
-
-administrator.system-configuration.list.label.system-currency = System Currency
-administrator.system-configuration.list.label.accepted-currencies = Accepted Currencies
+administrator.system-configuration.form.title = System Configuration
 
 administrator.system-configuration.form.label.system-currency = System Currency
 administrator.system-configuration.form.label.accepted-currencies = Accepted Currencies
 
 administrator.system-configuration.form.button.update = Update
 
-administrator.system-configuration.form.error.system-currency-not-included-in-accepted-currencies = The system currency must be included in the accepted currencies.
+administrator.system-configuration.form.error.system-currency-not-included-in-accepted-currencies = The system currency must be included in the accepted currencies

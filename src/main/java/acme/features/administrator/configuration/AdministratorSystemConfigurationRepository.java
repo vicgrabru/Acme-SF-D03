@@ -12,8 +12,6 @@
 
 package acme.features.administrator.configuration;
 
-import java.util.Collection;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -24,9 +22,6 @@ import acme.entities.configuration.SystemConfiguration;
 public interface AdministratorSystemConfigurationRepository extends AbstractRepository {
 
 	@Query("select sc from SystemConfiguration sc")
-	Collection<SystemConfiguration> findSystemConfiguration();
-
-	@Query("select sc from SystemConfiguration sc where sc.id = :id")
-	SystemConfiguration findSystemConfigurationById(int id);
+	SystemConfiguration findSystemConfiguration();
 
 }

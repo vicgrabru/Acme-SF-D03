@@ -27,9 +27,6 @@ public class AdministratorSystemConfigurationController extends AbstractControll
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private AdministratorSystemConfigurationListService		listService;
-
-	@Autowired
 	private AdministratorSystemConfigurationShowService		showService;
 
 	@Autowired
@@ -40,7 +37,6 @@ public class AdministratorSystemConfigurationController extends AbstractControll
 
 	@PostConstruct
 	protected void initialise() {
-		super.addBasicCommand("list", this.listService);
 		super.addBasicCommand("show", this.showService);
 		super.addBasicCommand("update", this.updateService);
 	}

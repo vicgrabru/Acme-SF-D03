@@ -32,7 +32,7 @@ master.menu.authenticated.risk = Lista de riesgos
 
 master.menu.administrator = Administrador
 master.menu.administrator.dashboard = Panel de indicadores
-master.menu.administrator.system-configuration-list = Configuración del Sistema
+master.menu.administrator.system-configuration-show = Configuración del Sistema
 master.menu.administrator.banner-list = Lista de banners
 master.menu.administrator.user-accounts = Cuentas de usuario
 master.menu.administrator.populate-initial = Poblar BD (inicial)

@@ -8,14 +8,11 @@
 # purposes.  The copyright owner does not offer any warranties or representations, nor do
 # they accept any liabilities with respect to them.
 
-administrator.system-configuration.list.title = Configuración del Sistema
-
-administrator.system-configuration.list.label.system-currency = Divisa del Sistema
-administrator.system-configuration.list.label.accepted-currencies = Divisas Aceptadas
+administrator.system-configuration.form.title = Configuración del Sistema
 
 administrator.system-configuration.form.label.system-currency = Divisa del Sistema
 administrator.system-configuration.form.label.accepted-currencies = Divisas Aceptadas
 
 administrator.system-configuration.form.button.update = Actualizar
 
-administrator.system-configuration.form.error.system-currency-not-included-in-accepted-currencies = La divisa del sistema debe estar incluida en las divisas aceptadas.
+administrator.system-configuration.form.error.system-currency-not-included-in-accepted-currencies = La divisa del sistema debe estar incluida en las divisas aceptadas
