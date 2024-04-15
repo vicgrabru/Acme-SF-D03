@@ -27,6 +27,10 @@ master.menu.anonymous.favourite-link-frarosram = 78234988M: Rosso Ramírez, Fran
 master.menu.anonymous.favourite-link-jorgomde = 54184356J: Gómez de Tovar, Jorge
 master.menu.anonymous.favourite-link-albescsan1= 77844410J: Escobar Sánchez, Alberto
 
+# master.menu.authenticated ###################################################
+master.menu.authenticated = Authenticated
+master.menu.authenticated.risk = Risk list
+
 # master.menu.administrator ###################################################
 
 master.menu.administrator = Administrator
