@@ -27,6 +27,7 @@ master.menu.anonymous.favourite-link-albescsan1= 77844410J: Escobar Sánchez, Al
 # master.menu.authenticated ###################################################
 master.menu.authenticated = Authenticated
 master.menu.authenticated.risk = Risk list
+master.menu.authenticated.notice = Notice list
 
 # master.menu.administrator ###################################################
 
