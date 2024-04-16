@@ -64,7 +64,7 @@ public class AuthenticatedNoticeCreateService extends AbstractService<Authentica
 	public void bind(final Notice object) {
 		assert object != null;
 
-		super.bind(object, "title", "message", "email", "link", "author", "instantiationMoment");
+		super.bind(object, "title", "message", "email", "link");
 	}
 
 	@Override
