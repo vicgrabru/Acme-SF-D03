@@ -57,7 +57,7 @@ public class AdministratorBannerCreateService extends AbstractService<Administra
 	public void bind(final Banner object) {
 		assert object != null;
 
-		super.bind(object, "instantiationMoment", "periodStart", "periodEnd", "pictureLink", "slogan", "webDocumentLink");
+		super.bind(object, "periodStart", "periodEnd", "pictureLink", "slogan", "webDocumentLink");
 	}
 
 	@Override
