@@ -1,5 +1,5 @@
 key,code,moment,start-duration,end-duration,amount,type,email,link,draft-mode,key:project,key:sponsor
-sponsorship-01,A-000,2020/03/03 12:00,2020/03/06 12:00,2020/04/07 12:00,EUR 50,FINANCIAL,null,null,true,project-01,sponsor-01
+sponsorship-01,A-000,2020/03/03 12:00,2020/03/06 12:00,2020/04/07 12:00,EUR 60.5,FINANCIAL,null,null,true,project-01,sponsor-01
 sponsorship-02,ZZZ-999,2019/05/03 12:00,2019/06/06 12:00,2019/07/07 12:00,EUR 40,IN_KIND,example@example.com,https://www.example.com,false,project-02,sponsor-01
 sponsorship-03,ABC-001,2019/12/23 14:00,2020/01/24 14:00,2020/02/25 14:00,EUR 69.99,FINANCIAL,example@example.com,https://www.example.com,true,project-03,sponsor-02
 sponsorship-04,CCC-002,2018/09/13 22:00,2018/10/15 22:00,2018/11/16 22:00,EUR 30,IN_KIND,example@example.com,https://www.example.com,false,project-02,sponsor-03

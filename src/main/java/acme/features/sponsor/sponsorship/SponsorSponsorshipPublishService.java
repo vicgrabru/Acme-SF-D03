@@ -14,6 +14,7 @@ import acme.client.views.SelectChoices;
 import acme.entities.project.Project;
 import acme.entities.sponsorship.Invoice;
 import acme.entities.sponsorship.Sponsorship;
+import acme.entities.sponsorship.Type;
 import acme.roles.Sponsor;
 
 @Service
@@ -63,18 +64,12 @@ public class SponsorSponsorshipPublishService extends AbstractService<Sponsor, S
 		projectId = super.getRequest().getData("project", int.class);
 		project = this.repository.findOneProjectById(projectId);
 
-		super.bind(object, "code", "startDuration", "endDuration", "amount", "type", "email", "link");
+		super.bind(object, "code", "startDuration", "endDuration", "amount", "type", "email", "link", "draftMode");
 		object.setProject(project);
 	}
 
 	@Override
 	public void validate(final Sponsorship object) {
-		if (!super.getBuffer().getErrors().hasErrors("reference")) {
-			Sponsorship existing;
-
-			existing = this.repository.findOneSponsorshipByCode(object.getCode());
-			super.state(existing == null, "code", "sponsor.sponsorship.form.error.duplicated");
-		}
 
 		if (!super.getBuffer().getErrors().hasErrors("startDuration"))
 			super.state(MomentHelper.isAfter(object.getStartDuration(), object.getMoment()), "startDuration", "sponsor.sponsorship.form.error.durationAfter");
@@ -86,7 +81,7 @@ public class SponsorSponsorshipPublishService extends AbstractService<Sponsor, S
 			Collection<Invoice> invoices;
 			invoices = this.repository.findManyInvoicesBySponsorshipId(object.getId());
 			Double totalAmount = invoices.stream().mapToDouble(i -> i.totalAmount().getAmount()).sum();
-			super.state(object.getAmount().equals(totalAmount), "amount", "sponsor.sponsorship.form.error.notEqualAmount");
+			super.state(object.getAmount().getAmount().equals(totalAmount), "amount", "sponsor.sponsorship.form.error.notEqualAmount");
 		}
 
 	}
@@ -103,15 +98,17 @@ public class SponsorSponsorshipPublishService extends AbstractService<Sponsor, S
 		assert object != null;
 
 		Collection<Project> projects;
-		SelectChoices choices;
+		SelectChoices choicesProject;
+		SelectChoices choicesType;
 		Dataset dataset;
 
 		projects = this.repository.findAllProjects();
-		choices = SelectChoices.from(projects, "code", object.getProject());
-
-		dataset = super.unbind(object, "code", "startDuration", "endDuration", "amount", "type", "email", "link");
-		dataset.put("project", choices.getSelected().getKey());
-		dataset.put("projects", choices);
+		choicesProject = SelectChoices.from(projects, "code", object.getProject());
+		choicesType = SelectChoices.from(Type.class, object.getType());
+		dataset = super.unbind(object, "code", "moment", "startDuration", "endDuration", "amount", "type", "email", "link");
+		dataset.put("project", choicesProject.getSelected().getKey());
+		dataset.put("projects", choicesProject);
+		dataset.put("types", choicesType);
 
 		super.getResponse().addData(dataset);
 	}

@@ -1,4 +1,4 @@
-# menu-en.i18n
+	# menu-en.i18n
 #
 # Copyright (C) 2012-2024 Rafael Corchuelo.
 #
@@ -39,6 +39,11 @@ master.menu.administrator.user-accounts = User accounts
 master.menu.administrator.populate-initial = Populate DB (initial)
 master.menu.administrator.populate-sample = Populate DB (samples)
 master.menu.administrator.shut-down = Shut down
+
+# master.menu.sponsor ########################################################
+
+master.menu.sponsor = Sponsor
+master.menu.sponsor.sponsorship-list = List my sponsorships
 
 # master.menu.provider ########################################################
 

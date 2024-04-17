@@ -21,10 +21,11 @@
 	<acme:input-moment code="sponsor.sponsorship.form.label.startDuration" path="startDuration"/>
 	<acme:input-moment code="sponsor.sponsorship.form.label.endDuration" path="endDuration"/>
 	<acme:input-money code="sponsor.sponsorship.form.label.amount" path="amount"/>
-	<acme:input-select code="sponsor.sponsorship.form.label.type" path="type" choices="${types}"readonly="${acme:anyOf(status, 'FINANCIAL, IN_KIND;')}"/>
+	<acme:input-select code="sponsor.sponsorship.form.label.type" path="type" choices="${types}" readonly="${acme:anyOf(status, 'FINANCIAL|IN_KIND')}"/>
 	<acme:input-email code="sponsor.sponsorship.form.label.email" path="email"/>
 	<acme:input-url code="sponsor.sponsorship.form.label.link" path="link"/>
 	<acme:input-select code="sponsor.sponsorship.form.label.project" path="project" choices="${projects}"/>
+	<acme:input-checkbox code="sponsor.sponsorship.form.label.draftmode" path="draftMode" readonly="true"/>
 	
 	<jstl:choose>
 		<jstl:when test="${acme:anyOf(_command, 'show|update|delete|publish') && draftMode == true}">
