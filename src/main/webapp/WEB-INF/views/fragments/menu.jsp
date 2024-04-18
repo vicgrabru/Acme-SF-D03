@@ -55,6 +55,8 @@
 	
 		<acme:menu-option code="master.menu.sponsor" access="hasRole('Sponsor')">
 			<acme:menu-suboption code="master.menu.sponsor.sponsorship-list" action="/sponsor/sponsorship/list-mine"/>
+			<acme:menu-separator/>
+			<acme:menu-suboption code="master.menu.sponsor.sponsor-dashboard" action="/sponsor/sponsor-dashboard/show"/>
 		</acme:menu-option>
 
 	<acme:menu-right>
