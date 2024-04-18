@@ -69,7 +69,7 @@ public class AdministratorBannerCreateService extends AbstractService<Administra
 			if (!super.getBuffer().getErrors().hasErrors("periodEnd")) {
 				Date targetDate;
 				targetDate = MomentHelper.deltaFromMoment(object.getPeriodStart(), 1, ChronoUnit.WEEKS);
-				super.state(object.getPeriodEnd().after(targetDate), "periodEnd", "administrator.banner.form.error.period-too-short");
+				super.state(object.getPeriodEnd().compareTo(targetDate) >= 0, "periodEnd", "administrator.banner.form.error.period-too-short");
 			}
 		}
 	}
