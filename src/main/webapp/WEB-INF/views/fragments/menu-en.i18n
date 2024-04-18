@@ -29,6 +29,10 @@ master.menu.authenticated = Authenticated
 master.menu.authenticated.risk = Risk list
 master.menu.authenticated.notice = Notice list
 
+# master.menu.any #############################################################
+master.menu.any = Any
+master.menu.any.sponsorship-list = Sponsorship List
+
 # master.menu.administrator ###################################################
 
 master.menu.administrator = Administrator

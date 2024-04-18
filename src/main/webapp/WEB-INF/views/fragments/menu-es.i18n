@@ -29,6 +29,10 @@ master.menu.authenticated = Autenticado
 master.menu.authenticated.risk = Lista de riesgos
 master.menu.authenticated.notice = Lista de avisos
 
+# master.menu.any #############################################################
+master.menu.any = Cualquiera
+master.menu.any.sponsorship-list = Lista de patrocinios
+
 # master.menu.administrator ###################################################
 
 master.menu.administrator = Administrador

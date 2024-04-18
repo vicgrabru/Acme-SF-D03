@@ -1,23 +1,23 @@
 
-package acme.features.sponsor.sponsorship;
+package acme.features.any;
 
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import acme.client.data.accounts.Any;
 import acme.client.data.models.Dataset;
 import acme.client.services.AbstractService;
 import acme.entities.sponsorship.Sponsorship;
-import acme.roles.Sponsor;
 
 @Service
-public class SponsorSponsorshipListAllService extends AbstractService<Sponsor, Sponsorship> {
+public class AnySponsorshipListService extends AbstractService<Any, Sponsorship> {
 
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private SponsorSponsorshipRepository repository;
+	private AnySponsorshipRepository repository;
 
 	// AbstractService interface ----------------------------------------------
 
