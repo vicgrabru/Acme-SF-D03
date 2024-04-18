@@ -21,7 +21,7 @@
 	<acme:input-moment code="any.sponsorship.form.label.startDuration" path="startDuration"/>
 	<acme:input-moment code="any.sponsorship.form.label.endDuration" path="endDuration"/>
 	<acme:input-money code="any.sponsorship.form.label.amount" path="amount"/>
-	<acme:input-select code="any.sponsorship.form.label.type" path="type" choices="${types}" readonly="${acme:anyOf(status, 'FINANCIAL|IN_KIND')}" readonly="true"/>
+	<acme:input-select code="any.sponsorship.form.label.type" path="type" choices="${types}" readonly="${acme:anyOf(status, 'FINANCIAL|IN_KIND')}" />
 	<acme:input-email code="any.sponsorship.form.label.email" path="email"/>
 	<acme:input-url code="any.sponsorship.form.label.link" path="link"/>
 	<acme:input-select code="any.sponsorship.form.label.project" path="project" choices="${projects}" readonly="true"/>
