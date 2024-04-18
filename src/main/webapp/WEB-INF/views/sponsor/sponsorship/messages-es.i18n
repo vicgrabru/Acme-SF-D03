@@ -28,6 +28,7 @@ sponsor.sponsorship.list.label.amount = Cantidad
 
 sponsor.sponsorship.list.button.create = Crear
 
+sponsor.sponsorship.form.button.invoices = Facturas
 sponsor.sponsorship.form.button.update = Actualizar
 sponsor.sponsorship.form.button.delete = Eliminar
 sponsor.sponsorship.form.button.publish = Publicar
