@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import acme.client.data.models.Dataset;
 import acme.client.services.AbstractService;
 import acme.entities.project.Project;
-import acme.entities.project.UserStory;
+import acme.entities.project.UserStoryAssign;
 import acme.roles.Manager;
 
 @Service
@@ -73,15 +73,12 @@ public class ManagerProjectDeleteService extends AbstractService<Manager, Projec
 	@Override
 	public void perform(final Project object) {
 		assert object != null;
-		int projectId;
-		Collection<UserStory> userStories;
+		Collection<UserStoryAssign> relationships;
 
-		projectId = super.getRequest().getData("id", int.class);
+		relationships = this.repository.findManyUserStoryAssignsByProjectId(object.getId());
 
-		userStories = this.repository.findManyUserStoriesByProjectId(projectId);
-
-		if (!userStories.isEmpty())
-			this.repository.deleteAll(userStories);
+		if (!relationships.isEmpty())
+			this.repository.deleteAll(relationships);
 
 		this.repository.delete(object);
 	}

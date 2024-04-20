@@ -22,11 +22,12 @@ manager.user-story.form.label.acceptance-criteria = Criterios de aceptación
 manager.user-story.form.label.priority = Prioridad
 manager.user-story.form.label.optional-link = Enlace opcional
 manager.user-story.form.label.draft-mode = Borrador
-manager.user-story.form.label.project-code = Código del proyecto
-manager.user-story.form.label.project-title = Título del proyecto
 
 manager.user-story.list.button.create = Crear
 manager.user-story.form.button.create = Crear
 manager.user-story.form.button.update = Actualizar
 manager.user-story.form.button.delete = Eliminar
 manager.user-story.form.button.publish = Publicar
+
+manager.user-story.form.button.assign = Asignar a un proyecto
+manager.user-story.form.button.unassign = Eliminar de un proyecto

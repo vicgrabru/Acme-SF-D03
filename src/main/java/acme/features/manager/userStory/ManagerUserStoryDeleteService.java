@@ -12,6 +12,8 @@
 
 package acme.features.manager.userStory;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ import acme.client.services.AbstractService;
 import acme.client.views.SelectChoices;
 import acme.entities.project.Priority;
 import acme.entities.project.UserStory;
+import acme.entities.project.UserStoryAssign;
 import acme.roles.Manager;
 
 @Service
@@ -38,10 +41,17 @@ public class ManagerUserStoryDeleteService extends AbstractService<Manager, User
 		boolean status;
 		int userStoryId;
 		UserStory userStory;
+		Collection<UserStoryAssign> relationships;
 
 		userStoryId = super.getRequest().getData("id", int.class);
+
+		relationships = this.repository.findManyUserStoryAssignsByUserStoryId(userStoryId);
 		userStory = this.repository.findOneUserStoryById(userStoryId);
-		status = userStory != null && userStory.isDraftMode() && super.getRequest().getPrincipal().hasRole(userStory.getProject().getManager());
+
+		status = userStory != null && //
+			userStory.isDraftMode() && //
+			relationships.stream().allMatch(x -> x.getProject().isDraftMode()) && //
+			super.getRequest().getPrincipal().hasRole(userStory.getManager());
 
 		super.getResponse().setAuthorised(status);
 	}
@@ -71,6 +81,13 @@ public class ManagerUserStoryDeleteService extends AbstractService<Manager, User
 	public void perform(final UserStory object) {
 		assert object != null;
 
+		Collection<UserStoryAssign> relationships;
+
+		relationships = this.repository.findManyUserStoryAssignsByUserStoryId(object.getId());
+
+		if (!relationships.isEmpty())
+			this.repository.deleteAll(relationships);
+
 		this.repository.delete(object);
 	}
 
@@ -84,10 +101,8 @@ public class ManagerUserStoryDeleteService extends AbstractService<Manager, User
 		choices = SelectChoices.from(Priority.class, object.getPriority());
 
 		dataset = super.unbind(object, "title", "description", "estimatedCost", "acceptanceCriteria", "priority", "optionalLink", "draftMode");
-		dataset.put("masterId", object.getProject().getId());
+		dataset.put("userStoryId", object.getId());
 		dataset.put("priorities", choices);
-		dataset.put("projectCode", object.getProject().getCode());
-		dataset.put("projectTitle", object.getProject().getTitle());
 
 		super.getResponse().addData(dataset);
 	}

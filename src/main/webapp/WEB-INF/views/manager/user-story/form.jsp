@@ -23,8 +23,6 @@
 	<acme:input-select code="manager.user-story.form.label.priority" path="priority" choices="${priorities}"/>
 	<acme:input-url code="manager.user-story.form.label.optional-link" path="optionalLink"/>
 	<acme:input-checkbox code="manager.user-story.form.label.draft-mode" path="draftMode" readonly="true"/>
-	<acme:input-textbox code="manager.user-story.form.label.project-code" path="projectCode" readonly="true"/>
-	<acme:input-textbox code="manager.user-story.form.label.project-title" path="projectTitle" readonly="true"/>
 	
 	
 	<jstl:if test="${acme:anyOf(_command, 'show|update|delete|publish') && draftMode == true}">
@@ -32,9 +30,15 @@
 		<acme:submit code="manager.user-story.form.button.delete" action="/manager/user-story/delete"/>
 		<acme:submit code="manager.user-story.form.button.publish" action="/manager/user-story/publish"/>
 	</jstl:if>
-	<jstl:if test="${acme:matches(_command, 'create')}">
-		<acme:submit code="manager.user-story.form.button.create" action="/manager/user-story/create?masterId=${masterId}"/>
-	</jstl:if>
+	<jstl:choose>
+		<jstl:when test="${acme:matches(_command, 'create')}">
+			<acme:submit code="manager.user-story.form.button.create" action="/manager/user-story/create?masterId=${masterId}"/>
+		</jstl:when>
+		<jstl:otherwise>
+			<acme:button code="manager.user-story.form.button.assign" action="/manager/user-story-assign/create?userStoryId=${userStoryId}"/>
+			<acme:button code="manager.user-story.form.button.unassign" action="/manager/user-story-assign/delete?userStoryId=${userStoryId}"/>
+		</jstl:otherwise>
+	</jstl:choose>
 </acme:form>
 
 

@@ -33,7 +33,6 @@ public class ManagerProjectCreateService extends AbstractService<Manager, Projec
 
 	@Override
 	public void authorise() {
-
 		super.getResponse().setAuthorised(true);
 	}
 
