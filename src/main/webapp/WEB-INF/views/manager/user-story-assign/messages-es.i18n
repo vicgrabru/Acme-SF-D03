@@ -19,3 +19,4 @@ manager.user-story-assign.form.error.project-is-published = El proyecto está pu
 manager.user-story-assign.form.error.project-is-null = Selecciona un proyecto
 manager.user-story-assign.form.error.user-story-already-assigned-to-project = La historia de usuario ya está asignada a este proyecto
 manager.user-story-assign.form.error.unassigning-user-story-not-assigned-to-project = La historia de usuario no está asignada a este proyecto
+manager.user-story-assign.form.error.project-is-null = Debes seleccionar un proyecto

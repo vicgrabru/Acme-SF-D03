@@ -98,11 +98,24 @@ public class ManagerUserStoryDeleteService extends AbstractService<Manager, User
 		SelectChoices choices;
 		Dataset dataset;
 
+		int managerId, userStoryId;
+		Integer nProjects, nAssignedProjects, nAssignedPublishedProjects;
+
+		managerId = super.getRequest().getPrincipal().getActiveRoleId();
+		userStoryId = object.getId();
+
+		nProjects = this.repository.countNumberProjectsByManagerId(managerId);
+		nAssignedProjects = this.repository.countNumberProjectsAssignedToByUserStoryId(userStoryId);
+		nAssignedPublishedProjects = this.repository.countNumberOfPublishedProjectsAssignedToByUserStoryId(userStoryId);
+
 		choices = SelectChoices.from(Priority.class, object.getPriority());
 
 		dataset = super.unbind(object, "title", "description", "estimatedCost", "acceptanceCriteria", "priority", "optionalLink", "draftMode");
-		dataset.put("userStoryId", object.getId());
+		dataset.put("userStoryId", userStoryId);
 		dataset.put("priorities", choices);
+
+		dataset.put("showAssignButton", nAssignedProjects < nProjects);
+		dataset.put("showUnassignButton", nAssignedPublishedProjects < nAssignedProjects);
 
 		super.getResponse().addData(dataset);
 	}

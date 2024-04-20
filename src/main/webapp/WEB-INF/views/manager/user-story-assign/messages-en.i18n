@@ -18,3 +18,4 @@ manager.user-story-assign.form.button.delete = Remove from Project
 manager.user-story-assign.form.error.project-is-published = The project is already published
 manager.user-story-assign.form.error.user-story-already-assigned-to-project = The User Story is already assigned to the Project
 manager.user-story-assign.form.error.unassigning-user-story-not-assigned-to-project = The User Story is not assigned to the Project
+manager.user-story-assign.form.error.project-is-null = You must select a Project

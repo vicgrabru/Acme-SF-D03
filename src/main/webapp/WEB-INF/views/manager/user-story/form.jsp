@@ -35,8 +35,12 @@
 			<acme:submit code="manager.user-story.form.button.create" action="/manager/user-story/create?masterId=${masterId}"/>
 		</jstl:when>
 		<jstl:otherwise>
-			<acme:button code="manager.user-story.form.button.assign" action="/manager/user-story-assign/create?userStoryId=${userStoryId}"/>
-			<acme:button code="manager.user-story.form.button.unassign" action="/manager/user-story-assign/delete?userStoryId=${userStoryId}"/>
+			<jstl:if test="${showAssignButton}">
+				<acme:button code="manager.user-story.form.button.assign" action="/manager/user-story-assign/create?userStoryId=${userStoryId}"/>
+			</jstl:if>
+			<jstl:if test="${showUnassignButton}">
+				<acme:button code="manager.user-story.form.button.unassign" action="/manager/user-story-assign/delete?userStoryId=${userStoryId}"/>
+			</jstl:if>
 		</jstl:otherwise>
 	</jstl:choose>
 </acme:form>
