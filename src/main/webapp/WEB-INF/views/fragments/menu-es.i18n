@@ -24,7 +24,13 @@ master.menu.anonymous.favourite-link-frarosram = 78234988M: Rosso Ramírez, Fran
 master.menu.anonymous.favourite-link-jorgomde = 54184356J: Gómez de Tovar, Jorge
 master.menu.anonymous.favourite-link-albescsan1= 77844410J: Escobar Sánchez, Alberto
 
+# master.menu.any #############################################################
+
+master.menu.any = Cualquiera
+master.menu.any.project-list = Lista de proyectos publicados
+
 # master.menu.authenticated ###################################################
+
 master.menu.authenticated = Autenticado
 master.menu.authenticated.risk = Lista de riesgos
 master.menu.authenticated.notice = Lista de avisos
@@ -39,6 +45,13 @@ master.menu.administrator.user-accounts = Cuentas de usuario
 master.menu.administrator.populate-initial = Poblar BD (inicial)
 master.menu.administrator.populate-sample = Poblar BD (ejemplos)
 master.menu.administrator.shut-down = Parar el sistema
+
+# master.menu.manager ########################################################
+
+master.menu.manager = Manager
+master.menu.manager.manager-dashboard = Panel de indicadores de Manager
+master.menu.manager.project-list = Listar mis proyectos
+master.menu.manager.user-story-list-mine = Listar mis historias de usuarios
 
 # master.menu.provider ########################################################
 
@@ -63,3 +76,5 @@ master.menu.user-account.provider = Datos de proveedor
 master.menu.user-account.become-provider = Hazte proveedor
 master.menu.user-account.consumer = Datos de consumidor
 master.menu.user-account.become-consumer = Hazte consumidor
+master.menu.user-account.manager = Datos de manager
+master.menu.user-account.become-manager = Hazte manager
