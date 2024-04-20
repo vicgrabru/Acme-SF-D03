@@ -26,9 +26,9 @@ user-account-manager-11,true,"UserIdentity{name: 'Nerea', surname: 'Manager', em
 user-account-client-01,true,"UserIdentity{name: 'Mike', surname: 'Client', email: 'client1@acme.com'}",client1,client1
 user-account-client-02,true,"UserIdentity{name: 'William', surname: 'Client', email: 'client2@acme.com'}",client2,client2
 user-account-client-03,true,"UserIdentity{name: 'Afton', surname: 'Client', email: 'client3@acme.com'}",client3,client3
-user-account-client-04,true,"UserIdentity{name: 'Elizabeth', surname: 'Client', email: 'client4@acme.com'}",client4,client4
-user-account-client-05,true,"UserIdentity{name: 'Henry', surname: 'Client', email: 'client5@acme.com'}",client5,client5
-user-account-client-06,true,"UserIdentity{name: 'Jeremy', surname: 'Client', email: 'client6@acme.com'}",client6,client6
+user-account-client-04,true,"UserIdentity{name: '麦克风', surname: 'Client', email: 'client4@acme.com'}",client4,client4
+user-account-client-05,true,"UserIdentity{name: 'M', surname: 'Client', email: 'client5@acme.com'}",client5,client5
+user-account-client-06,true,"UserIdentity{name: 'Extenseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', surname: 'Client', email: 'client6@acme.com'}",client6,client6
 user-account-developer-01,true,"UserIdentity{name: 'Albert', surname: 'Developer', email: 'albert@acme.com'}",developer1,developer1
 user-account-developer-02,true,"UserIdentity{name: 'Andrew', surname: 'Developer', email: 'andrew@acme.com'}",developer2,developer2
 user-account-sponsor-01,true,"UserIdentity{name: 'Peter', surname: 'Sponsor', email: 'peter@acme.com'}",sponsor1,sponsor1
