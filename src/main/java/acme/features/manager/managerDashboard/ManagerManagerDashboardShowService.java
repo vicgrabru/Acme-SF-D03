@@ -45,7 +45,6 @@ public class ManagerManagerDashboardShowService extends AbstractService<Manager,
 	public void load() {
 
 		int managerId;
-
 		ManagerDashboard dashboard;
 
 		Integer totalNumberOfUserStoriesWithMustPriority;
