@@ -44,6 +44,12 @@ public interface ManagerUserStoryRepository extends AbstractRepository {
 	@Query("select us from UserStory us where us.manager.id = :id")
 	Collection<UserStory> findManyUserStoriesByManagerId(int id);
 
+	@Query("select usa.project from UserStoryAssign usa where usa.userStory.id = :id and usa.project.draftMode = true")
+	Collection<Project> findManyDraftModeProjectsWithUserStoryAssignedByUserStoryId(int id);
+
+	@Query("select p from Project p where p.manager.id = :id and p.draftMode = true")
+	Collection<Project> findManyDraftModeProjectsByManagerId(int id);
+
 	@Query("select count(usa) from UserStoryAssign usa where usa.userStory.id = :id and usa.project.draftMode = false")
 	Integer countNumberOfDraftModeProjectsAssignedToByUserStoryId(int id);
 
