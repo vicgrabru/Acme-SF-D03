@@ -119,15 +119,13 @@ public class ManagerUserStoryAssignDeleteService extends AbstractService<Manager
 	public void unbind(final UserStoryAssign object) {
 		assert object != null;
 
-		Collection<Project> projects;
+		Collection<Project> draftModeProjects;
 		SelectChoices choices;
 		Dataset dataset;
 
-		projects = this.repository.findManyProjectsWithUserStoryAssignedByUserStoryId(super.getRequest().getData("userStoryId", int.class));
+		draftModeProjects = this.repository.findManyProjectsWithUserStoryAssignedByUserStoryId(super.getRequest().getData("userStoryId", int.class));
 
-		projects.removeIf(x -> !x.isDraftMode());
-
-		choices = SelectChoices.from(projects, "title", object.getProject());
+		choices = SelectChoices.from(draftModeProjects, "title", object.getProject());
 
 		dataset = super.unbind(object, "userStory");
 		dataset.put("project", choices.getSelected().getKey());

@@ -109,20 +109,18 @@ public class ManagerUserStoryAssignCreateService extends AbstractService<Manager
 	public void unbind(final UserStoryAssign object) {
 		assert object != null;
 
-		Collection<Project> projects;
-		Collection<Project> projectsAssigned;
+		Collection<Project> draftModeProjects;
+		Collection<Project> draftModeProjectsAssigned;
 		SelectChoices choices;
 		Dataset dataset;
 
-		projectsAssigned = this.repository.findManyProjectsWithUserStoryAssignedByUserStoryId(super.getRequest().getData("userStoryId", int.class));
+		draftModeProjectsAssigned = this.repository.findManyDraftModeProjectsWithUserStoryAssignedByUserStoryId(super.getRequest().getData("userStoryId", int.class));
 
-		projects = this.repository.findManyProjectsByManagerId(super.getRequest().getPrincipal().getActiveRoleId());
-		if (!projectsAssigned.isEmpty())
-			projects.removeIf(projectsAssigned::contains);
+		draftModeProjects = this.repository.findManyDraftModeProjectsByManagerId(super.getRequest().getPrincipal().getActiveRoleId());
+		if (!draftModeProjectsAssigned.isEmpty())
+			draftModeProjects.removeIf(draftModeProjectsAssigned::contains);
 
-		projects.removeIf(x -> !x.isDraftMode());
-
-		choices = SelectChoices.from(projects, "title", object.getProject());
+		choices = SelectChoices.from(draftModeProjects, "title", object.getProject());
 
 		dataset = super.unbind(object, "userStory");
 		dataset.put("project", choices.getSelected().getKey());

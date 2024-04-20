@@ -25,8 +25,11 @@ import acme.entities.project.UserStoryAssign;
 @Repository
 public interface ManagerUserStoryAssignRepository extends AbstractRepository {
 
-	@Query("select p from Project p where p.manager.id = :id")
-	Collection<Project> findManyProjectsByManagerId(int id);
+	@Query("select p from Project p where p.manager.id = :id and p.draftMode = true")
+	Collection<Project> findManyDraftModeProjectsByManagerId(int id);
+
+	@Query("select usa.project from UserStoryAssign usa where usa.userStory.id = :id and usa.project.draftMode = true")
+	Collection<Project> findManyDraftModeProjectsWithUserStoryAssignedByUserStoryId(int id);
 
 	@Query("select usa.project from UserStoryAssign usa where usa.userStory.id = :id")
 	Collection<Project> findManyProjectsWithUserStoryAssignedByUserStoryId(int id);

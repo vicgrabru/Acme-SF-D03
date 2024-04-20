@@ -21,6 +21,7 @@ import acme.client.data.models.Dataset;
 import acme.client.services.AbstractService;
 import acme.client.views.SelectChoices;
 import acme.entities.project.Priority;
+import acme.entities.project.Project;
 import acme.entities.project.UserStory;
 import acme.entities.project.UserStoryAssign;
 import acme.roles.Manager;
@@ -100,17 +101,15 @@ public class ManagerUserStoryUpdateService extends AbstractService<Manager, User
 	public void unbind(final UserStory object) {
 		assert object != null;
 
+		Collection<Project> draftModeProjects;
+		Collection<Project> draftModeProjectsAssigned;
 		SelectChoices choices;
 		Dataset dataset;
 
 		int managerId, userStoryId;
-		Integer nDraftModeProjects, nAssignedDraftModeProjects;
 
 		managerId = super.getRequest().getPrincipal().getActiveRoleId();
 		userStoryId = object.getId();
-
-		nDraftModeProjects = this.repository.countNumberOfDraftModeProjectsByManagerId(managerId);
-		nAssignedDraftModeProjects = this.repository.countNumberOfDraftModeProjectsAssignedToByUserStoryId(userStoryId);
 
 		choices = SelectChoices.from(Priority.class, object.getPriority());
 
@@ -118,8 +117,14 @@ public class ManagerUserStoryUpdateService extends AbstractService<Manager, User
 		dataset.put("userStoryId", userStoryId);
 		dataset.put("priorities", choices);
 
-		dataset.put("showAssignButton", nAssignedDraftModeProjects < nDraftModeProjects);
-		dataset.put("showUnassignButton", nAssignedDraftModeProjects > 0);
+		draftModeProjectsAssigned = this.repository.findManyDraftModeProjectsWithUserStoryAssignedByUserStoryId(userStoryId);
+		draftModeProjects = this.repository.findManyDraftModeProjectsByManagerId(managerId);
+
+		if (!draftModeProjectsAssigned.isEmpty())
+			draftModeProjects.removeIf(draftModeProjectsAssigned::contains);
+
+		dataset.put("showAssignButton", draftModeProjects.size() > 0);
+		dataset.put("showUnassignButton", draftModeProjectsAssigned.size() > 0);
 
 		super.getResponse().addData(dataset);
 	}

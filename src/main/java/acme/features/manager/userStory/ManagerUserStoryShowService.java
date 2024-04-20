@@ -71,7 +71,6 @@ public class ManagerUserStoryShowService extends AbstractService<Manager, UserSt
 		Dataset dataset;
 
 		int managerId, userStoryId;
-		//		Integer nDraftModeProjects, nAssignedDraftModeProjects, nAssignableProjects;
 
 		managerId = super.getRequest().getPrincipal().getActiveRoleId();
 		userStoryId = object.getId();
@@ -90,13 +89,6 @@ public class ManagerUserStoryShowService extends AbstractService<Manager, UserSt
 
 		dataset.put("showAssignButton", draftModeProjects.size() > 0);
 		dataset.put("showUnassignButton", draftModeProjectsAssigned.size() > 0);
-
-		//		nDraftModeProjects = this.repository.countNumberOfDraftModeProjectsByManagerId(managerId);
-		//		nAssignedDraftModeProjects = this.repository.countNumberOfDraftModeProjectsAssignedToByUserStoryId(userStoryId);
-		//		nAssignableProjects = nDraftModeProjects - nAssignedDraftModeProjects;
-		//
-		//		dataset.put("showAssignButton", nAssignableProjects > 0);
-		//		dataset.put("showUnassignButton", nAssignedDraftModeProjects > 0);
 
 		super.getResponse().addData(dataset);
 	}
