@@ -27,19 +27,34 @@ master.menu.anonymous.favourite-link-frarosram = 78234988M: Rosso Ramírez, Fran
 master.menu.anonymous.favourite-link-jorgomde = 54184356J: Gómez de Tovar, Jorge
 master.menu.anonymous.favourite-link-albescsan1= 77844410J: Escobar Sánchez, Alberto
 
+# master.menu.any #############################################################
+
+master.menu.any = Any
+master.menu.any.project-list = List of published projects
+
 # master.menu.authenticated ###################################################
+
 master.menu.authenticated = Authenticated
 master.menu.authenticated.risk = Risk list
+master.menu.authenticated.notice = Notice list
 
 # master.menu.administrator ###################################################
 
 master.menu.administrator = Administrator
 master.menu.administrator.dashboard = Dashboard
+master.menu.administrator.system-configuration-show = System Configuration
 master.menu.administrator.banner-list = Banner list
 master.menu.administrator.user-accounts = User accounts
 master.menu.administrator.populate-initial = Populate DB (initial)
 master.menu.administrator.populate-sample = Populate DB (samples)
 master.menu.administrator.shut-down = Shut down
+
+# master.menu.manager ########################################################
+
+master.menu.manager = Manager
+master.menu.manager.manager-dashboard = Manager Dashboard
+master.menu.manager.project-list = List my projects
+master.menu.manager.user-story-list-mine = List my User Stories
 
 # master.menu.provider ########################################################
 
@@ -59,3 +74,5 @@ master.menu.user-account.provider = Provider data
 master.menu.user-account.become-provider = Become a provider
 master.menu.user-account.consumer = Consumer data
 master.menu.user-account.become-consumer = Become a consumer
+master.menu.user-account.manager = Manager data
+master.menu.user-account.become-manager= Become a manager
