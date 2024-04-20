@@ -99,13 +99,12 @@ public class ManagerUserStoryDeleteService extends AbstractService<Manager, User
 		Dataset dataset;
 
 		int managerId, userStoryId;
-		Integer nProjects, nAssignedProjects, nAssignedDraftModeProjects;
+		Integer nDraftModeProjects, nAssignedDraftModeProjects;
 
 		managerId = super.getRequest().getPrincipal().getActiveRoleId();
 		userStoryId = object.getId();
 
-		nProjects = this.repository.countNumberOfProjectsByManagerId(managerId);
-		nAssignedProjects = this.repository.countNumberOfProjectsAssignedToByUserStoryId(userStoryId);
+		nDraftModeProjects = this.repository.countNumberOfDraftModeProjectsByManagerId(managerId);
 		nAssignedDraftModeProjects = this.repository.countNumberOfDraftModeProjectsAssignedToByUserStoryId(userStoryId);
 
 		choices = SelectChoices.from(Priority.class, object.getPriority());
@@ -114,7 +113,7 @@ public class ManagerUserStoryDeleteService extends AbstractService<Manager, User
 		dataset.put("userStoryId", userStoryId);
 		dataset.put("priorities", choices);
 
-		dataset.put("showAssignButton", nAssignedProjects < nProjects);
+		dataset.put("showAssignButton", nAssignedDraftModeProjects < nDraftModeProjects);
 		dataset.put("showUnassignButton", nAssignedDraftModeProjects > 0);
 
 		super.getResponse().addData(dataset);
