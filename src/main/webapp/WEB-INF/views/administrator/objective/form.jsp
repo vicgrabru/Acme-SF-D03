@@ -25,9 +25,7 @@
 	<acme:input-moment code="administrator.objective.form.label.endDateDuration" path="endDateDuration"/>
 	<acme:input-url code="administrator.objective.form.label.link" path="link"/>
 	
-	<jstl:if test="${acme:matches(_command, 'create')}">
-		<acme:submit code="administrator.objective.form.button.create" action="/administrator/objective/create"/>
-	</jstl:if>
+	<acme:submit test="${_command == 'create'}" code="administrator.objective.form.button.create" action="/administrator/objective/create"/>
 </acme:form>
 
 

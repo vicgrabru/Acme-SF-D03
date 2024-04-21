@@ -16,3 +16,12 @@ authenticated.objective.list.label.isCritical= Critical
 authenticated.objective.list.label.startDateDuration= Start Date
 authenticated.objective.list.label.endDateDuration= End Date
 authenticated.objective.list.label.link= Link
+
+authenticated.objective.form.label.title = Title
+authenticated.objective.form.label.instantiation-moment= Instantiation Moment
+authenticated.objective.form.label.description= Description
+authenticated.objective.form.label.priority= Priority
+authenticated.objective.form.label.isCritical= Critical
+authenticated.objective.form.label.startDateDuration= Start Date
+authenticated.objective.form.label.endDateDuration= End Date
+authenticated.objective.form.label.link= Link

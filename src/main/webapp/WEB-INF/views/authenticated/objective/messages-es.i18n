@@ -16,3 +16,12 @@ authenticated.objective.list.label.isCritical= Crítico
 authenticated.objective.list.label.startDateDuration= Fecha de inicio
 authenticated.objective.list.label.endDateDuration= Fecha de finalización
 authenticated.objective.list.label.link= Link
+
+authenticated.objective.form.label.title = Título
+authenticated.objective.form.label.instantiation-moment= Momento de iniciación
+authenticated.objective.form.label.description= Descripción
+authenticated.objective.form.label.priority= Prioridad
+authenticated.objective.form.label.isCritical= Crítico
+authenticated.objective.form.label.startDateDuration= Fecha de inicio
+authenticated.objective.form.label.endDateDuration= Fecha de finalización
+authenticated.objective.form.label.link= Link

@@ -14,3 +14,12 @@ administrator.objective.form.error.startDateDuration.not-after-instantiation = T
 administrator.objective.form.error.endDateDuration.not-after-startDateDuration = The duration end date must start after the duration start date
 
 administrator.objective.list.button.create= Create Objective
+
+administrator.objective.form.label.title = Title
+administrator.objective.form.label.instantiation-moment= Instantiation Moment
+administrator.objective.form.label.description= Description
+administrator.objective.form.label.priority= Priority
+administrator.objective.form.label.isCritical= Critical
+administrator.objective.form.label.startDateDuration= Start Date
+administrator.objective.form.label.endDateDuration= End Date
+administrator.objective.form.label.link= Link

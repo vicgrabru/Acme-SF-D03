@@ -14,3 +14,12 @@ administrator.objective.form.error.endDateDuration.not-after-startDateDuration =
 
 administrator.objective.list.button.create= Crear Objetivo
 
+administrator.objective.form.label.title = Título
+administrator.objective.form.label.instantiation-moment= Momento de iniciación
+administrator.objective.form.label.description= Descripción
+administrator.objective.form.label.priority= Prioridad
+administrator.objective.form.label.isCritical= Crítico
+administrator.objective.form.label.startDateDuration= Fecha de inicio
+administrator.objective.form.label.endDateDuration= Fecha de finalización
+administrator.objective.form.label.link= Link
+
