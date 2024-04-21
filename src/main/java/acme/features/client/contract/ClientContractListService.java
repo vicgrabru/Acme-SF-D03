@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import acme.client.data.accounts.Principal;
-import acme.client.data.accounts.UserAccount;
 import acme.client.data.models.Dataset;
 import acme.client.services.AbstractService;
 import acme.entities.contract.Contract;
@@ -45,10 +44,8 @@ public class ClientContractListService extends AbstractService<Client, Contract>
 		Collection<Contract> objects;
 
 		Principal p = super.getRequest().getPrincipal();
-		UserAccount ua = this.repository.findUserAccountById(p.getAccountId());
-		String name = ua.getIdentity().getName();
 
-		objects = this.repository.findNoticesByCostumerName(name);
+		objects = this.repository.findContractsByClientId(p.getActiveRoleId());
 
 		super.getBuffer().addData(objects);
 	}
@@ -65,8 +62,9 @@ public class ClientContractListService extends AbstractService<Client, Contract>
 		else
 			isDraftMode = "✗";
 
-		dataset = super.unbind(object, "code", "providerName");
+		dataset = super.unbind(object, "code");
 		dataset.put("project", object.getProject().getTitle());
+		dataset.put("provider", object.getProviderName());
 		dataset.put("draftMode", isDraftMode);
 
 		super.getResponse().addData(dataset);
