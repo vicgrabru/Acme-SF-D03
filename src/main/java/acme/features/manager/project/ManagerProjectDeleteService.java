@@ -91,6 +91,7 @@ public class ManagerProjectDeleteService extends AbstractService<Manager, Projec
 
 		dataset = super.unbind(object, "code", "title", "abstractField", "hasFatalErrors", "cost", "optionalLink", "draftMode");
 		dataset.put("masterId", object.getId());
+		dataset.put("readOnlyCode", true);
 
 		super.getResponse().addData(dataset);
 	}

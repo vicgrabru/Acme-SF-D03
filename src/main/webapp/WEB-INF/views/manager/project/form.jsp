@@ -16,7 +16,7 @@
 <%@taglib prefix="acme" uri="http://acme-framework.org/"%>
 
 <acme:form>
-	<acme:input-textbox code="manager.project.form.label.code" path="code"/>
+	<acme:input-textbox code="manager.project.form.label.code" path="code" readonly="${readOnlyCode}"/>
 	<acme:input-textbox code="manager.project.form.label.title" path="title"/>
 	<acme:input-textarea code="manager.project.form.label.abstract-field" path="abstractField"/>
 	<acme:input-checkbox code="manager.project.form.label.has-fatal-errors" path="hasFatalErrors"/>
@@ -26,9 +26,9 @@
 	
 	
 	<jstl:if test="${acme:anyOf(_command, 'show|update|delete|publish') && draftMode == true}">
-		<acme:submit code="manager.project.form.button.update" action="/manager/project/update"/>
-		<acme:submit code="manager.project.form.button.delete" action="/manager/project/delete"/>
-		<acme:submit code="manager.project.form.button.publish" action="/manager/project/publish"/>
+		<acme:submit code="manager.project.form.button.update" action="/manager/project/update?id=${masterId}"/>
+		<acme:submit code="manager.project.form.button.delete" action="/manager/project/delete?id=${masterId}"/>
+		<acme:submit code="manager.project.form.button.publish" action="/manager/project/publish?id=${masterId}"/>
 	</jstl:if>
 	<jstl:choose>
 		<jstl:when test="${acme:matches(_command, 'create')}">

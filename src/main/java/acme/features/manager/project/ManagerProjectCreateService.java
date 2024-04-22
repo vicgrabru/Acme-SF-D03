@@ -68,6 +68,12 @@ public class ManagerProjectCreateService extends AbstractService<Manager, Projec
 
 			super.state(object.getCost().getAmount() >= 0., "cost", "manager.project.form.error.cost.negative");
 		}
+
+		if (!super.getBuffer().getErrors().hasErrors("code")) {
+			Project existing;
+			existing = this.repository.findOneProjectByCode(object.getCode());
+			super.state(existing == null, "code", "manager.project.form.error.code-duplicated");
+		}
 	}
 
 	@Override
@@ -85,6 +91,7 @@ public class ManagerProjectCreateService extends AbstractService<Manager, Projec
 
 		dataset = super.unbind(object, "code", "title", "abstractField", "hasFatalErrors", "cost", "optionalLink", "draftMode");
 		dataset.put("masterId", object.getId());
+		dataset.put("readOnlyCode", false);
 
 		super.getResponse().addData(dataset);
 	}

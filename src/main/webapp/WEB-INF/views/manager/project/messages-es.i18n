@@ -36,3 +36,4 @@ manager.project.form.error.cost.negative = El coste no puede tener una cantidad 
 manager.project.form.error.no-user-stories = El proyecto no tiene historias de usuario asociadas
 manager.project.form.error.has-draft-user-story = El proyecto todavía tiene historias de usuario en borrador
 manager.project.form.error.has-fatal-errors = Un proyecto con errores graves no se puede publicar
+manager.project.form.error.code-duplicated = Ya hay un proyecto con ese código
