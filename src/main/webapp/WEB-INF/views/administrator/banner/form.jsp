@@ -20,7 +20,7 @@
 	<acme:input-url code="administrator.banner.form.label.picture-link" path="pictureLink"/>
 	<acme:input-moment code="administrator.banner.form.label.period-start" path="periodStart"/>
 	<acme:input-moment code="administrator.banner.form.label.period-end" path="periodEnd"/>
-	<acme:input-moment code="administrator.banner.form.label.instantiation-moment" path="instantiationMoment"/>
+	<acme:input-moment code="administrator.banner.form.label.instantiation-moment" path="instantiationMoment" readonly="true"/>
 	<acme:input-url code="administrator.banner.form.label.web-document-link" path="webDocumentLink"/>
 	
 	

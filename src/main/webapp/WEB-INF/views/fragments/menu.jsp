@@ -26,16 +26,19 @@
 			<acme:menu-suboption code="master.menu.anonymous.favourite-link-albescsan1" action="https://www.youtube.com/watch?v=XJZqs84BlNU"/>
 		</acme:menu-option>
 		
+
 		<acme:menu-option code="master.menu.any">
-			<acme:menu-suboption code="master.menu.any.claim-list" action="/any/claim/list"/>
+      		<acme:menu-suboption code="master.menu.any.claim-list" action="/any/claim/list"/>
+			<acme:menu-suboption code="master.menu.any.project-list" action="/any/project/list"/>
 		</acme:menu-option>
-		
+    
 		<acme:menu-option code="master.menu.authenticated" access="isAuthenticated()">
 			<acme:menu-suboption code="master.menu.authenticated.risk" action="/authenticated/risk/list"/>
+			<acme:menu-suboption code="master.menu.authenticated.notice" action="/authenticated/notice/list"/>
 		</acme:menu-option>
-
 		<acme:menu-option code="master.menu.administrator" access="hasRole('Administrator')">
 			<acme:menu-suboption code="master.menu.administrator.dashboard" action="/administrator/administrator-dashboard/show"/>
+			<acme:menu-suboption code="master.menu.administrator.system-configuration-show" action="/administrator/system-configuration/show"/>
 			<acme:menu-suboption code="master.menu.administrator.banner-list" action="/administrator/banner/list"/>
 			<acme:menu-separator/>
 			<acme:menu-suboption code="master.menu.administrator.user-accounts" action="/administrator/user-account/list"/>
@@ -44,6 +47,12 @@
 			<acme:menu-suboption code="master.menu.administrator.populate-sample" action="/administrator/system/populate-sample"/>			
 			<acme:menu-separator/>
 			<acme:menu-suboption code="master.menu.administrator.shut-down" action="/administrator/system/shut-down"/>
+		</acme:menu-option>
+		
+		<acme:menu-option code="master.menu.manager" access="hasRole('Manager')">
+			<acme:menu-suboption code="master.menu.manager.manager-dashboard" action="/manager/manager-dashboard/show"/>
+			<acme:menu-suboption code="master.menu.manager.project-list" action="/manager/project/list"/>
+			<acme:menu-suboption code="master.menu.manager.user-story-list-mine" action="/manager/user-story/list-mine"/>
 		</acme:menu-option>
 
 		<acme:menu-option code="master.menu.provider" access="hasRole('Provider')">
@@ -65,6 +74,8 @@
 			<acme:menu-suboption code="master.menu.user-account.provider" action="/authenticated/provider/update" access="hasRole('Provider')"/>
 			<acme:menu-suboption code="master.menu.user-account.become-consumer" action="/authenticated/consumer/create" access="!hasRole('Consumer')"/>
 			<acme:menu-suboption code="master.menu.user-account.consumer" action="/authenticated/consumer/update" access="hasRole('Consumer')"/>
+			<acme:menu-suboption code="master.menu.user-account.become-manager" action="/authenticated/manager/create" access="!hasRole('Manager')"/>
+			<acme:menu-suboption code="master.menu.user-account.manager" action="/authenticated/manager/update" access="hasRole('Manager')"/>
 		</acme:menu-option>
 
 		<acme:menu-option code="master.menu.sign-out" action="/authenticated/system/sign-out" access="isAuthenticated()"/>
