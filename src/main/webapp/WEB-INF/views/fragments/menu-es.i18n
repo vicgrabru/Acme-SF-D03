@@ -24,7 +24,13 @@ master.menu.anonymous.favourite-link-frarosram = 78234988M: Rosso Ramírez, Fran
 master.menu.anonymous.favourite-link-jorgomde = 54184356J: Gómez de Tovar, Jorge
 master.menu.anonymous.favourite-link-albescsan1= 77844410J: Escobar Sánchez, Alberto
 
+# master.menu.any #############################################################
+
+master.menu.any = Cualquiera
+master.menu.any.project-list = Lista de proyectos publicados
+
 # master.menu.authenticated ###################################################
+
 master.menu.authenticated = Autenticado
 master.menu.authenticated.risk = Lista de riesgos
 master.menu.authenticated.notice = Lista de avisos
@@ -50,6 +56,13 @@ master.menu.sponsor = Patrocinador
 master.menu.sponsor.sponsorship-list = Listar mis patrocinios
 master.menu.sponsor.sponsor-dashboard = Panel de indicadores de patrocinador
 
+# master.menu.manager ########################################################
+
+master.menu.manager = Manager
+master.menu.manager.manager-dashboard = Panel de indicadores de Manager
+master.menu.manager.project-list = Listar mis proyectos
+master.menu.manager.user-story-list-mine = Listar mis historias de usuarios
+
 # master.menu.provider ########################################################
 
 master.menu.provider = Proveedor
@@ -70,3 +83,6 @@ master.menu.user-account.consumer = Datos de consumidor
 master.menu.user-account.become-consumer = Hazte consumidor
 master.menu.user-account.sponsor = Datos de patrocinador
 master.menu.user-account.become-sponsor = Hazte patrocinador
+master.menu.user-account.manager = Datos de manager
+master.menu.user-account.become-manager = Hazte manager
+
