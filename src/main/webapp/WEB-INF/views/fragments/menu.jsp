@@ -26,9 +26,12 @@
 			<acme:menu-suboption code="master.menu.anonymous.favourite-link-albescsan1" action="https://www.youtube.com/watch?v=XJZqs84BlNU"/>
 		</acme:menu-option>
 		
+
 		<acme:menu-option code="master.menu.any">
+      		<acme:menu-suboption code="master.menu.any.claim-list" action="/any/claim/list"/>
 			<acme:menu-suboption code="master.menu.any.project-list" action="/any/project/list"/>
 		</acme:menu-option>
+    
 		<acme:menu-option code="master.menu.authenticated" access="isAuthenticated()">
 			<acme:menu-suboption code="master.menu.authenticated.risk" action="/authenticated/risk/list"/>
 			<acme:menu-suboption code="master.menu.authenticated.notice" action="/authenticated/notice/list"/>
