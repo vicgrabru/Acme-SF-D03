@@ -83,6 +83,7 @@ public class ClientContractShowService extends AbstractService<Client, Contract>
 		dataset.put("projects", choicesProject);
 
 		dataset.put("projectId", object.getProject().getId());
+		dataset.put("contractId", object.getId());
 
 		super.getResponse().addData(dataset);
 	}

@@ -63,9 +63,6 @@ public class ClientContractPublishService extends AbstractService<Client, Contra
 	public void bind(final Contract object) {
 		assert object != null;
 
-		super.bind(object, "code", "goals", "budget", "project", "provider");
-		object.setProviderName(object.getProvider().getIdentity().getName());
-
 	}
 
 	@Override
@@ -113,8 +110,6 @@ public class ClientContractPublishService extends AbstractService<Client, Contra
 		dataset.put("providers", choicesProvider);
 		dataset.put("project", choicesProject.getSelected().getKey());
 		dataset.put("projects", choicesProject);
-
-		dataset.put("projectId", object.getProject().getId());
 
 		super.getResponse().addData(dataset);
 	}

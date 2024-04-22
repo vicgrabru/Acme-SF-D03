@@ -63,7 +63,8 @@ public class ClientContractCreateService extends AbstractService<Client, Contrac
 		assert object != null;
 
 		super.bind(object, "code", "goals", "budget", "project", "provider");
-		object.setProviderName(object.getProvider().getIdentity().getName());
+		if (object.getProvider() != null)
+			object.setProviderName(object.getProvider().getIdentity().getName());
 
 	}
 
@@ -76,6 +77,11 @@ public class ClientContractCreateService extends AbstractService<Client, Contrac
 			currencies = this.repository.findAcceptedCurrencies();
 			super.state(currencies.contains(object.getBudget().getCurrency()), "budget", "client.contract.form.error.bugdet.invalid-currency");
 			super.state(object.getBudget().getAmount() <= object.getProject().getCost().getAmount(), "budget", "client.contract.form.error.budget.budget-over-project-cost");
+		}
+
+		if (!super.getBuffer().getErrors().hasErrors("code")) {
+			boolean duplicatedCode = this.repository.findAllContracts().stream().anyMatch(c -> c.getCode().equals(object.getCode()));
+			super.state(!duplicatedCode, "code", "client.contract.form.error.duplicated-code");
 		}
 	}
 

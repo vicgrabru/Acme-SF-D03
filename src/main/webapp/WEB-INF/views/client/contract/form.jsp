@@ -19,7 +19,7 @@
 	<acme:input-textbox code="client.contract.form.label.code" path="code"/>
 	<acme:input-textarea code="client.contract.form.label.goals" path="goals"/>
 	<acme:input-money code="client.contract.form.label.budget" path="budget"/>
-	<acme:input-select code="client.contract.form.label.provider-name" path="provider" choices="${providers}"/>
+	<acme:input-select code="client.contract.form.label.provider" path="provider" choices="${providers}"/>
 	<acme:input-textbox readonly="true" code="client.contract.form.label.customer-name" path="customerName"/>
 	<acme:input-moment readonly="true" code="client.contract.form.label.instantiation-moment" path="instantiationMoment"/>
 	<acme:input-checkbox readonly="true" code="client.contract.form.label.draft-mode" path="draftMode"/>
@@ -35,6 +35,7 @@
 	</jstl:choose>
 	<jstl:if test="${acme:anyOf(_command, 'show')}">
 		<acme:button code="client.contract.form.button.project" action="/any/project/show?id=${projectId}"/>
+		<acme:button code="client.contract.form.button.progress-log.list" action="/client/progress-log/list?contractId=${contractId}"/>
 	</jstl:if>
 	<jstl:if test="${acme:anyOf(_command, 'show|update|delete|publish') && draftMode == true}">
 		<acme:submit code="client.contract.form.button.update" action="/client/contract/update"/>
