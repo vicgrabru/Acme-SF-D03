@@ -16,7 +16,7 @@
 <%@taglib prefix="acme" uri="http://acme-framework.org/"%>
 
 <acme:form>
-	<acme:input-textbox code="manager.project.form.label.code" path="code" readonly="${acme:anyOf(_command, 'show|update|delete|publish')"/>
+	<acme:input-textbox code="manager.project.form.label.code" path="code" readonly="${readOnlyCode}"/>
 	<acme:input-textbox code="manager.project.form.label.title" path="title"/>
 	<acme:input-textarea code="manager.project.form.label.abstract-field" path="abstractField"/>
 	<acme:input-checkbox code="manager.project.form.label.has-fatal-errors" path="hasFatalErrors"/>
