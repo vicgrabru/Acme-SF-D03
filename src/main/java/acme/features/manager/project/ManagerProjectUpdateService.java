@@ -64,7 +64,7 @@ public class ManagerProjectUpdateService extends AbstractService<Manager, Projec
 	public void bind(final Project object) {
 		assert object != null;
 
-		super.bind(object, "code", "title", "abstractField", "hasFatalErrors", "cost", "optionalLink");
+		super.bind(object, "title", "abstractField", "hasFatalErrors", "cost", "optionalLink");
 	}
 
 	@Override

@@ -36,3 +36,4 @@ manager.project.form.error.cost.negative = The cost amount can't be negative
 manager.project.form.error.no-user-stories = The project has no user stories
 manager.project.form.error.has-draft-user-story = The project has user stories in draft mode
 manager.project.form.error.has-fatal-errors = A project with fatal errors can't be published
+manager.project.form.error.code-duplicated = A project with that code already exists
