@@ -70,13 +70,13 @@
 			<acme:menu-suboption code="master.menu.client.client-dashboard" action="/client/client-dashboard/show"/>
 			<acme:menu-suboption code="master.menu.client.contract" action="/client/contract/list"/>
 		</acme:menu-option>
-	</acme:menu-left>
-	
+		
 		<acme:menu-option code="master.menu.sponsor" access="hasRole('Sponsor')">
 			<acme:menu-suboption code="master.menu.sponsor.sponsorship-list" action="/sponsor/sponsorship/list-mine"/>
 			<acme:menu-separator/>
 			<acme:menu-suboption code="master.menu.sponsor.sponsor-dashboard" action="/sponsor/sponsor-dashboard/show"/>
 		</acme:menu-option>
+	</acme:menu-left>
 
 	<acme:menu-right>
 		<acme:menu-option code="master.menu.sign-up" action="/anonymous/user-account/create" access="isAnonymous()"/>
