@@ -113,6 +113,7 @@ public class ClientContractCreateService extends AbstractService<Client, Contrac
 		dataset.put("providers", choicesProvider);
 		dataset.put("project", choicesProject.getSelected().getKey());
 		dataset.put("projects", choicesProject);
+		dataset.put("readOnlyCode", false);
 
 		super.getResponse().addData(dataset);
 	}

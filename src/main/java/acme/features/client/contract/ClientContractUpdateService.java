@@ -63,7 +63,7 @@ public class ClientContractUpdateService extends AbstractService<Client, Contrac
 	public void bind(final Contract object) {
 		assert object != null;
 
-		super.bind(object, "code", "goals", "budget", "provider", "customerName");
+		super.bind(object, "goals", "budget", "provider", "customerName");
 		if (object.getProvider() != null)
 			object.setProviderName(object.getProvider().getIdentity().getName());
 
@@ -80,10 +80,6 @@ public class ClientContractUpdateService extends AbstractService<Client, Contrac
 			super.state(object.getBudget().getAmount() <= object.getProject().getCost().getAmount(), "budget", "client.contract.form.error.budget.budget-over-project-cost");
 		}
 
-		if (!super.getBuffer().getErrors().hasErrors("code")) {
-			boolean duplicatedCode = this.repository.findAllContracts().stream().filter(c -> c.getId() != object.getId()).anyMatch(c -> c.getCode().equals(object.getCode()));
-			super.state(!duplicatedCode, "code", "client.contract.form.error.duplicated-code");
-		}
 	}
 
 	@Override
@@ -118,6 +114,7 @@ public class ClientContractUpdateService extends AbstractService<Client, Contrac
 
 		dataset.put("projectId", object.getProject().getId());
 		dataset.put("contractId", object.getId());
+		dataset.put("readOnlyCode", true);
 
 		super.getResponse().addData(dataset);
 	}

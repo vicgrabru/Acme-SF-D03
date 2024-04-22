@@ -100,6 +100,7 @@ public class ClientProgressLogCreateService extends AbstractService<Client, Prog
 		contractId = super.getRequest().getData("contractId", int.class);
 
 		dataset.put("contractId", contractId);
+		dataset.put("readOnlyCode", false);
 
 		super.getResponse().addData(dataset);
 	}

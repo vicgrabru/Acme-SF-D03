@@ -60,7 +60,7 @@ public class ClientProgressLogUpdateService extends AbstractService<Client, Prog
 	public void bind(final ProgressLog object) {
 		assert object != null;
 
-		super.bind(object, "recordId", "completeness", "comment", "responsiblePerson");
+		super.bind(object, "completeness", "comment", "responsiblePerson");
 
 	}
 
@@ -68,10 +68,6 @@ public class ClientProgressLogUpdateService extends AbstractService<Client, Prog
 	public void validate(final ProgressLog object) {
 		assert object != null;
 
-		if (!super.getBuffer().getErrors().hasErrors("recordId")) {
-			boolean duplicatedCode = this.repository.findAllProgressLogs().stream().filter(c -> c.getId() != object.getId()).anyMatch(pl -> pl.getRecordId().equals(object.getRecordId()));
-			super.state(!duplicatedCode, "recordId", "client.progress-log.form.error.duplicated-record-id");
-		}
 	}
 
 	@Override
@@ -88,6 +84,7 @@ public class ClientProgressLogUpdateService extends AbstractService<Client, Prog
 		Dataset dataset;
 
 		dataset = super.unbind(object, "recordId", "completeness", "comment", "registrationMoment", "responsiblePerson", "draftMode");
+		dataset.put("readOnlyCode", true);
 
 		super.getResponse().addData(dataset);
 	}

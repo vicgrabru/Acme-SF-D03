@@ -57,17 +57,13 @@ public class AuthenticatedClientUpdateService extends AbstractService<Authentica
 	public void bind(final Client object) {
 		assert object != null;
 
-		super.bind(object, "identification", "companyName", "type", "email", "optionalLink");
+		super.bind(object, "companyName", "type", "email", "optionalLink");
 	}
 
 	@Override
 	public void validate(final Client object) {
 		assert object != null;
 
-		if (!super.getBuffer().getErrors().hasErrors("identification")) {
-			boolean duplicatedCode = this.repository.findAllClients().stream().filter(c -> c.getId() != object.getId()).anyMatch(c -> c.getIdentification().equals(object.getIdentification()));
-			super.state(!duplicatedCode, "identification", "authenticated.client.form.error.duplicated-identification");
-		}
 	}
 
 	@Override
@@ -87,6 +83,7 @@ public class AuthenticatedClientUpdateService extends AbstractService<Authentica
 
 		dataset = super.unbind(object, "identification", "companyName", "email", "optionalLink");
 		dataset.put("types", choices);
+		dataset.put("readOnlyCode", true);
 
 		super.getResponse().addData(dataset);
 	}

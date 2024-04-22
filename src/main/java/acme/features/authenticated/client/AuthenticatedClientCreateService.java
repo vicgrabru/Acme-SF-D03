@@ -92,6 +92,7 @@ public class AuthenticatedClientCreateService extends AbstractService<Authentica
 
 		dataset = super.unbind(object, "identification", "companyName", "email", "optionalLink");
 		dataset.put("types", choices);
+		dataset.put("readOnlyCode", false);
 
 		super.getResponse().addData(dataset);
 	}

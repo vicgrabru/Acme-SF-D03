@@ -16,7 +16,7 @@
 <%@taglib prefix="acme" uri="http://acme-framework.org/"%>
 
 <acme:form>
-	<acme:input-textbox code="authenticated.client.form.label.identification" path="identification"/>
+	<acme:input-textbox code="authenticated.client.form.label.identification" path="identification" readonly="${readOnlyCode}"/>
 	<acme:input-textbox code="authenticated.client.form.label.company-name" path="companyName"/>
 	<acme:input-select code="authenticated.client.form.label.type" path="type" choices="${types}"/>
 	<acme:input-url code="authenticated.client.form.label.email" path="email"/>
