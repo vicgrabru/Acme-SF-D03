@@ -24,7 +24,13 @@ master.menu.anonymous.favourite-link-frarosram = 78234988M: Rosso Ramírez, Fran
 master.menu.anonymous.favourite-link-jorgomde = 54184356J: Gómez de Tovar, Jorge
 master.menu.anonymous.favourite-link-albescsan1= 77844410J: Escobar Sánchez, Alberto
 
+# master.menu.any #############################################################
+
+master.menu.any = Any
+master.menu.any.project-list = List of published projects
+
 # master.menu.authenticated ###################################################
+
 master.menu.authenticated = Authenticated
 master.menu.authenticated.risk = Risk list
 master.menu.authenticated.notice = Notice list
@@ -44,11 +50,19 @@ master.menu.administrator.populate-initial = Populate DB (initial)
 master.menu.administrator.populate-sample = Populate DB (samples)
 master.menu.administrator.shut-down = Shut down
 
+
 # master.menu.sponsor ########################################################
 
 master.menu.sponsor = Sponsor
 master.menu.sponsor.sponsorship-list = List my sponsorships
 master.menu.sponsor.sponsor-dashboard = Sponsor dashboard
+
+# master.menu.manager ########################################################
+
+master.menu.manager = Manager
+master.menu.manager.manager-dashboard = Manager Dashboard
+master.menu.manager.project-list = List my projects
+master.menu.manager.user-story-list-mine = List my User Stories
 
 # master.menu.provider ########################################################
 
@@ -70,3 +84,5 @@ master.menu.user-account.consumer = Consumer data
 master.menu.user-account.become-consumer = Become a consumer
 master.menu.user-account.sponsor = Sponsor data
 master.menu.user-account.become-sponsor = Become a sponsor 
+master.menu.user-account.manager = Manager data
+master.menu.user-account.become-manager= Become a manager
