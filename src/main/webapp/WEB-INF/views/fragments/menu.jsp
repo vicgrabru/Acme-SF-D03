@@ -26,7 +26,7 @@
 			<acme:menu-suboption code="master.menu.anonymous.favourite-link-albescsan1" action="https://www.youtube.com/watch?v=XJZqs84BlNU"/>
 		</acme:menu-option>
 		
-		<acme:menu-option code="master.menu.any.claims">
+		<acme:menu-option code="master.menu.any">
 			<acme:menu-suboption code="master.menu.any.claim-list" action="/any/claim/list"/>
 		</acme:menu-option>
 		

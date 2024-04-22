@@ -60,8 +60,14 @@ public class AnyClaimCreateService extends AbstractService<Any, Claim> {
 	public void validate(final Claim object) {
 		assert object != null;
 
+		if (!super.getBuffer().getErrors().hasErrors("code")) {
+			Claim existing;
+			existing = this.repository.findOneClaimByCode(object.getCode());
+			super.state(existing == null, "code", "any.claim.form.error.duplicated");
+
+		}
 		if (!super.getBuffer().getErrors().hasErrors("confirmation"))
-			super.state(super.getRequest().getData("confirmation", boolean.class), "notConfirmed", "any.claim.form.error.not-confirmed");
+			super.state(super.getRequest().getData("confirmation", boolean.class), "confirmation", "any.claim.form.error.not-confirmed");
 
 	}
 

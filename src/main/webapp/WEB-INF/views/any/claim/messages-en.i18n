@@ -31,3 +31,7 @@ any.claim.list.label.link = Link
 any.claim.form.button.publish = Publish
 any.claim.form.button.create = Publish new claim
 any.claim.list.button.create = Publish new claim
+
+any.claim.form.error.duplicated  = Code duplicated
+any.claim.form.error.not-confirmed = Not confirmed
+

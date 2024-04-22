@@ -31,3 +31,6 @@ any.claim.list.label.link = Enlace
 any.claim.form.button.publish = Publicar
 any.claim.form.button.create = Publicar nueva reclamación
 any.claim.list.button.create = Publicar nueva reclamación
+
+any.claim.form.error.duplicated = Código duplicado
+any.claim.form.error.not-confirmed = No confirmado
