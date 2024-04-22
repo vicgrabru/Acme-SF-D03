@@ -1,4 +1,4 @@
-# menu-en.i18n
+	# menu-en.i18n
 #
 # Copyright (C) 2012-2024 Rafael Corchuelo.
 #
@@ -40,6 +40,10 @@ master.menu.authenticated = Authenticated
 master.menu.authenticated.risk = Risk list
 master.menu.authenticated.notice = Notice list
 
+# master.menu.any #############################################################
+master.menu.any = Any
+master.menu.any.sponsorship-list = Sponsorship List
+
 # master.menu.administrator ###################################################
 
 master.menu.administrator = Administrator
@@ -50,6 +54,13 @@ master.menu.administrator.user-accounts = User accounts
 master.menu.administrator.populate-initial = Populate DB (initial)
 master.menu.administrator.populate-sample = Populate DB (samples)
 master.menu.administrator.shut-down = Shut down
+
+
+# master.menu.sponsor ########################################################
+
+master.menu.sponsor = Sponsor
+master.menu.sponsor.sponsorship-list = List my sponsorships
+master.menu.sponsor.sponsor-dashboard = Sponsor dashboard
 
 # master.menu.manager ########################################################
 
@@ -76,5 +87,7 @@ master.menu.user-account.provider = Provider data
 master.menu.user-account.become-provider = Become a provider
 master.menu.user-account.consumer = Consumer data
 master.menu.user-account.become-consumer = Become a consumer
+master.menu.user-account.sponsor = Sponsor data
+master.menu.user-account.become-sponsor = Become a sponsor 
 master.menu.user-account.manager = Manager data
 master.menu.user-account.become-manager= Become a manager

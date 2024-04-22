@@ -45,7 +45,6 @@ public class Invoice extends AbstractEntity {
 	private Date				registrationTime;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Past
 	@NotNull
 	private Date				dueDate;
 
@@ -60,6 +59,8 @@ public class Invoice extends AbstractEntity {
 	@URL
 	private String				link;
 
+	private boolean				draftMode;
+
 	// Relationships ----------------------------------------------------------
 	@NotNull
 	@Valid
@@ -72,7 +73,7 @@ public class Invoice extends AbstractEntity {
 	@Transient
 	public Money totalAmount() {
 		Double amount = this.getQuantity().getAmount();
-		Double taxAmount = amount * this.getTax() / 100;
+		double taxAmount = amount * this.getTax() / 100;
 		Double total = amount + taxAmount;
 		Money res = new Money();
 		res.setAmount(total);
