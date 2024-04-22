@@ -69,7 +69,8 @@ public class ClientProgressLogUpdateService extends AbstractService<Client, Prog
 		assert object != null;
 
 		if (!super.getBuffer().getErrors().hasErrors("recordId")) {
-			boolean duplicatedCode = this.repository.findAllProgressLogs().stream().anyMatch(pl -> pl.getRecordId().equals(object.getRecordId()));
+			int id = super.getRequest().getData("id", int.class);
+			boolean duplicatedCode = this.repository.findAllProgressLogs().stream().filter(c -> c.getId() != id).anyMatch(pl -> pl.getRecordId().equals(object.getRecordId()));
 			super.state(!duplicatedCode, "recordId", "client.progress-log.form.error.duplicated-record-id");
 		}
 	}

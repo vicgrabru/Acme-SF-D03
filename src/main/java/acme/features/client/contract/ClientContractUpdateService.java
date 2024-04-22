@@ -81,7 +81,8 @@ public class ClientContractUpdateService extends AbstractService<Client, Contrac
 		}
 
 		if (!super.getBuffer().getErrors().hasErrors("code")) {
-			boolean duplicatedCode = this.repository.findAllContracts().stream().anyMatch(c -> c.getCode().equals(object.getCode()));
+			int id = super.getRequest().getData("id", int.class);
+			boolean duplicatedCode = this.repository.findAllContracts().stream().filter(c -> c.getId() != id).anyMatch(c -> c.getCode().equals(object.getCode()));
 			super.state(!duplicatedCode, "code", "client.contract.form.error.duplicated-code");
 		}
 	}
