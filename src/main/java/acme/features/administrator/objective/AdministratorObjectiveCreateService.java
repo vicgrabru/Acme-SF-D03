@@ -62,10 +62,13 @@ public class AdministratorObjectiveCreateService extends AbstractService<Adminis
 	@Override
 	public void validate(final Objective object) {
 		assert object != null;
-		if (!super.getBuffer().getErrors().hasErrors("startDateDuration")) {
-			super.state(object.getStartDateDuration().after(object.getInstantiationMoment()), "startDateDuration", "administrator.objective.form.error.startDateDuration.not-after-instantiation");
-			if (!super.getBuffer().getErrors().hasErrors("endDateDuration"))
-				super.state(object.getEndDateDuration().after(object.getStartDateDuration()), "endDateDuration", "administrator.objective.form.error.endDateDuration.not-after-startDateDuration");
+		if (!super.getBuffer().getErrors().hasErrors("confirm")) {
+			super.state(super.getRequest().getData("confirm", boolean.class), "confirm", "administrator.objective.form.notConfirmed");
+			if (!super.getBuffer().getErrors().hasErrors("startDateDuration")) {
+				super.state(object.getStartDateDuration().after(object.getInstantiationMoment()), "startDateDuration", "administrator.objective.form.error.startDateDuration.not-after-instantiation");
+				if (!super.getBuffer().getErrors().hasErrors("endDateDuration"))
+					super.state(object.getEndDateDuration().after(object.getStartDateDuration()), "endDateDuration", "administrator.objective.form.error.endDateDuration.not-after-startDateDuration");
+			}
 		}
 	}
 

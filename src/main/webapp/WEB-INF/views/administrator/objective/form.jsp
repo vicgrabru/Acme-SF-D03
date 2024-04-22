@@ -24,7 +24,7 @@
 	<acme:input-moment code="administrator.objective.form.label.startDateDuration" path="startDateDuration"/>
 	<acme:input-moment code="administrator.objective.form.label.endDateDuration" path="endDateDuration"/>
 	<acme:input-url code="administrator.objective.form.label.link" path="link"/>
-	
+	<acme:input-checkbox code="administrator.objective.form.label.confirm" path="confirm"/>
 	<acme:submit test="${_command == 'create'}" code="administrator.objective.form.button.create" action="/administrator/objective/create"/>
 </acme:form>
 
