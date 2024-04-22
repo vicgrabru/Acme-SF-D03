@@ -59,7 +59,7 @@ public class AuthenticatedNoticeListService extends AbstractService<Authenticate
 
 		Dataset dataset;
 
-		dataset = super.unbind(object, "title", "message");
+		dataset = super.unbind(object, "title", "author", "instantiationMoment");
 
 		super.getResponse().addData(dataset);
 	}

@@ -21,7 +21,7 @@
 	<acme:input-email code="authenticated.notice.form.label.email" path="email"/>
 	<acme:input-url code="authenticated.notice.form.label.link" path="link"/>
 	<acme:input-textbox readonly="true" code="authenticated.notice.form.label.author" path="author"/>
-	<acme:input-textbox readonly="true" code="authenticated.notice.form.label.instantiation-moment" path="instantiationMoment"/>
+	<acme:input-moment readonly="true" code="authenticated.notice.form.label.instantiation-moment" path="instantiationMoment"/>
 
 	<jstl:if test="${acme:anyOf(_command, 'create')}">
 		<acme:input-checkbox code="authenticated.notice.form.label.confirmation" path="confirmation"/>

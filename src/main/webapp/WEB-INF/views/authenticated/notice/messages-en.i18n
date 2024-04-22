@@ -12,7 +12,8 @@ authenticated.notice.form.title = Notice form
 authenticated.notice.list.title = Listing of notices
 
 authenticated.notice.list.label.title = Title
-authenticated.notice.list.label.message = Message
+authenticated.notice.list.label.author = Author
+authenticated.notice.list.label.instantiation-moment = Instantiation Moment
 
 authenticated.notice.form.label.title = Title
 authenticated.notice.form.label.message = Message

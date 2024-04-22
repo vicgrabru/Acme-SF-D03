@@ -12,7 +12,8 @@ authenticated.notice.form.title = Detalles de aviso
 authenticated.notice.list.title = Listado de avisos
 
 authenticated.notice.list.label.title = Título
-authenticated.notice.list.label.message = Mensaje
+authenticated.notice.list.label.author = Autor
+authenticated.notice.list.label.instantiation-moment = Momento de Creación
 
 authenticated.notice.form.label.title = Título
 authenticated.notice.form.label.message = Mensaje
