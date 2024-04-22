@@ -13,7 +13,7 @@ client.contract.form.title = Contract form
 
 client.contract.list.label.code = Code
 client.contract.list.label.project = Project
-client.contract.list.label.provider = Provider name
+client.contract.list.label.budget = Budget
 client.contract.list.label.draft-mode = Draft mode
 
 client.contract.form.label.code = Code

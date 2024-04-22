@@ -111,6 +111,9 @@ public class ClientContractPublishService extends AbstractService<Client, Contra
 		dataset.put("project", choicesProject.getSelected().getKey());
 		dataset.put("projects", choicesProject);
 
+		dataset.put("projectId", object.getProject().getId());
+		dataset.put("contractId", object.getId());
+
 		super.getResponse().addData(dataset);
 	}
 

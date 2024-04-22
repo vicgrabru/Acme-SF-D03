@@ -53,9 +53,8 @@ public class AnyContractListService extends AbstractService<Any, Contract> {
 
 		Dataset dataset;
 
-		dataset = super.unbind(object, "code");
+		dataset = super.unbind(object, "code", "budget");
 		dataset.put("project", object.getProject().getTitle());
-		dataset.put("provider", object.getProviderName());
 
 		super.getResponse().addData(dataset);
 	}

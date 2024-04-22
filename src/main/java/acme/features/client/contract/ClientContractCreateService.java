@@ -51,7 +51,6 @@ public class ClientContractCreateService extends AbstractService<Client, Contrac
 
 		object = new Contract();
 		object.setInstantiationMoment(MomentHelper.getCurrentMoment());
-		object.setCustomerName(client.getIdentity().getName());
 		object.setClient(client);
 		object.setDraftMode(true);
 
@@ -62,7 +61,7 @@ public class ClientContractCreateService extends AbstractService<Client, Contrac
 	public void bind(final Contract object) {
 		assert object != null;
 
-		super.bind(object, "code", "goals", "budget", "project", "provider");
+		super.bind(object, "code", "goals", "budget", "project", "provider", "customerName");
 		if (object.getProvider() != null)
 			object.setProviderName(object.getProvider().getIdentity().getName());
 

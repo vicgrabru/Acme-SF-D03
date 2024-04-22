@@ -18,6 +18,7 @@
 <acme:list>	
 	<acme:list-column code="client.progress-log.list.label.record-id" path="recordId"/>
 	<acme:list-column code="client.progress-log.list.label.completeness" path="completeness"/>
+	<acme:list-column code="client.progress-log.list.label.registration-moment" path="registrationMoment"/>
 	<acme:list-column code="client.progress-log.list.label.draft-mode" path="draftMode"/>
 </acme:list>
 

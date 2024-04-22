@@ -65,7 +65,7 @@ public class AnyProgressLogListService extends AbstractService<Any, ProgressLog>
 
 		Dataset dataset;
 
-		dataset = super.unbind(object, "recordId", "completeness");
+		dataset = super.unbind(object, "recordId", "completeness", "registrationMoment");
 
 		super.getResponse().addData(dataset);
 	}

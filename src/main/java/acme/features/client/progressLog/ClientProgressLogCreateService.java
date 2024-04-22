@@ -53,14 +53,11 @@ public class ClientProgressLogCreateService extends AbstractService<Client, Prog
 		ProgressLog object;
 		int contractId;
 		Contract contract;
-		Client client;
 
 		contractId = super.getRequest().getData("contractId", int.class);
 		contract = this.repository.findContractById(contractId);
-		client = this.repository.findClientById(super.getRequest().getPrincipal().getActiveRoleId());
 
 		object = new ProgressLog();
-		object.setResponsiblePerson(client.getIdentity().getName());
 		object.setRegistrationMoment(MomentHelper.getCurrentMoment());
 		object.setContract(contract);
 		object.setDraftMode(true);
@@ -72,7 +69,7 @@ public class ClientProgressLogCreateService extends AbstractService<Client, Prog
 	public void bind(final ProgressLog object) {
 		assert object != null;
 
-		super.bind(object, "recordId", "completeness", "comment");
+		super.bind(object, "recordId", "completeness", "comment", "responsiblePerson");
 	}
 
 	@Override

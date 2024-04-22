@@ -23,5 +23,6 @@
 	<acme:input-textbox code="any.contract.form.label.customer-name" path="customerName"/>
 	<acme:input-moment code="any.contract.form.label.instantiation-moment" path="instantiationMoment"/>
 	<acme:input-textbox code="any.contract.form.label.project" path="project"/>
+	<acme:button code="any.contract.form.button.project" action="/any/project/show?id=${projectId}"/>
 	<acme:button code="any.contract.form.button.progress-log.list" action="/any/progress-log/list?contractId=${contractId}"/>
 </acme:form>

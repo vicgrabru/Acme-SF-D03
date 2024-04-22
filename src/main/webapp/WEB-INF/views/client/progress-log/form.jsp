@@ -19,8 +19,8 @@
 	<acme:input-textbox code="client.progress-log.form.label.record-id" path="recordId"/>
 	<acme:input-double code="client.progress-log.form.label.completeness" path="completeness"/>
 	<acme:input-textarea code="client.progress-log.form.label.comment" path="comment"/>
+	<acme:input-textbox code="client.progress-log.form.label.responsible-person" path="responsiblePerson"/>
 	<acme:input-moment readonly="true" code="client.progress-log.form.label.registration-moment" path="registrationMoment"/>
-	<acme:input-textbox readonly="true" code="client.progress-log.form.label.responsible-person" path="responsiblePerson"/>
 	<acme:input-checkbox readonly="true" code="client.progress-log.form.label.draft-mode" path="draftMode"/>
 	
 	<jstl:choose>

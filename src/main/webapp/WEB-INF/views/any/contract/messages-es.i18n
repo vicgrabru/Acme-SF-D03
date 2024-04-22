@@ -13,7 +13,7 @@ any.contract.form.title = Detalles de contrato
 
 any.contract.list.label.code = Código
 any.contract.list.label.project = Proyecto
-any.contract.list.label.provider = Nombre de proveedor
+any.contract.list.label.budget = Presupuesto
 
 any.contract.form.label.code = Código
 any.contract.form.label.goals = Objetivos
@@ -23,4 +23,5 @@ any.contract.form.label.customer-name = Nombre de cliente
 any.contract.form.label.instantiation-moment = Momento de creación
 any.contract.form.label.project = Proyecto
 
+any.contract.form.button.project = Proyecto
 any.contract.form.button.progress-log.list = Registros de progresos

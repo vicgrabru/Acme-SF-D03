@@ -13,6 +13,7 @@ any.progress-log.form.title = Detalles de registro de progreso
 
 any.progress-log.list.label.record-id = Id de registro
 any.progress-log.list.label.completeness = Completitud
+any.progress-log.list.label.registration-moment = Momento de registro
 
 any.progress-log.form.label.record-id = Id de registro
 any.progress-log.form.label.completeness = Completitud

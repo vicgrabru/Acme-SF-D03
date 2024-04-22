@@ -18,5 +18,5 @@
 <acme:list>	
 	<acme:list-column code="any.contract.list.label.code" path="code"/>
 	<acme:list-column code="any.contract.list.label.project" path="project"/>
-	<acme:list-column code="any.contract.list.label.provider" path="provider"/>
+	<acme:list-column code="any.contract.list.label.budget" path="budget"/>
 </acme:list>

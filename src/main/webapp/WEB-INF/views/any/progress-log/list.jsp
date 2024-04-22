@@ -16,6 +16,7 @@
 <%@taglib prefix="acme" uri="http://acme-framework.org/"%>
 
 <acme:list>	
-	<acme:list-column code="client.progress-log.list.label.record-id" path="recordId"/>
-	<acme:list-column code="client.progress-log.list.label.completeness" path="completeness"/>
+	<acme:list-column code="any.progress-log.list.label.record-id" path="recordId"/>
+	<acme:list-column code="any.progress-log.list.label.completeness" path="completeness"/>
+	<acme:list-column code="any.progress-log.list.label.registration-moment" path="registrationMoment"/>
 </acme:list>

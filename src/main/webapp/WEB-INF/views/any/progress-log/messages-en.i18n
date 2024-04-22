@@ -13,6 +13,7 @@ any.progress-log.form.title = Progress log form
 
 any.progress-log.list.label.record-id = Record id
 any.progress-log.list.label.completeness = Completeness
+any.progress-log.list.label.registration-moment = Registration moment
 
 any.progress-log.form.label.record-id = Record id
 any.progress-log.form.label.completeness = Completeness

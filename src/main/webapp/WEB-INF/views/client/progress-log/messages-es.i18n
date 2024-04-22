@@ -13,6 +13,7 @@ client.progress-log.form.title = Detalles de registro de progreso
 
 client.progress-log.list.label.record-id = Id de registro
 client.progress-log.list.label.completeness = Completitud
+client.progress-log.list.label.registration-moment = Momento de registro
 client.progress-log.list.label.draft-mode = Modo borrador
 
 client.progress-log.form.label.record-id = Id de registro

@@ -71,7 +71,7 @@ public class ClientProgressLogListService extends AbstractService<Client, Progre
 		else
 			isDraftMode = "✗";
 
-		dataset = super.unbind(object, "recordId", "completeness");
+		dataset = super.unbind(object, "recordId", "completeness", "registrationMoment");
 		dataset.put("draftMode", isDraftMode);
 
 		super.getResponse().addData(dataset);

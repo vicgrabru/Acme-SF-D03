@@ -62,9 +62,8 @@ public class ClientContractListService extends AbstractService<Client, Contract>
 		else
 			isDraftMode = "✗";
 
-		dataset = super.unbind(object, "code");
+		dataset = super.unbind(object, "code", "budget");
 		dataset.put("project", object.getProject().getTitle());
-		dataset.put("provider", object.getProviderName());
 		dataset.put("draftMode", isDraftMode);
 
 		super.getResponse().addData(dataset);
