@@ -10,23 +10,23 @@
  * they accept any liabilities with respect to them.
  */
 
-package acme.features.client.progressLog;
+package acme.features.any.progressLog;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import acme.client.data.accounts.Any;
 import acme.client.data.models.Dataset;
 import acme.client.services.AbstractService;
 import acme.entities.contract.ProgressLog;
-import acme.roles.Client;
 
 @Service
-public class ClientProgressLogUpdateService extends AbstractService<Client, ProgressLog> {
+public class AnyProgressLogShowService extends AbstractService<Any, ProgressLog> {
 
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private ClientProgressLogRepository repository;
+	private AnyProgressLogRepository repository;
 
 	// AbstractService interface ----------------------------------------------
 
@@ -39,9 +39,7 @@ public class ClientProgressLogUpdateService extends AbstractService<Client, Prog
 
 		progressLogId = super.getRequest().getData("id", int.class);
 		progressLog = this.repository.findProgressLogById(progressLogId);
-		status = progressLog != null && //
-			progressLog.isDraftMode() && //
-			super.getRequest().getPrincipal().hasRole(progressLog.getContract().getClient());
+		status = progressLog != null && !progressLog.isDraftMode() && !progressLog.getContract().isDraftMode();
 
 		super.getResponse().setAuthorised(status);
 	}
@@ -53,32 +51,8 @@ public class ClientProgressLogUpdateService extends AbstractService<Client, Prog
 
 		id = super.getRequest().getData("id", int.class);
 		object = this.repository.findProgressLogById(id);
+
 		super.getBuffer().addData(object);
-	}
-
-	@Override
-	public void bind(final ProgressLog object) {
-		assert object != null;
-
-		super.bind(object, "recordId", "completeness", "comment");
-
-	}
-
-	@Override
-	public void validate(final ProgressLog object) {
-		assert object != null;
-
-		if (!super.getBuffer().getErrors().hasErrors("recordId")) {
-			boolean duplicatedCode = this.repository.findAllProgressLogs().stream().filter(c -> c.getId() != object.getId()).anyMatch(pl -> pl.getRecordId().equals(object.getRecordId()));
-			super.state(!duplicatedCode, "recordId", "client.progress-log.form.error.duplicated-record-id");
-		}
-	}
-
-	@Override
-	public void perform(final ProgressLog object) {
-		assert object != null;
-
-		this.repository.save(object);
 	}
 
 	@Override
@@ -87,7 +61,7 @@ public class ClientProgressLogUpdateService extends AbstractService<Client, Prog
 
 		Dataset dataset;
 
-		dataset = super.unbind(object, "recordId", "completeness", "comment", "registrationMoment", "responsiblePerson", "draftMode");
+		dataset = super.unbind(object, "recordId", "completeness", "comment", "registrationMoment", "responsiblePerson");
 
 		super.getResponse().addData(dataset);
 	}
