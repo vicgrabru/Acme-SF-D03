@@ -66,6 +66,7 @@ master.menu.consumer.favourite-link = Favourite link
 # master.menu.client ##########################################################
 
 master.menu.client = Client
+master.menu.client.client-dashboard = Client Dashboard
 master.menu.client.contract = Contract list
 
 # master.menu.user-account ####################################################
