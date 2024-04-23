@@ -17,7 +17,7 @@ any.contract.list.label.budget = Presupuesto
 
 any.contract.form.label.code = Código
 any.contract.form.label.goals = Objetivos
-any.contract.form.label.budget = Presupuesto
+any.contract.form.label.budget = Presupuesto (Divisa del sistema)
 any.contract.form.label.provider-name = Nombre de proveedor
 any.contract.form.label.customer-name = Nombre de cliente
 any.contract.form.label.instantiation-moment = Momento de creación

@@ -17,6 +17,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import acme.client.data.datatypes.Money;
 import acme.client.data.models.Dataset;
 import acme.client.services.AbstractService;
 import acme.client.views.SelectChoices;
@@ -24,6 +25,7 @@ import acme.entities.contract.Contract;
 import acme.entities.project.Project;
 import acme.roles.Client;
 import acme.roles.Provider;
+import acme.utils.MoneyExchangeRepository;
 
 @Service
 public class ClientContractUpdateService extends AbstractService<Client, Contract> {
@@ -31,7 +33,10 @@ public class ClientContractUpdateService extends AbstractService<Client, Contrac
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private ClientContractRepository repository;
+	private ClientContractRepository	repository;
+
+	@Autowired
+	private MoneyExchangeRepository		exchangeRepo;
 
 	// AbstractService interface ----------------------------------------------
 
@@ -77,7 +82,7 @@ public class ClientContractUpdateService extends AbstractService<Client, Contrac
 		if (!super.getBuffer().getErrors().hasErrors("budget")) {
 			currencies = this.repository.findAcceptedCurrencies();
 			super.state(currencies.contains(object.getBudget().getCurrency()), "budget", "client.contract.form.error.bugdet.invalid-currency");
-			super.state(object.getBudget().getAmount() <= object.getProject().getCost().getAmount(), "budget", "client.contract.form.error.budget.budget-over-project-cost");
+			super.state(this.exchangeRepo.exchangeMoney(object.getBudget()).getAmount() <= this.exchangeRepo.exchangeMoney(object.getProject().getCost()).getAmount(), "budget", "client.contract.form.error.budget.budget-over-project-cost");
 		}
 
 	}
@@ -115,6 +120,9 @@ public class ClientContractUpdateService extends AbstractService<Client, Contrac
 		dataset.put("projectId", object.getProject().getId());
 		dataset.put("contractId", object.getId());
 		dataset.put("readOnlyCode", true);
+
+		Money eb = this.exchangeRepo.exchangeMoney(object.getBudget());
+		dataset.put("exchangedBudget", eb);
 
 		super.getResponse().addData(dataset);
 	}
