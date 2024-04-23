@@ -22,6 +22,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
 import acme.client.data.datatypes.Money;
+import acme.client.helpers.MomentHelper;
 import acme.client.repositories.AbstractRepository;
 import acme.entities.configuration.ExchangeRate;
 
@@ -51,13 +52,20 @@ public interface MoneyExchangeRepository extends AbstractRepository {
 				ner.setTarget(sc);
 				ner.setRate(rate);
 				ner.setInstantiationMoment(today);
-				this.save(ner);
+				if (rate.equals(-1.0))
+					rate = 1.0;
+				else
+					this.save(ner);
 
 			} else if (!today.equals(er.getInstantiationMoment())) {
 				rate = this.getExchangeRate(currency, sc);
 				er.setInstantiationMoment(today);
 				er.setRate(rate);
-				this.save(er);
+				if (rate.equals(-1.0))
+					rate = 1.0;
+				else
+					this.save(er);
+
 			} else
 				rate = er.getRate();
 
@@ -69,12 +77,20 @@ public interface MoneyExchangeRepository extends AbstractRepository {
 	}
 
 	private double getExchangeRate(final String source, final String target) {
-		RestTemplate api = new RestTemplate();
-		HttpHeaders headers = new HttpHeaders();
-		headers.set("apikey", "gosbR4UgNOwcVY3AnfgUhYCnrz95oxFf");
-		HttpEntity<?> entity = new HttpEntity<>(headers);
-		String uri = "https://api.apilayer.com/exchangerates_data/convert?to=" + target + "&from=" + source + "&amount=1";
-		return api.exchange(uri, HttpMethod.GET, entity, Rate.class).getBody().getResult();
+		Double result;
+		try {
+			RestTemplate api = new RestTemplate();
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("apikey", "gosbR4UgNOwcVY3AnfgUhYCnrz95oxFf");
+			HttpEntity<?> entity = new HttpEntity<>(headers);
+			String uri = "https://api.apilayer.com/exchangerates_data/convert?to=" + target + "&from=" + source + "&amount=1";
+			result = api.exchange(uri, HttpMethod.GET, entity, Rate.class).getBody().getResult();
+
+			MomentHelper.sleep(1000);
+		} catch (final Throwable oops) {
+			result = -1.0;
+		}
+		return result;
 	}
 
 }

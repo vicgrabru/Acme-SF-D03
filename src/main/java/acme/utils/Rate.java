@@ -10,6 +10,6 @@ public class Rate {
 
 	// Attributes -------------------------------------------------------------
 
-	public double Result;
+	public double result;
 
 }
