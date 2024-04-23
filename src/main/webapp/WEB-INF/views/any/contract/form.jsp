@@ -19,6 +19,7 @@
 	<acme:input-textbox code="any.contract.form.label.code" path="code"/>
 	<acme:input-textarea code="any.contract.form.label.goals" path="goals"/>
 	<acme:input-money code="any.contract.form.label.budget" path="budget"/>
+	<acme:input-money code="any.contract.form.label.exchanged-budget" path="exchangedBudget"/>
 	<acme:input-textbox code="any.contract.form.label.provider-name" path="providerName"/>
 	<acme:input-textbox code="any.contract.form.label.customer-name" path="customerName"/>
 	<acme:input-moment code="any.contract.form.label.instantiation-moment" path="instantiationMoment"/>

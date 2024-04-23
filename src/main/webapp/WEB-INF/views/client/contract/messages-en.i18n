@@ -19,6 +19,7 @@ client.contract.list.label.draft-mode = Draft mode
 client.contract.form.label.code = Code
 client.contract.form.label.goals = Goals
 client.contract.form.label.budget = Budget
+client.contract.form.label.exchanged-budget = Budget (System Currency)
 client.contract.form.label.provider = Provider name
 client.contract.form.label.customer-name = Customer name
 client.contract.form.label.instantiation-moment = Instantiation moment

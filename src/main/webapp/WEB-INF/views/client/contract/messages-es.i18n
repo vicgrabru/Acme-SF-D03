@@ -14,6 +14,7 @@ client.contract.form.title = Detalles de contrato
 client.contract.list.label.code = Código
 client.contract.list.label.project = Proyecto
 client.contract.list.label.budget = Presupuesto
+client.contract.form.label.exchanged-budget = Presupuesto (Divisa del sistema)
 client.contract.list.label.draft-mode = Modo borrador
 
 client.contract.form.label.code = Código

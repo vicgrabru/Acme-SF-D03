@@ -19,6 +19,9 @@
 	<acme:input-textbox code="client.contract.form.label.code" path="code" readonly="${readOnlyCode}"/>
 	<acme:input-textarea code="client.contract.form.label.goals" path="goals"/>
 	<acme:input-money code="client.contract.form.label.budget" path="budget"/>
+	<jstl:if test="${acme:anyOf(_command, 'show|update|publish')}">
+		<acme:input-money readonly="true" code="client.contract.form.label.exchanged-budget" path="exchangedBudget"/>
+	</jstl:if>
 	<acme:input-select code="client.contract.form.label.provider" path="provider" choices="${providers}"/>
 	<acme:input-textbox code="client.contract.form.label.customer-name" path="customerName"/>
 	<acme:input-moment readonly="true" code="client.contract.form.label.instantiation-moment" path="instantiationMoment"/>

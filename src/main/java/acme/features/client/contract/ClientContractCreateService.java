@@ -25,6 +25,7 @@ import acme.entities.contract.Contract;
 import acme.entities.project.Project;
 import acme.roles.Client;
 import acme.roles.Provider;
+import acme.utils.MoneyExchangeRepository;
 
 @Service
 public class ClientContractCreateService extends AbstractService<Client, Contract> {
@@ -32,7 +33,10 @@ public class ClientContractCreateService extends AbstractService<Client, Contrac
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private ClientContractRepository repository;
+	private ClientContractRepository	repository;
+
+	@Autowired
+	private MoneyExchangeRepository		exchangeRepo;
 
 	// AbstractService interface ----------------------------------------------
 
@@ -75,7 +79,7 @@ public class ClientContractCreateService extends AbstractService<Client, Contrac
 		if (!super.getBuffer().getErrors().hasErrors("budget")) {
 			currencies = this.repository.findAcceptedCurrencies();
 			super.state(currencies.contains(object.getBudget().getCurrency()), "budget", "client.contract.form.error.bugdet.invalid-currency");
-			super.state(object.getBudget().getAmount() <= object.getProject().getCost().getAmount(), "budget", "client.contract.form.error.budget.budget-over-project-cost");
+			super.state(this.exchangeRepo.exchangeMoney(object.getBudget()).getAmount() <= this.exchangeRepo.exchangeMoney(object.getProject().getCost()).getAmount(), "budget", "client.contract.form.error.budget.budget-over-project-cost");
 		}
 
 		if (!super.getBuffer().getErrors().hasErrors("code")) {

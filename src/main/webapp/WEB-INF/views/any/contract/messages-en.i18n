@@ -18,6 +18,7 @@ any.contract.list.label.budget = Budget
 any.contract.form.label.code = Code
 any.contract.form.label.goals = Goals
 any.contract.form.label.budget = Budget
+any.contract.form.label.exchanged-budget = Budget (System Currency)
 any.contract.form.label.provider-name = Provider name
 any.contract.form.label.customer-name = Customer name
 any.contract.form.label.instantiation-moment = Instantiation moment
