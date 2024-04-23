@@ -1,5 +1,5 @@
 
-package acme.features.any;
+package acme.features.any.sponsorship;
 
 import java.util.Collection;
 
@@ -9,13 +9,10 @@ import org.springframework.stereotype.Service;
 import acme.client.data.accounts.Any;
 import acme.client.data.models.Dataset;
 import acme.client.services.AbstractService;
-import acme.client.views.SelectChoices;
-import acme.entities.project.Project;
 import acme.entities.sponsorship.Sponsorship;
-import acme.entities.sponsorship.Type;
 
 @Service
-public class AnySponsorshipShowService extends AbstractService<Any, Sponsorship> {
+public class AnySponsorshipListService extends AbstractService<Any, Sponsorship> {
 
 	// Internal state ---------------------------------------------------------
 
@@ -32,32 +29,22 @@ public class AnySponsorshipShowService extends AbstractService<Any, Sponsorship>
 
 	@Override
 	public void load() {
-		Sponsorship object;
-		int id;
+		Collection<Sponsorship> objects;
 
-		id = super.getRequest().getData("id", int.class);
-		object = this.repository.findOneSponsorshipById(id);
+		objects = this.repository.findAllSponsorships();
 
-		super.getBuffer().addData(object);
+		super.getBuffer().addData(objects);
 	}
 
 	@Override
 	public void unbind(final Sponsorship object) {
 		assert object != null;
 
-		Collection<Project> projects;
-		SelectChoices choicesProject;
-		SelectChoices choicesType;
 		Dataset dataset;
 
-		projects = this.repository.findAllProjects();
-		choicesProject = SelectChoices.from(projects, "code", object.getProject());
-		choicesType = SelectChoices.from(Type.class, object.getType());
 		dataset = super.unbind(object, "code", "moment", "startDuration", "endDuration", "amount", "type", "email", "link", "draftMode");
-		dataset.put("project", choicesProject.getSelected().getKey());
-		dataset.put("projects", choicesProject);
-		dataset.put("types", choicesType);
 
 		super.getResponse().addData(dataset);
 	}
+
 }
