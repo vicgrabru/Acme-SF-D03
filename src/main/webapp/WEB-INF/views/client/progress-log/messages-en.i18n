@@ -12,12 +12,12 @@ client.progress-log.list.title = Listing of progress logs
 client.progress-log.form.title = Progress log form
 
 client.progress-log.list.label.record-id = Record id
-client.progress-log.list.label.completeness = Completeness
+client.progress-log.list.label.completeness = Completeness %
 client.progress-log.list.label.registration-moment = Registration moment
 client.progress-log.list.label.draft-mode = Draft mode
 
 client.progress-log.form.label.record-id = Record id
-client.progress-log.form.label.completeness = Completeness
+client.progress-log.form.label.completeness = Completeness %
 client.progress-log.form.label.comment = Comment
 client.progress-log.form.label.registration-moment = Registration moment
 client.progress-log.form.label.responsible-person = Responsible person

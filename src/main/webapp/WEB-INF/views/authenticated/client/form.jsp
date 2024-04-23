@@ -19,7 +19,7 @@
 	<acme:input-textbox code="authenticated.client.form.label.identification" path="identification" readonly="${readOnlyCode}"/>
 	<acme:input-textbox code="authenticated.client.form.label.company-name" path="companyName"/>
 	<acme:input-select code="authenticated.client.form.label.type" path="type" choices="${types}"/>
-	<acme:input-url code="authenticated.client.form.label.email" path="email"/>
+	<acme:input-email code="authenticated.client.form.label.email" path="email"/>
 	<acme:input-url code="authenticated.client.form.label.optional-link" path="optionalLink"/>
 	
 	<acme:submit test="${_command == 'create'}" code="authenticated.client.form.button.create" action="/authenticated/client/create"/>
