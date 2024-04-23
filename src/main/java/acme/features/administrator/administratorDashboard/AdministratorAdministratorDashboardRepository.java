@@ -73,5 +73,4 @@ public interface AdministratorAdministratorDashboardRepository extends AbstractR
 
 	@Query("select count(c) from Claim c where c.instantiationMoment >= :startDate and c.instantiationMoment < :endDate")
 	Long numberOfClaimsBetweenDates(Date startDate, Date endDate);
-
 }
