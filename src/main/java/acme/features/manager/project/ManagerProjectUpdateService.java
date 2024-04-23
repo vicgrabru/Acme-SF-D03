@@ -22,6 +22,7 @@ import acme.client.services.AbstractService;
 import acme.entities.project.Project;
 import acme.entities.project.UserStoryAssign;
 import acme.roles.Manager;
+import spamDetector.SpamDetector;
 
 @Service
 public class ManagerProjectUpdateService extends AbstractService<Manager, Project> {
@@ -78,6 +79,12 @@ public class ManagerProjectUpdateService extends AbstractService<Manager, Projec
 
 			super.state(object.getCost().getAmount() >= 0., "cost", "manager.project.form.error.cost.negative");
 		}
+
+		if (!super.getBuffer().getErrors().hasErrors("title"))
+			super.state(!SpamDetector.checkTextValue(object.getTitle()), "title", "manager.project.form.error.spam-in-title");
+
+		if (!super.getBuffer().getErrors().hasErrors("abstractField"))
+			super.state(!SpamDetector.checkTextValue(object.getAbstractField()), "abstractField", "manager.project.form.error.spam-in-abstract-field");
 	}
 
 	@Override

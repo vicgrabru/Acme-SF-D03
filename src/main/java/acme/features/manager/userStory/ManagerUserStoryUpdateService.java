@@ -25,6 +25,7 @@ import acme.entities.project.Project;
 import acme.entities.project.UserStory;
 import acme.entities.project.UserStoryAssign;
 import acme.roles.Manager;
+import spamDetector.SpamDetector;
 
 @Service
 public class ManagerUserStoryUpdateService extends AbstractService<Manager, UserStory> {
@@ -78,6 +79,15 @@ public class ManagerUserStoryUpdateService extends AbstractService<Manager, User
 	@Override
 	public void validate(final UserStory object) {
 		assert object != null;
+
+		if (!super.getBuffer().getErrors().hasErrors("title"))
+			super.state(!SpamDetector.checkTextValue(object.getTitle()), "title", "manager.user-story.form.error.spam-in-title");
+
+		if (!super.getBuffer().getErrors().hasErrors("description"))
+			super.state(!SpamDetector.checkTextValue(object.getDescription()), "description", "manager.user-story.form.error.spam-in-description");
+
+		if (!super.getBuffer().getErrors().hasErrors("acceptanceCriteria"))
+			super.state(!SpamDetector.checkTextValue(object.getAcceptanceCriteria()), "acceptanceCriteria", "manager.user-story.form.error.spam-in-acceptance-criteria");
 	}
 
 	@Override
