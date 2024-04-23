@@ -38,3 +38,4 @@ client.contract.form.error.bugdet.invalid-currency = La divisa introducida no es
 client.contract.form.error.budget.budget-over-project-cost = La cantidad de presupuesto no puede ser superior al coste del proyecto
 client.contract.form.error.duplicated-code = Código duplicado
 client.contract.form.error.project-cost-exceeded = El coste del proyecto no puede ser superado por los presupuestos del contrato
+client.contract.form.error.spam = Hay spam

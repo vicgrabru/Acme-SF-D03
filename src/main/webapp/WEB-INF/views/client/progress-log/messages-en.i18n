@@ -30,3 +30,4 @@ client.progress-log.form.button.delete = Delete
 client.progress-log.form.button.publish = Publish
 
 client.progress-log.form.error.duplicated-record-id = Duplicated record id
+client.progress-log.form.error.spam = There is a spam

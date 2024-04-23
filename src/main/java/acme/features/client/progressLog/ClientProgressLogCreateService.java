@@ -83,11 +83,11 @@ public class ClientProgressLogCreateService extends AbstractService<Client, Prog
 		}
 
 		if (!super.getBuffer().getErrors().hasErrors("recordId"))
-			super.state(!SpamDetector.checkTextValue(object.getRecordId()), "recordId", "client.progress-log.form.error.code.spam");
+			super.state(!SpamDetector.checkTextValue(object.getRecordId()), "recordId", "client.progress-log.form.error.spam");
 		if (!super.getBuffer().getErrors().hasErrors("comment"))
-			super.state(!SpamDetector.checkTextValue(object.getComment()), "comment", "client.progress-log.form.error.code.spam");
+			super.state(!SpamDetector.checkTextValue(object.getComment()), "comment", "client.progress-log.form.error.spam");
 		if (!super.getBuffer().getErrors().hasErrors("responsiblePerson"))
-			super.state(!SpamDetector.checkTextValue(object.getComment()), "responsiblePerson", "client.progress-log.form.error.code.spam");
+			super.state(!SpamDetector.checkTextValue(object.getComment()), "responsiblePerson", "client.progress-log.form.error.spam");
 	}
 
 	@Override

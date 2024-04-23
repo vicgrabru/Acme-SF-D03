@@ -89,11 +89,11 @@ public class ClientContractCreateService extends AbstractService<Client, Contrac
 		}
 
 		if (!super.getBuffer().getErrors().hasErrors("code"))
-			super.state(!SpamDetector.checkTextValue(object.getCode()), "code", "client.contract.form.error.code.spam");
+			super.state(!SpamDetector.checkTextValue(object.getCode()), "code", "client.contract.form.error.spam");
 		if (!super.getBuffer().getErrors().hasErrors("goals"))
-			super.state(!SpamDetector.checkTextValue(object.getGoals()), "goals", "client.contract.form.error.code.spam");
+			super.state(!SpamDetector.checkTextValue(object.getGoals()), "goals", "client.contract.form.error.spam");
 		if (!super.getBuffer().getErrors().hasErrors("customerName"))
-			super.state(!SpamDetector.checkTextValue(object.getCustomerName()), "customerName", "client.contract.form.error.code.spam");
+			super.state(!SpamDetector.checkTextValue(object.getCustomerName()), "customerName", "client.contract.form.error.spam");
 	}
 
 	@Override
