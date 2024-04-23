@@ -26,6 +26,7 @@ import acme.entities.project.Project;
 import acme.roles.Client;
 import acme.roles.Provider;
 import acme.utils.MoneyExchangeRepository;
+import spamDetector.SpamDetector;
 
 @Service
 public class ClientContractUpdateService extends AbstractService<Client, Contract> {
@@ -85,6 +86,10 @@ public class ClientContractUpdateService extends AbstractService<Client, Contrac
 			super.state(this.exchangeRepo.exchangeMoney(object.getBudget()).getAmount() <= this.exchangeRepo.exchangeMoney(object.getProject().getCost()).getAmount(), "budget", "client.contract.form.error.budget.budget-over-project-cost");
 		}
 
+		if (!super.getBuffer().getErrors().hasErrors("goals"))
+			super.state(!SpamDetector.checkTextValue(object.getGoals()), "goals", "client.contract.form.error.code.spam");
+		if (!super.getBuffer().getErrors().hasErrors("customerName"))
+			super.state(!SpamDetector.checkTextValue(object.getCustomerName()), "customerName", "client.contract.form.error.code.spam");
 	}
 
 	@Override

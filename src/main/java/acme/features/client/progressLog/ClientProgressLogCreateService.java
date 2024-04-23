@@ -21,6 +21,7 @@ import acme.client.services.AbstractService;
 import acme.entities.contract.Contract;
 import acme.entities.contract.ProgressLog;
 import acme.roles.Client;
+import spamDetector.SpamDetector;
 
 @Service
 public class ClientProgressLogCreateService extends AbstractService<Client, ProgressLog> {
@@ -80,6 +81,13 @@ public class ClientProgressLogCreateService extends AbstractService<Client, Prog
 			boolean duplicatedCode = this.repository.findAllProgressLogs().stream().anyMatch(pl -> pl.getRecordId().equals(object.getRecordId()));
 			super.state(!duplicatedCode, "recordId", "client.progress-log.form.error.duplicated-record-id");
 		}
+
+		if (!super.getBuffer().getErrors().hasErrors("recordId"))
+			super.state(!SpamDetector.checkTextValue(object.getRecordId()), "recordId", "client.progress-log.form.error.code.spam");
+		if (!super.getBuffer().getErrors().hasErrors("comment"))
+			super.state(!SpamDetector.checkTextValue(object.getComment()), "comment", "client.progress-log.form.error.code.spam");
+		if (!super.getBuffer().getErrors().hasErrors("responsiblePerson"))
+			super.state(!SpamDetector.checkTextValue(object.getComment()), "responsiblePerson", "client.progress-log.form.error.code.spam");
 	}
 
 	@Override

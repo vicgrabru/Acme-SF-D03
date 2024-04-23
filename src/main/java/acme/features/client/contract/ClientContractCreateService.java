@@ -26,6 +26,7 @@ import acme.entities.project.Project;
 import acme.roles.Client;
 import acme.roles.Provider;
 import acme.utils.MoneyExchangeRepository;
+import spamDetector.SpamDetector;
 
 @Service
 public class ClientContractCreateService extends AbstractService<Client, Contract> {
@@ -86,6 +87,13 @@ public class ClientContractCreateService extends AbstractService<Client, Contrac
 			boolean duplicatedCode = this.repository.findAllContracts().stream().anyMatch(c -> c.getCode().equals(object.getCode()));
 			super.state(!duplicatedCode, "code", "client.contract.form.error.duplicated-code");
 		}
+
+		if (!super.getBuffer().getErrors().hasErrors("code"))
+			super.state(!SpamDetector.checkTextValue(object.getCode()), "code", "client.contract.form.error.code.spam");
+		if (!super.getBuffer().getErrors().hasErrors("goals"))
+			super.state(!SpamDetector.checkTextValue(object.getGoals()), "goals", "client.contract.form.error.code.spam");
+		if (!super.getBuffer().getErrors().hasErrors("customerName"))
+			super.state(!SpamDetector.checkTextValue(object.getCustomerName()), "customerName", "client.contract.form.error.code.spam");
 	}
 
 	@Override
