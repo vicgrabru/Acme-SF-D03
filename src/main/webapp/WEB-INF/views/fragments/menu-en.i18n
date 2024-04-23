@@ -33,6 +33,7 @@ master.menu.anonymous.favourite-link-albescsan1= 77844410J: Escobar Sánchez, Al
 
 master.menu.any = Any
 master.menu.any.project-list = List of published projects
+master.menu.any.contract-list = List of published contracts
 
 # master.menu.authenticated ###################################################
 
@@ -79,6 +80,12 @@ master.menu.provider.favourite-link = Favourite link
 master.menu.consumer = Consumer
 master.menu.consumer.favourite-link = Favourite link
 
+# master.menu.client ##########################################################
+
+master.menu.client = Client
+master.menu.client.client-dashboard = Client Dashboard
+master.menu.client.contract = Contract list
+
 # master.menu.user-account ####################################################
 
 master.menu.user-account = Account
@@ -91,3 +98,5 @@ master.menu.user-account.sponsor = Sponsor data
 master.menu.user-account.become-sponsor = Become a sponsor 
 master.menu.user-account.manager = Manager data
 master.menu.user-account.become-manager= Become a manager
+master.menu.user-account.client = Client data
+master.menu.user-account.become-client = Become a client
