@@ -41,19 +41,17 @@ public class DeveloperTrainingSessionListService extends AbstractService<Develop
 	@Override
 	public void load() {
 		Collection<TrainingSession> objects;
-
-		objects = this.repository.findTrainingSessions();
-
+		int masterId = super.getRequest().getData("masterId", int.class);
+		objects = this.repository.findTrainingSessionsOfTrainingModule(masterId);
 		super.getBuffer().addData(objects);
 	}
-
 	@Override
 	public void unbind(final TrainingSession object) {
 		assert object != null;
 
 		Dataset dataset;
 
-		dataset = super.unbind(object, "code", "startPeriod", "endPeriod", "location", "instructor", "contactEmail", "link");
+		dataset = super.unbind(object, "code", "startPeriod", "endPeriod", "location", "instructor", "contactEmail", "link", "draftMode");
 
 		super.getResponse().addData(dataset);
 	}

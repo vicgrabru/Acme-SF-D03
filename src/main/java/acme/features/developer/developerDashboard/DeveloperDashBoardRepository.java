@@ -10,13 +10,13 @@
  * they accept any liabilities with respect to them.
  */
 
-package acme.features.administrator.administratorDashboard;
+package acme.features.developer.developerDashboard;
 
 import org.springframework.stereotype.Repository;
 
 import acme.client.repositories.AbstractRepository;
 
 @Repository
-public interface DeveloperDashboardRepository extends AbstractRepository {
+public interface DeveloperDashBoardRepository extends AbstractRepository {
 
 }

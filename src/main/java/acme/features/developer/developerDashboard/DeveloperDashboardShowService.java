@@ -1,5 +1,5 @@
 /*
- * EmployerApplicationListService.java
+ * AdministratorDashboardShowService.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -10,25 +10,22 @@
  * they accept any liabilities with respect to them.
  */
 
-package acme.features.developer.trainingModule;
-
-import java.util.Collection;
+package acme.features.developer.developerDashboard;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import acme.client.data.models.Dataset;
 import acme.client.services.AbstractService;
-import acme.entities.training.TrainingModule;
+import acme.forms.DeveloperDashboard;
 import acme.roles.Developer;
 
 @Service
-public class DeveloperTrainingModuleListService extends AbstractService<Developer, TrainingModule> {
+public class DeveloperDashboardShowService extends AbstractService<Developer, DeveloperDashboard> {
 
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private DeveloperTrainingModuleRepository repository;
+	private DeveloperDashBoardRepository repository;
 
 	// AbstractService interface ----------------------------------------------
 
@@ -40,22 +37,12 @@ public class DeveloperTrainingModuleListService extends AbstractService<Develope
 
 	@Override
 	public void load() {
-		Collection<TrainingModule> objects;
 
-		objects = this.repository.findTrainingModules();
-
-		super.getBuffer().addData(objects);
 	}
 
 	@Override
-	public void unbind(final TrainingModule object) {
-		assert object != null;
+	public void unbind(final DeveloperDashboard object) {
 
-		Dataset dataset;
-
-		dataset = super.unbind(object, "code", "creationMoment", "details", "difficulty", "updateMoment", "startTotalTime", "endTotalTime", "link", "draftMode");
-
-		super.getResponse().addData(dataset);
 	}
 
 }

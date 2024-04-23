@@ -19,13 +19,17 @@ import org.springframework.stereotype.Repository;
 
 import acme.client.repositories.AbstractRepository;
 import acme.entities.training.TrainingModule;
+import acme.entities.training.TrainingSession;
 
 @Repository
 public interface DeveloperTrainingModuleRepository extends AbstractRepository {
 
-	@Query("select t from TrainingModule b")
+	@Query("select t from TrainingModule t")
 	Collection<TrainingModule> findTrainingModules();
 
 	@Query("select t from TrainingModule t where t.id = :id")
 	TrainingModule findTrainingModuleById(int id);
+
+	@Query("select t from TrainingSession t where t.trainingModule.id = :id")
+	Collection<TrainingSession> findTrainingSessionsOfTrainingModule(int id);
 }

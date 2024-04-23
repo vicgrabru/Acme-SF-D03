@@ -1,29 +1,19 @@
-/*
- * EmployerApplicationUpdateService.java
- *
- * Copyright (C) 2012-2024 Rafael Corchuelo.
- *
- * In keeping with the traditional purpose of furthering education and research, it is
- * the policy of the copyright owner to permit non-commercial use and redistribution of
- * this software. It has been tested carefully, but it is not guaranteed for any particular
- * purposes. The copyright owner does not offer any warranties or representations, nor do
- * they accept any liabilities with respect to them.
- */
 
 package acme.features.developer.trainingModule;
+
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import acme.client.data.models.Dataset;
+import acme.client.helpers.MomentHelper;
 import acme.client.services.AbstractService;
 import acme.entities.training.TrainingModule;
 import acme.roles.Developer;
 
 @Service
-public class DeveloperTrainingModuleDeleteService extends AbstractService<Developer, TrainingModule> {
-
-	// Internal state ---------------------------------------------------------
+public class DeveloperTrainingModulePublishService extends AbstractService<Developer, TrainingModule> {
 
 	@Autowired
 	private DeveloperTrainingModuleRepository repository;
@@ -58,18 +48,31 @@ public class DeveloperTrainingModuleDeleteService extends AbstractService<Develo
 	@Override
 	public void bind(final TrainingModule object) {
 		assert object != null;
+		Date updateMoment;
+
+		updateMoment = MomentHelper.getCurrentMoment();
+
+		super.bind(object, "code", "creationMoment", "details", "difficulty", "updateMoment", "startTotalTime", "endTotalTime", "link", "draftMode");
+		object.setUpdateMoment(updateMoment);
 	}
 
 	@Override
 	public void validate(final TrainingModule object) {
 		assert object != null;
+		if (!super.getBuffer().getErrors().hasErrors("draftMode"))
+			super.state(!this.repository.findTrainingSessionsOfTrainingModule(object.getId()).isEmpty(), "draftMode", "developer.training-module.form.error.emptyTrainingSessions");
+		if (!super.getBuffer().getErrors().hasErrors("startTotalTime")) {
+			super.state(object.getStartTotalTime().after(object.getCreationMoment()), "startTotalTime", "developer.training-module.form.error.startTotalTime.not-after-creationMoment");
+			if (!super.getBuffer().getErrors().hasErrors("endTotalTime"))
+				super.state(object.getEndTotalTime().after(object.getStartTotalTime()), "endTotalTime", "developer.training-module.form.error.endTotalTime.not-after-startTotalTime");
+		}
 	}
 
 	@Override
 	public void perform(final TrainingModule object) {
 		assert object != null;
-
-		this.repository.delete(object);
+		object.setDraftMode(false);
+		this.repository.save(object);
 	}
 
 	@Override
@@ -82,5 +85,4 @@ public class DeveloperTrainingModuleDeleteService extends AbstractService<Develo
 
 		super.getResponse().addData(dataset);
 	}
-
 }

@@ -20,8 +20,11 @@ import org.springframework.stereotype.Service;
 import acme.client.data.models.Dataset;
 import acme.client.helpers.MomentHelper;
 import acme.client.services.AbstractService;
+import acme.client.views.SelectChoices;
+import acme.entities.training.Difficulty;
 import acme.entities.training.TrainingModule;
 import acme.roles.Developer;
+import spamDetector.SpamDetector;
 
 @Service
 public class DeveloperTrainingModuleUpdateService extends AbstractService<Developer, TrainingModule> {
@@ -65,18 +68,29 @@ public class DeveloperTrainingModuleUpdateService extends AbstractService<Develo
 
 		updateMoment = MomentHelper.getCurrentMoment();
 
-		super.bind(object, "code", "creationMoment", "details", "difficulty", "updateMoment", "startTotalTime", "endTotalTime", "link");
+		super.bind(object, "code", "creationMoment", "details", "difficulty", "updateMoment", "startTotalTime", "endTotalTime", "link", "draftMode");
 		object.setUpdateMoment(updateMoment);
 	}
 
 	@Override
 	public void validate(final TrainingModule object) {
 		assert object != null;
-
-		if (!super.getBuffer().getErrors().hasErrors("startTotalTime")) {
-			super.state(object.getStartTotalTime().after(object.getCreationMoment()), "startTotalTime", "developer.training-module.form.error.startTotalTime.not-after-creationMoment");
-			if (!super.getBuffer().getErrors().hasErrors("endTotalTime"))
-				super.state(object.getEndTotalTime().after(object.getStartTotalTime()), "endTotalTime", "developer.training-module.form.error.endTotalTime.not-after-startTotalTime");
+		if (!super.getBuffer().getErrors().hasErrors("code")) {
+			super.state(!SpamDetector.checkTextValue(super.getRequest().getData("code", String.class)), "code", "developer.training-module.form.error.code.spam");
+			if (!super.getBuffer().getErrors().hasErrors("details")) {
+				super.state(!SpamDetector.checkTextValue(super.getRequest().getData("details", String.class)), "details", "developer.training-module.form.error.details.spam");
+				if (!super.getBuffer().getErrors().hasErrors("difficulty")) {
+					super.state(!SpamDetector.checkTextValue(super.getRequest().getData("difficulty", String.class)), "difficulty", "developer.training-module.form.error.difficulty.spam");
+					if (!super.getBuffer().getErrors().hasErrors("link")) {
+						super.state(!SpamDetector.checkTextValue(super.getRequest().getData("link", String.class)), "link", "developer.training-module.form.error.link.spam");
+						if (!super.getBuffer().getErrors().hasErrors("startTotalTime")) {
+							super.state(object.getStartTotalTime().after(object.getCreationMoment()), "startTotalTime", "developer.training-module.form.error.startTotalTime.not-after-creationMoment");
+							if (!super.getBuffer().getErrors().hasErrors("endTotalTime"))
+								super.state(object.getEndTotalTime().after(object.getStartTotalTime()), "endTotalTime", "developer.training-module.form.error.endTotalTime.not-after-startTotalTime");
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -90,11 +104,12 @@ public class DeveloperTrainingModuleUpdateService extends AbstractService<Develo
 	@Override
 	public void unbind(final TrainingModule object) {
 		assert object != null;
-
 		Dataset dataset;
-
-		dataset = super.unbind(object, "code", "creationMoment", "details", "difficulty", "updateMoment", "startTotalTime", "endTotalTime", "link");
-
+		dataset = super.unbind(object, "code", "creationMoment", "details", "difficulty", "updateMoment", "startTotalTime", "endTotalTime", "link", "draftMode");
+		final SelectChoices choices;
+		choices = SelectChoices.from(Difficulty.class, object.getDifficulty());
+		dataset.put("difficulty", choices.getSelected().getKey());
+		dataset.put("difficulties", choices);
 		super.getResponse().addData(dataset);
 	}
 

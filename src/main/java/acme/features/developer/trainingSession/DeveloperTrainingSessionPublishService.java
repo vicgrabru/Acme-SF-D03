@@ -10,23 +10,23 @@
  * they accept any liabilities with respect to them.
  */
 
-package acme.features.developer.trainingModule;
+package acme.features.developer.trainingSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import acme.client.data.models.Dataset;
 import acme.client.services.AbstractService;
-import acme.entities.training.TrainingModule;
+import acme.entities.training.TrainingSession;
 import acme.roles.Developer;
 
 @Service
-public class DeveloperTrainingModuleDeleteService extends AbstractService<Developer, TrainingModule> {
+public class DeveloperTrainingSessionPublishService extends AbstractService<Developer, TrainingSession> {
 
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private DeveloperTrainingModuleRepository repository;
+	private DeveloperTrainingSessionRepository repository;
 
 	// AbstractService interface ----------------------------------------------
 
@@ -34,51 +34,55 @@ public class DeveloperTrainingModuleDeleteService extends AbstractService<Develo
 	@Override
 	public void authorise() {
 		boolean status;
-		int trainingModuleId;
-		TrainingModule trainingModule;
+		int trainingSessionId;
+		TrainingSession trainingSession;
 
-		trainingModuleId = super.getRequest().getData("id", int.class);
-		trainingModule = this.repository.findTrainingModuleById(trainingModuleId);
-		status = trainingModule != null;
+		trainingSessionId = super.getRequest().getData("id", int.class);
+		trainingSession = this.repository.findTrainingSessionById(trainingSessionId);
+		status = trainingSession != null;
 
 		super.getResponse().setAuthorised(status);
 	}
 
 	@Override
 	public void load() {
-		TrainingModule object;
+		TrainingSession object;
 		int id;
 
 		id = super.getRequest().getData("id", int.class);
-		object = this.repository.findTrainingModuleById(id);
+		object = this.repository.findTrainingSessionById(id);
 
 		super.getBuffer().addData(object);
 	}
 
 	@Override
-	public void bind(final TrainingModule object) {
+	public void bind(final TrainingSession object) {
 		assert object != null;
+		super.bind(object, "code", "startPeriod", "endPeriod", "location", "instructor", "contactEmail", "link", "draftMode");
 	}
 
 	@Override
-	public void validate(final TrainingModule object) {
+	public void validate(final TrainingSession object) {
 		assert object != null;
+
+		if (!super.getBuffer().getErrors().hasErrors("endPeriod"))
+			super.state(object.getEndPeriod().after(object.getStartPeriod()), "startPeriod", "developer.training-session.form.error.endPeriod.not-after-startPeriod");
 	}
 
 	@Override
-	public void perform(final TrainingModule object) {
+	public void perform(final TrainingSession object) {
 		assert object != null;
-
-		this.repository.delete(object);
+		object.setDraftMode(false);
+		this.repository.save(object);
 	}
 
 	@Override
-	public void unbind(final TrainingModule object) {
+	public void unbind(final TrainingSession object) {
 		assert object != null;
 
 		Dataset dataset;
 
-		dataset = super.unbind(object, "code", "creationMoment", "details", "difficulty", "updateMoment", "startTotalTime", "endTotalTime", "link", "draftMode");
+		dataset = super.unbind(object, "code", "startPeriod", "endPeriod", "location", "instructor", "contactEmail", "link", "draftMode");
 
 		super.getResponse().addData(dataset);
 	}
