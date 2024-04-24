@@ -7,6 +7,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import acme.client.data.datatypes.Money;
 import acme.client.data.models.Dataset;
 import acme.client.helpers.MomentHelper;
 import acme.client.services.AbstractService;
@@ -15,6 +16,8 @@ import acme.entities.project.Project;
 import acme.entities.sponsorship.Sponsorship;
 import acme.entities.sponsorship.Type;
 import acme.roles.Sponsor;
+import acme.utils.MoneyExchangeRepository;
+import spamDetector.SpamDetector;
 
 @Service
 public class SponsorSponsorshipUpdateService extends AbstractService<Sponsor, Sponsorship> {
@@ -22,7 +25,10 @@ public class SponsorSponsorshipUpdateService extends AbstractService<Sponsor, Sp
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private SponsorSponsorshipRepository repository;
+	private SponsorSponsorshipRepository	repository;
+
+	@Autowired
+	private MoneyExchangeRepository			exchangeRepo;
 
 	// AbstractService interface ----------------------------------------------
 
@@ -71,12 +77,25 @@ public class SponsorSponsorshipUpdateService extends AbstractService<Sponsor, Sp
 	@Override
 	public void validate(final Sponsorship object) {
 		assert object != null;
+		String currencies;
+
+		if (!super.getBuffer().getErrors().hasErrors("amount")) {
+			currencies = this.repository.findAcceptedCurrencies();
+			super.state(currencies.contains(object.getAmount().getCurrency()), "amount", "sponsor.sponsorship.form.error.amount.invalid-currency");
+		}
 
 		if (!super.getBuffer().getErrors().hasErrors("startDuration"))
 			super.state(MomentHelper.isAfter(object.getStartDuration(), object.getMoment()), "startDuration", "sponsor.sponsorship.form.error.durationAfter");
 
 		if (!super.getBuffer().getErrors().hasErrors("endDuration"))
 			super.state(MomentHelper.isLongEnough(object.getStartDuration(), object.getEndDuration(), 1, ChronoUnit.MONTHS), "endDuration", "sponsor.sponsorship.form.error.atLeast1MonthLong");
+
+		if (!super.getBuffer().getErrors().hasErrors("code"))
+			super.state(!SpamDetector.checkTextValue(super.getRequest().getData("code", String.class)), "code", "sponsor.sponsorship.form.error.spam");
+		if (!super.getBuffer().getErrors().hasErrors("email"))
+			super.state(!SpamDetector.checkTextValue(super.getRequest().getData("email", String.class)), "email", "sponsor.sponsorship.form.error.spam");
+		if (!super.getBuffer().getErrors().hasErrors("link"))
+			super.state(!SpamDetector.checkTextValue(super.getRequest().getData("link", String.class)), "link", "sponsor.sponsorship.form.error.spam");
 
 	}
 
@@ -103,6 +122,9 @@ public class SponsorSponsorshipUpdateService extends AbstractService<Sponsor, Sp
 		dataset.put("project", choicesProject.getSelected().getKey());
 		dataset.put("projects", choicesProject);
 		dataset.put("types", choicesType);
+
+		Money eb = this.exchangeRepo.exchangeMoney(object.getAmount());
+		dataset.put("exchangedAmount", eb);
 
 		super.getResponse().addData(dataset);
 	}

@@ -16,6 +16,7 @@ sponsor.sponsorship.form.label.moment = Moment
 sponsor.sponsorship.form.label.startDuration = Start Duration
 sponsor.sponsorship.form.label.endDuration = End Duration
 sponsor.sponsorship.form.label.amount = Amount
+sponsor.invoice.form.label.exchanged-amount  = Amount (System Currency)
 sponsor.sponsorship.form.label.type = Type
 sponsor.sponsorship.form.label.email = Email
 sponsor.sponsorship.form.label.link = Link
