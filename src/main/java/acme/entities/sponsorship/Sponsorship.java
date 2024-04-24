@@ -20,6 +20,7 @@ import org.hibernate.validator.constraints.URL;
 import acme.client.data.AbstractEntity;
 import acme.client.data.datatypes.Money;
 import acme.entities.project.Project;
+import acme.roles.Sponsor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -45,12 +46,10 @@ public class Sponsorship extends AbstractEntity {
 	private Date				moment;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Past
 	@NotNull
 	private Date				startDuration;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Past
 	@NotNull
 	private Date				endDuration;
 
@@ -67,11 +66,18 @@ public class Sponsorship extends AbstractEntity {
 	@URL
 	private String				link;
 
+	private boolean				draftMode;
+
 	// Relationships ----------------------------------------------------------
 
 	@NotNull
 	@Valid
 	@ManyToOne(optional = false)
 	protected Project			project;
+
+	@NotNull
+	@Valid
+	@ManyToOne(optional = false)
+	protected Sponsor			sponsor;
 
 }

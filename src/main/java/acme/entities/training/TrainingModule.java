@@ -51,13 +51,15 @@ public class TrainingModule extends AbstractEntity {
 	@Past
 	private Date				updateMoment;
 
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date				startTotalTime;
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date				endTotalTime;
 
 	@URL
 	private String				link;
+
+	private boolean				draftMode;
 
 	@NotNull
 	@Valid
