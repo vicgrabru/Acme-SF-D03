@@ -7,24 +7,13 @@ import acme.client.data.datatypes.Money;
 
 public class MoneyUtils {
 
-	public static Collection<Money> exchangeCollectionToCurrency(final Collection<Money> collection, final String currency) {
-		//TODO hacer intercambio de monedas
-		Collection<Money> result;
-
-		result = collection;
-		return result;
-	}
-
 	public static Money getAvg(final Collection<Money> collection, final String systemCurrency) {
 
 		Money result;
-		Collection<Money> exchangedCollection;
-
-		exchangedCollection = MoneyUtils.exchangeCollectionToCurrency(collection, systemCurrency);
 
 		result = new Money();
 		result.setCurrency(systemCurrency);
-		result.setAmount(exchangedCollection.stream().mapToDouble(Money::getAmount).average().getAsDouble());
+		result.setAmount(collection.stream().mapToDouble(Money::getAmount).average().getAsDouble());
 
 		return result;
 	}
@@ -32,17 +21,14 @@ public class MoneyUtils {
 	public static Money getStd(final Collection<Money> collection, final String systemCurrency) {
 
 		Money result;
-		Collection<Money> exchangedCollection;
-
-		exchangedCollection = MoneyUtils.exchangeCollectionToCurrency(collection, systemCurrency);
 
 		result = new Money();
 		result.setCurrency(systemCurrency);
 
-		Integer n = exchangedCollection.size();
-		Double media = exchangedCollection.stream().mapToDouble(Money::getAmount).average().getAsDouble();
+		Integer n = collection.size();
+		Double media = collection.stream().mapToDouble(Money::getAmount).average().getAsDouble();
 
-		Double varianza = exchangedCollection.stream().mapToDouble(Money::getAmount).map(x -> Math.pow(x - media, 2) / n).sum();
+		Double varianza = collection.stream().mapToDouble(Money::getAmount).map(x -> Math.pow(x - media, 2) / n).sum();
 
 		result.setAmount(Math.sqrt(varianza));
 
@@ -52,13 +38,10 @@ public class MoneyUtils {
 	public static Money getMin(final Collection<Money> collection, final String systemCurrency) {
 
 		Money result;
-		Collection<Money> exchangedCollection;
-
-		exchangedCollection = MoneyUtils.exchangeCollectionToCurrency(collection, systemCurrency);
 
 		result = new Money();
 		result.setCurrency(systemCurrency);
-		result.setAmount(exchangedCollection.stream().mapToDouble(Money::getAmount).min().orElse(0.));
+		result.setAmount(collection.stream().mapToDouble(Money::getAmount).min().orElse(0.));
 
 		return result;
 	}
@@ -66,13 +49,10 @@ public class MoneyUtils {
 	public static Money getMax(final Collection<Money> collection, final String systemCurrency) {
 
 		Money result;
-		Collection<Money> exchangedCollection;
-
-		exchangedCollection = MoneyUtils.exchangeCollectionToCurrency(collection, systemCurrency);
 
 		result = new Money();
 		result.setCurrency(systemCurrency);
-		result.setAmount(exchangedCollection.stream().mapToDouble(Money::getAmount).max().orElse(0.));
+		result.setAmount(collection.stream().mapToDouble(Money::getAmount).max().orElse(0.));
 
 		return result;
 	}
