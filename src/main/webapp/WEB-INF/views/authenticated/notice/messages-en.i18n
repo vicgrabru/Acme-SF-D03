@@ -27,3 +27,4 @@ authenticated.notice.list.button.create = Create
 authenticated.notice.form.button.create = Create
 
 authenticated.notice.form.error.confirmation-needed = Confirmation needed
+authenticated.notice.form.error.spam = There is spam
