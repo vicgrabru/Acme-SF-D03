@@ -24,7 +24,6 @@ import acme.client.views.SelectChoices;
 import acme.entities.contract.Contract;
 import acme.entities.project.Project;
 import acme.roles.Client;
-import acme.roles.Provider;
 import acme.utils.MoneyExchangeRepository;
 import spamDetector.SpamDetector;
 
@@ -69,10 +68,7 @@ public class ClientContractUpdateService extends AbstractService<Client, Contrac
 	public void bind(final Contract object) {
 		assert object != null;
 
-		super.bind(object, "goals", "budget", "provider", "customerName");
-		if (object.getProvider() != null)
-			object.setProviderName(object.getProvider().getIdentity().getName());
-
+		super.bind(object, "goals", "budget", "provider", "customerName", "providerName");
 	}
 
 	@Override
@@ -83,11 +79,16 @@ public class ClientContractUpdateService extends AbstractService<Client, Contrac
 		if (!super.getBuffer().getErrors().hasErrors("budget")) {
 			currencies = this.repository.findAcceptedCurrencies();
 			super.state(currencies.contains(object.getBudget().getCurrency()), "budget", "client.contract.form.error.bugdet.invalid-currency");
-			super.state(this.exchangeRepo.exchangeMoney(object.getBudget()).getAmount() <= this.exchangeRepo.exchangeMoney(object.getProject().getCost()).getAmount(), "budget", "client.contract.form.error.budget.budget-over-project-cost");
 		}
+		if (!super.getBuffer().getErrors().hasErrors("budget"))
+			super.state(object.getBudget().getAmount() >= 0., "budget", "client.contract.form.error.bugdet.negative-budget");
+		if (!super.getBuffer().getErrors().hasErrors("budget"))
+			super.state(this.exchangeRepo.exchangeMoney(object.getBudget()).getAmount() <= this.exchangeRepo.exchangeMoney(object.getProject().getCost()).getAmount(), "budget", "client.contract.form.error.budget.budget-over-project-cost");
 
 		if (!super.getBuffer().getErrors().hasErrors("goals"))
 			super.state(!SpamDetector.checkTextValue(object.getGoals()), "goals", "client.contract.form.error.spam");
+		if (!super.getBuffer().getErrors().hasErrors("providerName"))
+			super.state(!SpamDetector.checkTextValue(object.getProviderName()), "providerName", "client.contract.form.error.spam");
 		if (!super.getBuffer().getErrors().hasErrors("customerName"))
 			super.state(!SpamDetector.checkTextValue(object.getCustomerName()), "customerName", "client.contract.form.error.spam");
 	}
@@ -105,20 +106,14 @@ public class ClientContractUpdateService extends AbstractService<Client, Contrac
 
 		Dataset dataset;
 		SelectChoices choicesProject;
-		SelectChoices choicesProvider;
 
-		Collection<Provider> providers;
 		Collection<Project> projects;
 
-		providers = this.repository.findAllProviders();
 		projects = this.repository.findPublishedProjects();
 
-		choicesProvider = SelectChoices.from(providers, "userAccount.identity.name", object.getProvider());
 		choicesProject = SelectChoices.from(projects, "title", object.getProject());
 
-		dataset = super.unbind(object, "code", "goals", "budget", "customerName", "instantiationMoment", "draftMode");
-		dataset.put("provider", choicesProvider.getSelected().getKey());
-		dataset.put("providers", choicesProvider);
+		dataset = super.unbind(object, "code", "goals", "budget", "customerName", "providerName", "instantiationMoment", "draftMode");
 		dataset.put("project", choicesProject.getSelected().getKey());
 		dataset.put("projects", choicesProject);
 
@@ -126,8 +121,11 @@ public class ClientContractUpdateService extends AbstractService<Client, Contrac
 		dataset.put("contractId", object.getId());
 		dataset.put("readOnlyCode", true);
 
-		Money eb = this.exchangeRepo.exchangeMoney(object.getBudget());
-		dataset.put("exchangedBudget", eb);
+		if (super.getBuffer().getErrors().getFirstError("budget").equals("The budget amount can't be higher than the project cost")
+			|| super.getBuffer().getErrors().getFirstError("budget").equals("La cantidad de presupuesto no puede ser superior al coste del proyecto")) {
+			Money eb = this.exchangeRepo.exchangeMoney(object.getBudget());
+			dataset.put("exchangedBudget", eb);
+		}
 
 		super.getResponse().addData(dataset);
 	}

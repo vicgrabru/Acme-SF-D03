@@ -24,7 +24,6 @@ import acme.client.views.SelectChoices;
 import acme.entities.contract.Contract;
 import acme.entities.project.Project;
 import acme.roles.Client;
-import acme.roles.Provider;
 import acme.utils.MoneyExchangeRepository;
 
 @Service
@@ -71,20 +70,14 @@ public class ClientContractShowService extends AbstractService<Client, Contract>
 
 		Dataset dataset;
 		SelectChoices choicesProject;
-		SelectChoices choicesProvider;
 
-		Collection<Provider> providers;
 		Collection<Project> projects;
 
-		providers = this.repository.findAllProviders();
 		projects = this.repository.findPublishedProjects();
 
-		choicesProvider = SelectChoices.from(providers, "userAccount.identity.name", object.getProvider());
 		choicesProject = SelectChoices.from(projects, "title", object.getProject());
 
-		dataset = super.unbind(object, "code", "goals", "budget", "customerName", "instantiationMoment", "draftMode");
-		dataset.put("provider", choicesProvider.getSelected().getKey());
-		dataset.put("providers", choicesProvider);
+		dataset = super.unbind(object, "code", "goals", "budget", "customerName", "providerName", "instantiationMoment", "draftMode");
 		dataset.put("project", choicesProject.getSelected().getKey());
 		dataset.put("projects", choicesProject);
 
@@ -94,6 +87,14 @@ public class ClientContractShowService extends AbstractService<Client, Contract>
 
 		Money eb = this.exchangeRepo.exchangeMoney(object.getBudget());
 		dataset.put("exchangedBudget", eb);
+
+		int projectId = object.getProject().getId();
+		Money projectCost = this.exchangeRepo.exchangeMoney(object.getProject().getCost());
+		double remainingCost = projectCost.getAmount() - this.repository.findPublishedContractsByProjectId(projectId).stream().map(c -> this.exchangeRepo.exchangeMoney(c.getBudget()).getAmount()).reduce(0.0, Double::sum);
+		Money rCost = new Money();
+		rCost.setAmount(remainingCost);
+		rCost.setCurrency(projectCost.getCurrency());
+		dataset.put("remainingCost", rCost);
 
 		super.getResponse().addData(dataset);
 	}

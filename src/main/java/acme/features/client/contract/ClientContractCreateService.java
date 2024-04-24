@@ -24,7 +24,6 @@ import acme.client.views.SelectChoices;
 import acme.entities.contract.Contract;
 import acme.entities.project.Project;
 import acme.roles.Client;
-import acme.roles.Provider;
 import acme.utils.MoneyExchangeRepository;
 import spamDetector.SpamDetector;
 
@@ -66,9 +65,7 @@ public class ClientContractCreateService extends AbstractService<Client, Contrac
 	public void bind(final Contract object) {
 		assert object != null;
 
-		super.bind(object, "code", "goals", "budget", "project", "provider", "customerName");
-		if (object.getProvider() != null)
-			object.setProviderName(object.getProvider().getIdentity().getName());
+		super.bind(object, "code", "goals", "budget", "project", "provider", "customerName", "providerName");
 
 	}
 
@@ -77,21 +74,27 @@ public class ClientContractCreateService extends AbstractService<Client, Contrac
 		assert object != null;
 		String currencies;
 
+		if (!super.getBuffer().getErrors().hasErrors("code")) {
+			Contract existing;
+			existing = this.repository.findContractByCode(object.getCode());
+			super.state(existing == null, "code", "client.contract.form.error.duplicated-code");
+		}
+
 		if (!super.getBuffer().getErrors().hasErrors("budget")) {
 			currencies = this.repository.findAcceptedCurrencies();
 			super.state(currencies.contains(object.getBudget().getCurrency()), "budget", "client.contract.form.error.bugdet.invalid-currency");
+		}
+		if (!super.getBuffer().getErrors().hasErrors("budget"))
+			super.state(object.getBudget().getAmount() >= 0., "budget", "client.contract.form.error.bugdet.negative-budget");
+		if (!super.getBuffer().getErrors().hasErrors("budget"))
 			super.state(this.exchangeRepo.exchangeMoney(object.getBudget()).getAmount() <= this.exchangeRepo.exchangeMoney(object.getProject().getCost()).getAmount(), "budget", "client.contract.form.error.budget.budget-over-project-cost");
-		}
-
-		if (!super.getBuffer().getErrors().hasErrors("code")) {
-			boolean duplicatedCode = this.repository.findAllContracts().stream().anyMatch(c -> c.getCode().equals(object.getCode()));
-			super.state(!duplicatedCode, "code", "client.contract.form.error.duplicated-code");
-		}
 
 		if (!super.getBuffer().getErrors().hasErrors("code"))
 			super.state(!SpamDetector.checkTextValue(object.getCode()), "code", "client.contract.form.error.spam");
 		if (!super.getBuffer().getErrors().hasErrors("goals"))
 			super.state(!SpamDetector.checkTextValue(object.getGoals()), "goals", "client.contract.form.error.spam");
+		if (!super.getBuffer().getErrors().hasErrors("providerName"))
+			super.state(!SpamDetector.checkTextValue(object.getProviderName()), "providerName", "client.contract.form.error.spam");
 		if (!super.getBuffer().getErrors().hasErrors("customerName"))
 			super.state(!SpamDetector.checkTextValue(object.getCustomerName()), "customerName", "client.contract.form.error.spam");
 	}
@@ -109,20 +112,14 @@ public class ClientContractCreateService extends AbstractService<Client, Contrac
 
 		Dataset dataset;
 		SelectChoices choicesProject;
-		SelectChoices choicesProvider;
 
-		Collection<Provider> providers;
 		Collection<Project> projects;
 
-		providers = this.repository.findAllProviders();
 		projects = this.repository.findPublishedProjects();
 
-		choicesProvider = SelectChoices.from(providers, "userAccount.identity.name", object.getProvider());
 		choicesProject = SelectChoices.from(projects, "title", object.getProject());
 
-		dataset = super.unbind(object, "code", "goals", "budget", "customerName", "instantiationMoment", "draftMode");
-		dataset.put("provider", choicesProvider.getSelected().getKey());
-		dataset.put("providers", choicesProvider);
+		dataset = super.unbind(object, "code", "goals", "budget", "providerName", "customerName", "instantiationMoment", "draftMode");
 		dataset.put("project", choicesProject.getSelected().getKey());
 		dataset.put("projects", choicesProject);
 		dataset.put("readOnlyCode", false);

@@ -42,9 +42,7 @@ public class ClientProgressLogCreateService extends AbstractService<Client, Prog
 
 		contractId = super.getRequest().getData("contractId", int.class);
 		contract = this.repository.findContractById(contractId);
-		status = contract != null && //
-			contract.isDraftMode() && //
-			super.getRequest().getPrincipal().hasRole(contract.getClient());
+		status = contract != null && super.getRequest().getPrincipal().hasRole(contract.getClient());
 
 		super.getResponse().setAuthorised(status);
 	}
@@ -78,8 +76,9 @@ public class ClientProgressLogCreateService extends AbstractService<Client, Prog
 		assert object != null;
 
 		if (!super.getBuffer().getErrors().hasErrors("recordId")) {
-			boolean duplicatedCode = this.repository.findAllProgressLogs().stream().anyMatch(pl -> pl.getRecordId().equals(object.getRecordId()));
-			super.state(!duplicatedCode, "recordId", "client.progress-log.form.error.duplicated-record-id");
+			ProgressLog existing;
+			existing = this.repository.findProgressLogByRecordId(object.getRecordId());
+			super.state(existing == null, "recordId", "client.progress-log.form.error.duplicated-record-id");
 		}
 
 		if (!super.getBuffer().getErrors().hasErrors("recordId"))
