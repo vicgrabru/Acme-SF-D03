@@ -39,4 +39,7 @@ public interface SponsorSponsorshipRepository extends AbstractRepository {
 	@Query("select i from Invoice i where i.sponsorship.id = :sponsorshipId")
 	public Collection<Invoice> findManyInvoicesBySponsorshipId(int sponsorshipId);
 
+	@Query("select sc.acceptedCurrencies from SystemConfiguration sc")
+	String findAcceptedCurrencies();
+
 }

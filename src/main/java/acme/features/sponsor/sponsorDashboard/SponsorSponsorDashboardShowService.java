@@ -1,7 +1,7 @@
 
 package acme.features.sponsor.sponsorDashboard;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +12,8 @@ import acme.client.services.AbstractService;
 import acme.entities.configuration.SystemConfiguration;
 import acme.forms.SponsorDashboard;
 import acme.roles.Sponsor;
+import acme.utils.MoneyExchangeRepository;
+import acme.utils.MoneyUtils;
 
 @Service
 public class SponsorSponsorDashboardShowService extends AbstractService<Sponsor, SponsorDashboard> {
@@ -19,7 +21,10 @@ public class SponsorSponsorDashboardShowService extends AbstractService<Sponsor,
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private SponsorSponsorDashboardRepository repository;
+	private SponsorSponsorDashboardRepository	repository;
+
+	@Autowired
+	private MoneyExchangeRepository				exchangeRepo;
 
 	// AbstractService interface ----------------------------------------------
 
@@ -49,62 +54,50 @@ public class SponsorSponsorDashboardShowService extends AbstractService<Sponsor,
 		Money minQuantityOfInvoices;
 		Money maxQuantityOfInvoices;
 
-		List<Money> amountOfSponsorships;
-		List<Money> quantityOfInvoices;
 		SystemConfiguration systemConfiguration;
-		Double sumOfSquaresOfDifferencesSponsorships = 0.;
-		Double averageSponsorships = 0.;
-		Double sumOfSquaresOfDifferencesInvoices = 0.;
-		Double averageInvoices = 0.;
+		Collection<Money> amountOfSponsorships;
+		Collection<Money> quantityOfInvoices;
 
 		sponsorId = super.getRequest().getPrincipal().getActiveRoleId();
 
-		totalNumberOfInvoicesWithLessOrEqualThan21 = this.repository.findAllInvoicesWithTaxLessOrEqualThan21BySponsorId(sponsorId).size();
+		totalNumberOfInvoicesWithLessOrEqualThan21 = this.repository.totalNumberOfInvoicesWithLessOrEqualThan21(sponsorId);
 
-		totalNumberOfSponsorshipsWithLink = this.repository.findAllSponsorshipsWithLinkBySponsorId(sponsorId).size();
+		totalNumberOfSponsorshipsWithLink = this.repository.totalNumberOfSponsorshipsWithLink(sponsorId);
 
-		amountOfSponsorships = this.repository.findAllSponsorshipsAmountsBySponsorId(sponsorId);
 		systemConfiguration = this.repository.getSystemConfiguration();
 
-		avgAmountOfSponsorships = new Money();
-		averageSponsorships = amountOfSponsorships.stream().mapToDouble(a -> a.getAmount()).average().orElse(0.0);
-		avgAmountOfSponsorships.setAmount(averageSponsorships);
-		avgAmountOfSponsorships.setCurrency(systemConfiguration.getSystemCurrency());
+		amountOfSponsorships = this.repository.findSponsorshipsAmountBySponsorId(sponsorId).stream().map(a -> this.exchangeRepo.exchangeMoney(a)).toList();
+		quantityOfInvoices = this.repository.findInvoicesQuantityBySponsorId(sponsorId).stream().map(q -> this.exchangeRepo.exchangeMoney(q)).toList();
 
-		sumOfSquaresOfDifferencesSponsorships = amountOfSponsorships.stream().mapToDouble(a -> a.getAmount()).map(a -> a - amountOfSponsorships.stream().mapToDouble(a2 -> a2.getAmount()).average().orElse(0.0)).map(a -> a * a).sum();
+		if (!amountOfSponsorships.isEmpty()) {
+			avgAmountOfSponsorships = MoneyUtils.getAvg(amountOfSponsorships, systemConfiguration.getSystemCurrency());
+			devAmountOfSponsorships = MoneyUtils.getStd(amountOfSponsorships, systemConfiguration.getSystemCurrency());
+			minAmountOfSponsorships = MoneyUtils.getMin(amountOfSponsorships, systemConfiguration.getSystemCurrency());
+			maxAmountOfSponsorships = MoneyUtils.getMax(amountOfSponsorships, systemConfiguration.getSystemCurrency());
+		} else {
+			Money result = new Money();
+			result.setAmount(0.0);
+			result.setCurrency(systemConfiguration.getSystemCurrency());
+			avgAmountOfSponsorships = result;
+			devAmountOfSponsorships = result;
+			minAmountOfSponsorships = result;
+			maxAmountOfSponsorships = result;
+		}
 
-		devAmountOfSponsorships = new Money();
-		devAmountOfSponsorships.setAmount(Math.sqrt(sumOfSquaresOfDifferencesSponsorships / (amountOfSponsorships.size() - 1)));
-		devAmountOfSponsorships.setCurrency(systemConfiguration.getSystemCurrency());
-
-		minAmountOfSponsorships = new Money();
-		minAmountOfSponsorships.setAmount(amountOfSponsorships.stream().mapToDouble(a -> a.getAmount()).min().orElse(0.0));
-		minAmountOfSponsorships.setCurrency(systemConfiguration.getSystemCurrency());
-
-		maxAmountOfSponsorships = new Money();
-		maxAmountOfSponsorships.setAmount(amountOfSponsorships.stream().mapToDouble(a -> a.getAmount()).max().orElse(0.0));
-		maxAmountOfSponsorships.setCurrency(systemConfiguration.getSystemCurrency());
-
-		quantityOfInvoices = this.repository.findAllInvoicesQuantitiesBySponsorId(sponsorId);
-
-		avgQuantityOfInvoices = new Money();
-		averageInvoices = quantityOfInvoices.stream().mapToDouble(q -> q.getAmount()).average().orElse(0.0);
-		avgQuantityOfInvoices.setAmount(averageInvoices);
-		avgQuantityOfInvoices.setCurrency(systemConfiguration.getSystemCurrency());
-
-		sumOfSquaresOfDifferencesInvoices = quantityOfInvoices.stream().mapToDouble(q -> q.getAmount()).map(q -> q - quantityOfInvoices.stream().mapToDouble(q2 -> q2.getAmount()).average().orElse(0.0)).map(q -> q * q).sum();
-
-		devQuantityOfInvoices = new Money();
-		devQuantityOfInvoices.setAmount(Math.sqrt(sumOfSquaresOfDifferencesInvoices / (quantityOfInvoices.size() - 1)));
-		devQuantityOfInvoices.setCurrency(systemConfiguration.getSystemCurrency());
-
-		minQuantityOfInvoices = new Money();
-		minQuantityOfInvoices.setAmount(quantityOfInvoices.stream().mapToDouble(q -> q.getAmount()).min().orElse(0.0));
-		minQuantityOfInvoices.setCurrency(systemConfiguration.getSystemCurrency());
-
-		maxQuantityOfInvoices = new Money();
-		maxQuantityOfInvoices.setAmount(quantityOfInvoices.stream().mapToDouble(q -> q.getAmount()).max().orElse(0.0));
-		maxQuantityOfInvoices.setCurrency(systemConfiguration.getSystemCurrency());
+		if (!quantityOfInvoices.isEmpty()) {
+			avgQuantityOfInvoices = MoneyUtils.getAvg(quantityOfInvoices, systemConfiguration.getSystemCurrency());
+			devQuantityOfInvoices = MoneyUtils.getStd(quantityOfInvoices, systemConfiguration.getSystemCurrency());
+			minQuantityOfInvoices = MoneyUtils.getMin(quantityOfInvoices, systemConfiguration.getSystemCurrency());
+			maxQuantityOfInvoices = MoneyUtils.getMax(quantityOfInvoices, systemConfiguration.getSystemCurrency());
+		} else {
+			Money result = new Money();
+			result.setAmount(0.0);
+			result.setCurrency(systemConfiguration.getSystemCurrency());
+			avgQuantityOfInvoices = result;
+			devQuantityOfInvoices = result;
+			minQuantityOfInvoices = result;
+			maxQuantityOfInvoices = result;
+		}
 
 		dashboard = new SponsorDashboard();
 

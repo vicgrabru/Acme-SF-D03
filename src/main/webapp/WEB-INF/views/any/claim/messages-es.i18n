@@ -34,3 +34,4 @@ any.claim.list.button.create = Publicar nueva reclamación
 
 any.claim.form.error.duplicated = Código duplicado
 any.claim.form.error.not-confirmed = No confirmado
+any.claim.form.error.spam = Spam encontrado

@@ -34,4 +34,4 @@ any.claim.list.button.create = Publish new claim
 
 any.claim.form.error.duplicated  = Code duplicated
 any.claim.form.error.not-confirmed = Not confirmed
-
+any.claim.form.error.spam  = Spam found
