@@ -13,7 +13,6 @@ manager.project.list.title = Lista de proyectos
 
 manager.project.list.label.code = Código
 manager.project.list.label.title = Título
-manager.project.list.label.abstract = Abstracto
 manager.project.list.label.draft-mode = Borrador
 
 manager.project.form.label.code = Código
@@ -21,6 +20,7 @@ manager.project.form.label.title = Título
 manager.project.form.label.abstract-field = Abstracto
 manager.project.form.label.has-fatal-errors = Tiene errores graves
 manager.project.form.label.cost = Coste
+manager.project.form.label.exchanged-cost = Coste (Cambiado a la divisa del sistema)
 manager.project.form.label.optional-link = Enlace opcional
 manager.project.form.label.draft-mode = Borrador
 

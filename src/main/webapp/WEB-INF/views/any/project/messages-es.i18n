@@ -13,7 +13,6 @@ any.project.list.title = Lista de proyectos publicados
 
 any.project.list.label.code = Código
 any.project.list.label.title = Título
-any.project.list.label.abstract = Abstracto
 any.project.list.label.manager-username = Manager
 
 any.project.form.label.code = Código
@@ -21,6 +20,7 @@ any.project.form.label.title = Título
 any.project.form.label.abstract-field = Abstracto
 any.project.form.label.has-fatal-errors = Tiene errores graves
 any.project.form.label.cost = Coste
+any.project.form.label.exchanged-cost = Coste (Cambiado a la divisa del sistema)
 any.project.form.label.optional-link = Enlace opcional
 any.project.form.label.draft-mode = Borrador
 any.project.form.label.manager-username = Nombre de usuario del manager

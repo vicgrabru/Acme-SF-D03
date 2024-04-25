@@ -13,7 +13,6 @@ manager.project.list.title = Listing of projects
 
 manager.project.list.label.code = Code
 manager.project.list.label.title = Title
-manager.project.list.label.abstract = Abstract
 manager.project.list.label.draft-mode = Draft Mode?
 
 manager.project.form.label.code = Code
@@ -21,6 +20,7 @@ manager.project.form.label.title = Title
 manager.project.form.label.abstract-field = Abstract
 manager.project.form.label.has-fatal-errors = Has any fatal errors?
 manager.project.form.label.cost = Cost
+manager.project.form.label.exchanged-cost = Cost (Exchanged to System currency)
 manager.project.form.label.optional-link = Optional Link
 manager.project.form.label.draft-mode = Draft Mode?
 
