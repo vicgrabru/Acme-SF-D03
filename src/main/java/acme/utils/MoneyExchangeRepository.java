@@ -12,6 +12,8 @@
 
 package acme.utils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 
 import org.springframework.data.jpa.repository.Query;
@@ -70,7 +72,8 @@ public interface MoneyExchangeRepository extends AbstractRepository {
 				rate = er.getRate();
 
 			result = new Money();
-			result.setAmount(rate * money.getAmount());
+			double amount = BigDecimal.valueOf(rate * money.getAmount()).setScale(2, RoundingMode.FLOOR).doubleValue();
+			result.setAmount(amount);
 			result.setCurrency(sc);
 		}
 		return result;

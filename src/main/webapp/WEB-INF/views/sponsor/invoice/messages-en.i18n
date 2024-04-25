@@ -15,6 +15,7 @@ sponsor.invoice.form.label.code = Code
 sponsor.invoice.form.label.registrationTime = Registration Time
 sponsor.invoice.form.label.dueDate = Due Date
 sponsor.invoice.form.label.quantity = Quantity
+sponsor.invoice.form.label.exchanged-quantity = Quantity (System Currency)
 sponsor.invoice.form.label.tax = Tax
 sponsor.invoice.form.label.link = Link
 sponsor.invoice.form.label.sponsorship = Sponsorship
@@ -35,3 +36,5 @@ sponsor.invoice.form.button.create = Create
 
 sponsor.invoice.form.error.duplicated = Code Duplicated
 sponsor.invoice.form.error.atLeast1MonthLong = Due Date must be at least 1 month after
+
+

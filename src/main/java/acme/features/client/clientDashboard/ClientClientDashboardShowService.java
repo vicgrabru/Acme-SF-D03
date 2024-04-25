@@ -23,6 +23,7 @@ import acme.client.services.AbstractService;
 import acme.entities.configuration.SystemConfiguration;
 import acme.forms.ClientDashboard;
 import acme.roles.Client;
+import acme.utils.MoneyExchangeRepository;
 import acme.utils.MoneyUtils;
 
 @Service
@@ -31,7 +32,10 @@ public class ClientClientDashboardShowService extends AbstractService<Client, Cl
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private ClientClientDashboardRepository repository;
+	private ClientClientDashboardRepository	repository;
+
+	@Autowired
+	private MoneyExchangeRepository			exchangeRepo;
 
 	// AbstractService interface ----------------------------------------------
 
@@ -67,7 +71,7 @@ public class ClientClientDashboardShowService extends AbstractService<Client, Cl
 		between50and75CompletenessProgressLogs = this.repository.between50and75CompletenessProgressLogsByClientId(clientId);
 		above75CompletenessProgressLogs = this.repository.above75CompletenessProgressLogsByClientId(clientId);
 
-		budgetOfContracts = this.repository.getBudgetOfContractsByClientId(clientId);
+		budgetOfContracts = this.repository.getBudgetOfContractsByClientId(clientId).stream().map(b -> this.exchangeRepo.exchangeMoney(b)).toList();
 		systemConfiguration = this.repository.getSystemConfiguration();
 
 		if (!budgetOfContracts.isEmpty()) {
