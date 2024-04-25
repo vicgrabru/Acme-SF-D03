@@ -94,25 +94,15 @@ public class ManagerUserStoryUpdateService extends AbstractService<Manager, User
 	public void perform(final UserStory object) {
 		assert object != null;
 
-		Collection<UserStoryAssign> relationships;
-
 		this.repository.save(object);
-
-		relationships = this.repository.findManyUserStoryAssignsByUserStoryId(object.getId());
-
-		for (UserStoryAssign rel : relationships) {
-			rel.setUserStory(object);
-			this.repository.save(rel);
-		}
-
 	}
 
 	@Override
 	public void unbind(final UserStory object) {
 		assert object != null;
 
-		Collection<Project> draftModeProjects;
 		Collection<Project> draftModeProjectsAssigned;
+		Collection<Project> draftModeProjectsUnassigned;
 		SelectChoices choices;
 		Dataset dataset;
 
@@ -128,13 +118,10 @@ public class ManagerUserStoryUpdateService extends AbstractService<Manager, User
 		dataset.put("priorities", choices);
 
 		draftModeProjectsAssigned = this.repository.findManyDraftModeProjectsWithUserStoryAssignedByUserStoryId(userStoryId);
-		draftModeProjects = this.repository.findManyDraftModeProjectsByManagerId(managerId);
+		draftModeProjectsUnassigned = this.repository.findManyDraftModeProjectsWithoutUserStoryByManagerIdAndUserStoryId(managerId, userStoryId);
 
-		if (!draftModeProjectsAssigned.isEmpty())
-			draftModeProjects.removeIf(draftModeProjectsAssigned::contains);
-
-		dataset.put("showAssignButton", draftModeProjects.size() > 0);
-		dataset.put("showUnassignButton", draftModeProjectsAssigned.size() > 0);
+		dataset.put("showAssignButton", !draftModeProjectsUnassigned.isEmpty());
+		dataset.put("showUnassignButton", !draftModeProjectsAssigned.isEmpty());
 
 		super.getResponse().addData(dataset);
 	}
