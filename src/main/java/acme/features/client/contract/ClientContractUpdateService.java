@@ -121,11 +121,19 @@ public class ClientContractUpdateService extends AbstractService<Client, Contrac
 		dataset.put("contractId", object.getId());
 		dataset.put("readOnlyCode", true);
 
-		if (super.getBuffer().getErrors().getFirstError("budget").equals("The budget amount can't be higher than the project cost")
+		if (!super.getBuffer().getErrors().hasErrors("budget") || super.getBuffer().getErrors().getFirstError("budget").equals("The budget amount can't be higher than the project cost")
 			|| super.getBuffer().getErrors().getFirstError("budget").equals("La cantidad de presupuesto no puede ser superior al coste del proyecto")) {
 			Money eb = this.exchangeRepo.exchangeMoney(object.getBudget());
 			dataset.put("exchangedBudget", eb);
 		}
+
+		int projectId = object.getProject().getId();
+		Money projectCost = this.exchangeRepo.exchangeMoney(object.getProject().getCost());
+		Double remainingCost = projectCost.getAmount() - this.repository.findPublishedContractsByProjectId(projectId).stream().map(c -> this.exchangeRepo.exchangeMoney(c.getBudget()).getAmount()).reduce(0.0, Double::sum);
+		Money rCost = new Money();
+		rCost.setAmount(remainingCost);
+		rCost.setCurrency(projectCost.getCurrency());
+		dataset.put("remainingCost", rCost);
 
 		super.getResponse().addData(dataset);
 	}

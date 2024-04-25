@@ -14,5 +14,5 @@ contract-12,A-012,2002/04/14 08:00,Laurel,Customer example,Test minimum budget,E
 contract-13,A-013,2002/04/14 08:00,Laurel,Customer example,Test maximum budget,EUR 30.00,false,project-02,client-01
 contract-14,A-014,2002/04/14 08:00,Laurel,Customer example,Test different money budget,USD 1.00,false,project-01,client-01
 contract-15,A-015,2002/04/14 08:00,Laurel,Customer example,Test true draft mode,EUR 1.00,true,project-01,client-01
-contract-16,A-016,2002/04/14 08:00,Laurel,Customer example,Test different project,EUR 1.00,false,project-02,client-01
+contract-16,A-016,2002/04/14 08:00,Laurel,Customer example,Test different project,EUR 1.00,false,project-03,client-01
 contract-17,AAA-001,2002/04/14 08:00,Laurel,Customer example,Test extense code,EUR 1.00,false,project-01,client-01
