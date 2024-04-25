@@ -78,7 +78,7 @@ public class ClientContractShowService extends AbstractService<Client, Contract>
 		choicesProject = SelectChoices.from(projects, "title", object.getProject());
 
 		dataset = super.unbind(object, "code", "goals", "budget", "customerName", "providerName", "instantiationMoment", "draftMode");
-		dataset.put("project", choicesProject.getSelected().getKey());
+		dataset.put("project", choicesProject.getSelected());
 		dataset.put("projects", choicesProject);
 
 		dataset.put("projectId", object.getProject().getId());
