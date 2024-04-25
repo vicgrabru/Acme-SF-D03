@@ -18,6 +18,9 @@ master.menu.sign-out = Salir
 # master.menu.any #######################################################
 master.menu.any = Cualquiera
 master.menu.any.claim-list = Lista de reclamaciones
+master.menu.any.project-list = Lista de proyectos publicados
+master.menu.any.contract-list = Lista de contratos publicados
+master.menu.any.sponsorship-list = Lista de patrocinios
 
 # master.menu.anonymous #######################################################
 
@@ -28,21 +31,11 @@ master.menu.anonymous.favourite-link-frarosram = 78234988M: Rosso Ramírez, Fran
 master.menu.anonymous.favourite-link-jorgomde = 54184356J: Gómez de Tovar, Jorge
 master.menu.anonymous.favourite-link-albescsan1= 77844410J: Escobar Sánchez, Alberto
 
-# master.menu.any #############################################################
-
-master.menu.any = Cualquiera
-master.menu.any.project-list = Lista de proyectos publicados
-master.menu.any.contract-list = Lista de contratos publicados
-
 # master.menu.authenticated ###################################################
 
 master.menu.authenticated = Autenticado
 master.menu.authenticated.risk = Lista de riesgos
 master.menu.authenticated.notice = Lista de avisos
-
-# master.menu.any #############################################################
-master.menu.any = Cualquiera
-master.menu.any.sponsorship-list = Lista de patrocinios
 
 # master.menu.administrator ###################################################
 
@@ -83,6 +76,11 @@ master.menu.consumer.favourite-link = Enlace favorito
 master.menu.client = Cliente
 master.menu.client.contract =  Lista de contratos
 master.menu.client.client-dashboard = Panel de indicadores de Cliente
+
+# master.menu.auditor #########################################################
+
+master.menu.auditor = Auditor
+master.menu.auditor.code-audit = Auditorías de código
 
 # master.menu.user-account ####################################################
 

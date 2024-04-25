@@ -16,9 +16,11 @@ master.menu.sign-in = Sign in
 master.menu.sign-out = Sign out
 
 # master.menu.any #######################################################
-master.menu.any  = Any
+master.menu.any = Any
 master.menu.any.claim-list = Claims list
-
+master.menu.any.project-list = List of published projects
+master.menu.any.contract-list = List of published contracts
+master.menu.any.sponsorship-list = Sponsorship List
 
 # master.menu.anonymous #######################################################
 
@@ -29,21 +31,11 @@ master.menu.anonymous.favourite-link-frarosram = 78234988M: Rosso Ramírez, Fran
 master.menu.anonymous.favourite-link-jorgomde = 54184356J: Gómez de Tovar, Jorge
 master.menu.anonymous.favourite-link-albescsan1= 77844410J: Escobar Sánchez, Alberto
 
-# master.menu.any #############################################################
-
-master.menu.any = Any
-master.menu.any.project-list = List of published projects
-master.menu.any.contract-list = List of published contracts
-
 # master.menu.authenticated ###################################################
 
 master.menu.authenticated = Authenticated
 master.menu.authenticated.risk = Risk list
 master.menu.authenticated.notice = Notice list
-
-# master.menu.any #############################################################
-master.menu.any = Any
-master.menu.any.sponsorship-list = Sponsorship List
 
 # master.menu.administrator ###################################################
 
@@ -55,7 +47,6 @@ master.menu.administrator.user-accounts = User accounts
 master.menu.administrator.populate-initial = Populate DB (initial)
 master.menu.administrator.populate-sample = Populate DB (samples)
 master.menu.administrator.shut-down = Shut down
-
 
 # master.menu.sponsor ########################################################
 
@@ -85,6 +76,11 @@ master.menu.consumer.favourite-link = Favourite link
 master.menu.client = Client
 master.menu.client.client-dashboard = Client Dashboard
 master.menu.client.contract = Contract list
+
+# master.menu.auditor #########################################################
+
+master.menu.auditor = Auditor
+master.menu.auditor.code-audit = Code audits
 
 # master.menu.user-account ####################################################
 
