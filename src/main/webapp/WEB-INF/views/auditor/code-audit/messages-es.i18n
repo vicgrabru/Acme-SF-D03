@@ -19,12 +19,13 @@ auditor.code-audit.form.label.mark = Nota
 auditor.code-audit.form.label.link = Más información (opcional)
 auditor.code-audit.form.label.project = Proyecto
 auditor.code-audit.form.label.draft-mode = Modo borrador
-auditor.code-audit.form.label.project = Proyecto
+
 auditor.code-audit.form.button.project = Proyecto
 auditor.code-audit.form.button.create = Crear
 auditor.code-audit.form.button.update = Actualizar
 auditor.code-audit.form.button.delete = Eliminar
 auditor.code-audit.form.button.publish = Publicar
+auditor.code-audit.form.button.audit-record = Registros de auditoría
 
 auditor.code-audit.list.label.code = Código
 auditor.code-audit.list.label.type = Tipo
@@ -33,3 +34,4 @@ auditor.code-audit.list.label.draft-mode = Modo borrador
 auditor.code-audit.list.button.create = Crear
 
 auditor.code-audit.form.error.minimum-mark-not-reached = Para que una auditoría de códito sea publicada, la nota debe ser, al menos, "C"
+auditor.code-audit.form.error.duplicated-code = Código duplicado
