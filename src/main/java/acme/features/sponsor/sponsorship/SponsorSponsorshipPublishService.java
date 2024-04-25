@@ -75,6 +75,8 @@ public class SponsorSponsorshipPublishService extends AbstractService<Sponsor, S
 
 	@Override
 	public void validate(final Sponsorship object) {
+		Collection<Invoice> invoices;
+		invoices = this.repository.findManyInvoicesBySponsorshipId(object.getId());
 
 		if (!super.getBuffer().getErrors().hasErrors("startDuration"))
 			super.state(MomentHelper.isAfter(object.getStartDuration(), object.getMoment()), "startDuration", "sponsor.sponsorship.form.error.durationAfter");
@@ -83,11 +85,11 @@ public class SponsorSponsorshipPublishService extends AbstractService<Sponsor, S
 			super.state(MomentHelper.isLongEnough(object.getStartDuration(), object.getEndDuration(), 1, ChronoUnit.MONTHS), "endDuration", "sponsor.sponsorship.form.error.atLeast1MonthLong");
 
 		if (!super.getBuffer().getErrors().hasErrors("amount")) {
-			Collection<Invoice> invoices;
-			invoices = this.repository.findManyInvoicesBySponsorshipId(object.getId());
 			Double totalAmount = invoices.stream().mapToDouble(i -> i.totalAmount().getAmount()).sum();
 			super.state(object.getAmount().getAmount().equals(totalAmount), "amount", "sponsor.sponsorship.form.error.notEqualAmount");
 		}
+		if (!super.getBuffer().getErrors().hasErrors("draftMode"))
+			super.state(invoices.stream().allMatch(i -> !i.isDraftMode()), "draftMode", "sponsor.sponsorship.form.error.AllInvoicesMustBePublished");
 
 	}
 
