@@ -82,15 +82,8 @@ public class ClientProgressLogListService extends AbstractService<Client, Progre
 		assert objects != null;
 
 		int contractId;
-		Contract contract;
-		boolean showCreate;
-
 		contractId = super.getRequest().getData("contractId", int.class);
-		contract = this.repository.findContractById(contractId);
-		showCreate = contract.isDraftMode();
 
 		super.getResponse().addGlobal("contractId", contractId);
-		super.getResponse().addGlobal("showCreate", showCreate);
 	}
-
 }

@@ -38,7 +38,11 @@ public class AuthenticatedClientCreateService extends AbstractService<Authentica
 
 	@Override
 	public void authorise() {
-		super.getResponse().setAuthorised(true);
+		boolean status;
+
+		status = !super.getRequest().getPrincipal().hasRole(Client.class);
+
+		super.getResponse().setAuthorised(status);
 	}
 
 	@Override
@@ -70,9 +74,11 @@ public class AuthenticatedClientCreateService extends AbstractService<Authentica
 		assert object != null;
 
 		if (!super.getBuffer().getErrors().hasErrors("identification")) {
-			boolean duplicatedCode = this.repository.findAllClients().stream().anyMatch(c -> c.getIdentification().equals(object.getIdentification()));
-			super.state(!duplicatedCode, "identification", "authenticated.client.form.error.duplicated-identification");
+			Client existing;
+			existing = this.repository.findClientByIdentification(object.getIdentification());
+			super.state(existing == null, "identification", "authenticated.client.form.error.duplicated-identification");
 		}
+
 	}
 
 	@Override
