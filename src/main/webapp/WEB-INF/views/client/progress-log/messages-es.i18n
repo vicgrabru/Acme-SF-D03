@@ -18,6 +18,7 @@ client.progress-log.list.label.draft-mode = Modo borrador
 
 client.progress-log.form.label.record-id = Id de registro
 client.progress-log.form.label.completeness = % de completitud
+client.progress-log.form.completeness-interval = 0,01-100,0
 client.progress-log.form.label.comment = Comentario
 client.progress-log.form.label.registration-moment = Momento de registro
 client.progress-log.form.label.responsible-person = Persona responsable
