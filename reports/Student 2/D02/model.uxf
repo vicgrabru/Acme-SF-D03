@@ -76,7 +76,7 @@ style=wordwrap</panel_attributes>
 ProgressLog
 --
 +recordId: String {Unique, NotBlank, Pattern(regexp = PG-[A-Z]{1,2}-[0-9]{4})}
-+completeness: double {Positive, Max(100), Digits(3,2)}
++completeness: Double {Positive, Max(100), Digits(3,2)}
 +comment: String {NotBlank, Length(max=100)}
 +registrationMoment: Date {Past, TemporalType(TIMESTAMP)}
 +responsiblePerson: String {NotBlank, Length(max=75)}
