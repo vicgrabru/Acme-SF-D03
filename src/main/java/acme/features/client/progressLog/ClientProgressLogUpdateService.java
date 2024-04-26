@@ -72,7 +72,7 @@ public class ClientProgressLogUpdateService extends AbstractService<Client, Prog
 		if (!super.getBuffer().getErrors().hasErrors("comment"))
 			super.state(!SpamDetector.checkTextValue(object.getComment()), "comment", "client.progress-log.form.error.spam");
 		if (!super.getBuffer().getErrors().hasErrors("responsiblePerson"))
-			super.state(!SpamDetector.checkTextValue(object.getComment()), "responsiblePerson", "client.progress-log.form.error.spam");
+			super.state(!SpamDetector.checkTextValue(object.getResponsiblePerson()), "responsiblePerson", "client.progress-log.form.error.spam");
 	}
 
 	@Override

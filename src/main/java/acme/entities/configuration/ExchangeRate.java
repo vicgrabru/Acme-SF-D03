@@ -32,6 +32,7 @@ public class ExchangeRate extends AbstractEntity {
 	@Pattern(regexp = "[A-Z]{3}")
 	private String				target;
 
+	@NotNull
 	@Positive
 	private double				rate;
 
