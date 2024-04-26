@@ -42,7 +42,7 @@ public class ProgressLog extends AbstractEntity {
 	@Positive
 	@Digits(integer = 3, fraction = 2)
 	@Max(100)
-	private double				completeness;
+	private Double				completeness;
 
 	@NotBlank
 	@Length(max = 100)
@@ -56,6 +56,8 @@ public class ProgressLog extends AbstractEntity {
 	@NotBlank
 	@Length(max = 75)
 	private String				responsiblePerson;
+
+	private boolean				draftMode;
 
 	// Relationships ----------------------------------------------------------
 

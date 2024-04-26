@@ -10,7 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TrainingDashboard extends AbstractForm {
+public class DeveloperDashboard extends AbstractForm {
 
 	// Serialisation identifier -----------------------------------------------
 
@@ -22,7 +22,7 @@ public class TrainingDashboard extends AbstractForm {
 	private Map<String, Integer>	numberOfTrainingSessionPerLink;
 
 	private Double					averageTrainingModuleTime;
-	private Double					deviationrainingModuleTime;
-	private Double					minimumTrainingModuleTime;
+	private Double					deviationTrainingModuleTime;
 	private Double					maximumTrainingModuleTime;
+	private Double					minimumTrainingModuleTime;
 }

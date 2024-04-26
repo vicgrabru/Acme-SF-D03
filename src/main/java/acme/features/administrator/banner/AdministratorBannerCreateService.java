@@ -23,6 +23,7 @@ import acme.client.data.models.Dataset;
 import acme.client.helpers.MomentHelper;
 import acme.client.services.AbstractService;
 import acme.entities.banner.Banner;
+import spamDetector.SpamDetector;
 
 @Service
 public class AdministratorBannerCreateService extends AbstractService<Administrator, Banner> {
@@ -57,7 +58,7 @@ public class AdministratorBannerCreateService extends AbstractService<Administra
 	public void bind(final Banner object) {
 		assert object != null;
 
-		super.bind(object, "instantiationMoment", "periodStart", "periodEnd", "pictureLink", "slogan", "webDocumentLink");
+		super.bind(object, "periodStart", "periodEnd", "pictureLink", "slogan", "webDocumentLink");
 	}
 
 	@Override
@@ -69,9 +70,12 @@ public class AdministratorBannerCreateService extends AbstractService<Administra
 			if (!super.getBuffer().getErrors().hasErrors("periodEnd")) {
 				Date targetDate;
 				targetDate = MomentHelper.deltaFromMoment(object.getPeriodStart(), 1, ChronoUnit.WEEKS);
-				super.state(object.getPeriodEnd().after(targetDate), "periodEnd", "administrator.banner.form.error.period-too-short");
+				super.state(object.getPeriodEnd().compareTo(targetDate) >= 0, "periodEnd", "administrator.banner.form.error.period-too-short");
 			}
 		}
+
+		if (!super.getBuffer().getErrors().hasErrors("slogan"))
+			super.state(!SpamDetector.checkTextValue(object.getSlogan()), "slogan", "administrator.banner.form.error.spam-in-slogan");
 	}
 
 	@Override

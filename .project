@@ -40,6 +40,16 @@
 			<type>2</type>
 			<locationURI>WORKSPACE_LOC/Frameworks/Acme-Framework-24.1.0/target/classes</locationURI>
 		</link>
+		<link>
+			<name>main</name>
+			<type>2</type>
+			<locationURI>WORKSPACE_LOC/Projects/SpamDetector/src/main</locationURI>
+		</link>
+		<link>
+			<name>spamDetector</name>
+			<type>2</type>
+			<locationURI>WORKSPACE_LOC/SpamDetector/src/spamDetector</locationURI>
+		</link>
 	</linkedResources>
 	<filteredResources>
 		<filter>
