@@ -1,5 +1,5 @@
 
-package acme.entities.audit;
+package acme.entities.codeAudit;
 
 import java.util.Date;
 
@@ -14,18 +14,16 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
 
 import acme.client.data.AbstractEntity;
-import acme.entities.project.Project;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-public class Audit extends AbstractEntity {
+public class AuditRecord extends AbstractEntity {
 
 	// Serialisation identifier -----------------------------------------------
 
@@ -35,20 +33,18 @@ public class Audit extends AbstractEntity {
 
 	@NotBlank
 	@Column(unique = true)
-	@Pattern(regexp = "[A-Z]{1,3}-[0-9]{3}")
+	@Pattern(regexp = "AU-[0-9]{4}-[0-9]{3}")
 	private String				code;
 
-	@Temporal(TemporalType.TIMESTAMP)
+	@NotNull
 	@Past
-	@NotNull
-	private Date				executionDate;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date				periodStart;
 
 	@NotNull
-	private Type				type;
-
-	@NotBlank
-	@Length(max = 100)
-	private String				correctiveActions;
+	@Past
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date				periodEnd;
 
 	@NotNull
 	private Mark				mark;
@@ -63,6 +59,5 @@ public class Audit extends AbstractEntity {
 	@NotNull
 	@Valid
 	@ManyToOne(optional = false)
-	protected Project			project;
-
+	protected CodeAudit			codeAudit;
 }
