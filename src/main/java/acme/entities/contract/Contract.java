@@ -20,7 +20,6 @@ import acme.client.data.AbstractEntity;
 import acme.client.data.datatypes.Money;
 import acme.entities.project.Project;
 import acme.roles.Client;
-import acme.roles.Provider;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -74,10 +73,5 @@ public class Contract extends AbstractEntity {
 	@Valid
 	@ManyToOne(optional = false)
 	protected Client			client;
-
-	@NotNull
-	@Valid
-	@ManyToOne(optional = false)
-	protected Provider			provider;
 
 }

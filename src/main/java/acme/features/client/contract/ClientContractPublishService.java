@@ -12,18 +12,21 @@
 
 package acme.features.client.contract;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import acme.client.data.datatypes.Money;
 import acme.client.data.models.Dataset;
 import acme.client.services.AbstractService;
 import acme.client.views.SelectChoices;
 import acme.entities.contract.Contract;
 import acme.entities.project.Project;
 import acme.roles.Client;
-import acme.roles.Provider;
+import acme.utils.MoneyExchangeRepository;
 
 @Service
 public class ClientContractPublishService extends AbstractService<Client, Contract> {
@@ -31,7 +34,10 @@ public class ClientContractPublishService extends AbstractService<Client, Contra
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private ClientContractRepository repository;
+	private ClientContractRepository	repository;
+
+	@Autowired
+	private MoneyExchangeRepository		exchangeRepo;
 
 	// AbstractService interface ----------------------------------------------
 
@@ -69,15 +75,12 @@ public class ClientContractPublishService extends AbstractService<Client, Contra
 	public void validate(final Contract object) {
 		assert object != null;
 
-		int projectId;
-		Double totalBudget;
-
-		projectId = object.getProject().getId();
-
-		if (!super.getBuffer().getErrors().hasErrors("budget")) {
-			totalBudget = this.repository.findPublishedContractsByProjectId(projectId).stream().map(c -> c.getBudget().getAmount()).reduce(0.0, Double::sum) + object.getBudget().getAmount();
-			super.state(object.getProject().getCost().getAmount() >= totalBudget, "budget", "client.contract.form.error.project-cost-exceeded");
-		}
+		int projectId = object.getProject().getId();
+		Money projectCost = this.exchangeRepo.exchangeMoney(object.getProject().getCost());
+		double remainingCost = projectCost.getAmount() - this.repository.findPublishedContractsByProjectId(projectId).stream().map(c -> this.exchangeRepo.exchangeMoney(c.getBudget()).getAmount()).reduce(0.0, Double::sum);
+		remainingCost = BigDecimal.valueOf(remainingCost).setScale(2, RoundingMode.HALF_UP).doubleValue();
+		if (!super.getBuffer().getErrors().hasErrors("budget"))
+			super.state(remainingCost >= this.exchangeRepo.exchangeMoney(object.getBudget()).getAmount(), "budget", "client.contract.form.error.project-cost-exceeded");
 	}
 
 	@Override
@@ -94,26 +97,31 @@ public class ClientContractPublishService extends AbstractService<Client, Contra
 
 		Dataset dataset;
 		SelectChoices choicesProject;
-		SelectChoices choicesProvider;
 
-		Collection<Provider> providers;
 		Collection<Project> projects;
 
-		providers = this.repository.findAllProviders();
 		projects = this.repository.findPublishedProjects();
 
-		choicesProvider = SelectChoices.from(providers, "userAccount.identity.name", object.getProvider());
 		choicesProject = SelectChoices.from(projects, "title", object.getProject());
 
-		dataset = super.unbind(object, "code", "goals", "budget", "customerName", "instantiationMoment", "draftMode");
-		dataset.put("provider", choicesProvider.getSelected().getKey());
-		dataset.put("providers", choicesProvider);
-		dataset.put("project", choicesProject.getSelected().getKey());
+		dataset = super.unbind(object, "code", "goals", "budget", "customerName", "providerName", "instantiationMoment", "draftMode");
+		dataset.put("project", choicesProject.getSelected());
 		dataset.put("projects", choicesProject);
 
 		dataset.put("projectId", object.getProject().getId());
 		dataset.put("contractId", object.getId());
 		dataset.put("readOnlyCode", true);
+
+		Money eb = this.exchangeRepo.exchangeMoney(object.getBudget());
+		dataset.put("exchangedBudget", eb);
+
+		int projectId = object.getProject().getId();
+		Money projectCost = this.exchangeRepo.exchangeMoney(object.getProject().getCost());
+		Double remainingCost = projectCost.getAmount() - this.repository.findPublishedContractsByProjectId(projectId).stream().map(c -> this.exchangeRepo.exchangeMoney(c.getBudget()).getAmount()).reduce(0.0, Double::sum);
+		Money rCost = new Money();
+		rCost.setAmount(remainingCost);
+		rCost.setCurrency(projectCost.getCurrency());
+		dataset.put("remainingCost", rCost);
 
 		super.getResponse().addData(dataset);
 	}

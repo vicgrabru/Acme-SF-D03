@@ -17,7 +17,6 @@
 
 <acme:list>
 	<acme:list-column code="any.project.list.label.code" path="code" width="10%"/>
-	<acme:list-column code="any.project.list.label.title" path="title" width="20%"/>
-	<acme:list-column code="any.project.list.label.abstract" path="abstractField" width="60%"/>
-	<acme:list-column code="any.project.list.label.manager-username" path="managerUsername" width="10%"/>
+	<acme:list-column code="any.project.list.label.title" path="title" width="60%"/>
+	<acme:list-column code="any.project.list.label.manager-username" path="managerUsername" width="30%"/>
 </acme:list>

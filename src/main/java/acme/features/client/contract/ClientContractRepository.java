@@ -22,7 +22,6 @@ import acme.entities.contract.Contract;
 import acme.entities.contract.ProgressLog;
 import acme.entities.project.Project;
 import acme.roles.Client;
-import acme.roles.Provider;
 
 @Repository
 public interface ClientContractRepository extends AbstractRepository {
@@ -33,14 +32,11 @@ public interface ClientContractRepository extends AbstractRepository {
 	@Query("select c from Contract c where c.id = :id")
 	Contract findContractById(int id);
 
-	@Query("select c from Contract c")
-	Collection<Contract> findAllContracts();
+	@Query("select c from Contract c where c.code = :code")
+	Contract findContractByCode(String code);
 
 	@Query("select p from Project p where draftMode = false")
 	Collection<Project> findPublishedProjects();
-
-	@Query("select p from Provider p")
-	Collection<Provider> findAllProviders();
 
 	@Query("select pl from ProgressLog pl where pl.contract.id = :contractId")
 	Collection<ProgressLog> findProgressLogsByContractId(int contractId);

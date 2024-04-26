@@ -31,3 +31,7 @@ manager.user-story.form.button.publish = Publicar
 
 manager.user-story.form.button.assign = Asignar a un proyecto
 manager.user-story.form.button.unassign = Eliminar de un proyecto
+
+manager.user-story.form.error.spam-in-title = Hay spam en el título
+manager.user-story.form.error.spam-in-description = Hay spam en la descripción
+manager.user-story.form.error.spam-in-acceptance-criteria = Hay spam en los criterios de aceptación

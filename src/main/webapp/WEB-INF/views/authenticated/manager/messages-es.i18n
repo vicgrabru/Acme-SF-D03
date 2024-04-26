@@ -17,3 +17,7 @@ authenticated.manager.form.label.optional-link = Enlace opcional
 
 authenticated.manager.form.button.create = Registrar
 authenticated.manager.form.button.update = Actualizar
+
+authenticated.manager.form.error.spam-in-degree = Hay spam en el grado
+authenticated.manager.form.error.spam-in-overview = Hay spam en el resumen
+authenticated.manager.form.error.spam-in-certifications = Hay spam en las certificaciones

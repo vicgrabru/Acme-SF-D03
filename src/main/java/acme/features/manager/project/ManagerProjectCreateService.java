@@ -19,6 +19,7 @@ import acme.client.data.models.Dataset;
 import acme.client.services.AbstractService;
 import acme.entities.project.Project;
 import acme.roles.Manager;
+import spamDetector.SpamDetector;
 
 @Service
 public class ManagerProjectCreateService extends AbstractService<Manager, Project> {
@@ -74,6 +75,13 @@ public class ManagerProjectCreateService extends AbstractService<Manager, Projec
 			existing = this.repository.findOneProjectByCode(object.getCode());
 			super.state(existing == null, "code", "manager.project.form.error.code-duplicated");
 		}
+
+		if (!super.getBuffer().getErrors().hasErrors("title"))
+			super.state(!SpamDetector.checkTextValue(object.getTitle()), "title", "manager.project.form.error.spam-in-title");
+
+		if (!super.getBuffer().getErrors().hasErrors("abstractField"))
+			super.state(!SpamDetector.checkTextValue(object.getAbstractField()), "abstractField", "manager.project.form.error.spam-in-abstract-field");
+
 	}
 
 	@Override
@@ -92,6 +100,7 @@ public class ManagerProjectCreateService extends AbstractService<Manager, Projec
 		dataset = super.unbind(object, "code", "title", "abstractField", "hasFatalErrors", "cost", "optionalLink", "draftMode");
 		dataset.put("masterId", object.getId());
 		dataset.put("readOnlyCode", false);
+		dataset.put("showExchangedCode", false);
 
 		super.getResponse().addData(dataset);
 	}

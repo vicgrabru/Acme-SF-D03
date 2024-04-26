@@ -25,4 +25,7 @@ public interface SponsorInvoiceRepository extends AbstractRepository {
 	@Query("select i from Invoice i where i.sponsorship.id = :masterId")
 	Collection<Invoice> findManyInvoicesByMasterId(int masterId);
 
+	@Query("select sc.acceptedCurrencies from SystemConfiguration sc")
+	String findAcceptedCurrencies();
+
 }

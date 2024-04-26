@@ -96,8 +96,8 @@ public class ManagerUserStoryDeleteService extends AbstractService<Manager, User
 	public void unbind(final UserStory object) {
 		assert object != null;
 
-		Collection<Project> draftModeProjects;
 		Collection<Project> draftModeProjectsAssigned;
+		Collection<Project> draftModeProjectsUnassigned;
 		SelectChoices choices;
 		Dataset dataset;
 
@@ -113,13 +113,10 @@ public class ManagerUserStoryDeleteService extends AbstractService<Manager, User
 		dataset.put("priorities", choices);
 
 		draftModeProjectsAssigned = this.repository.findManyDraftModeProjectsWithUserStoryAssignedByUserStoryId(userStoryId);
-		draftModeProjects = this.repository.findManyDraftModeProjectsByManagerId(managerId);
+		draftModeProjectsUnassigned = this.repository.findManyDraftModeProjectsWithoutUserStoryByManagerIdAndUserStoryId(managerId, userStoryId);
 
-		if (!draftModeProjectsAssigned.isEmpty())
-			draftModeProjects.removeIf(draftModeProjectsAssigned::contains);
-
-		dataset.put("showAssignButton", draftModeProjects.size() > 0);
-		dataset.put("showUnassignButton", draftModeProjectsAssigned.size() > 0);
+		dataset.put("showAssignButton", !draftModeProjectsUnassigned.isEmpty());
+		dataset.put("showUnassignButton", !draftModeProjectsAssigned.isEmpty());
 
 		super.getResponse().addData(dataset);
 	}

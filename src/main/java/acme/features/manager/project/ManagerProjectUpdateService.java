@@ -12,16 +12,16 @@
 
 package acme.features.manager.project;
 
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import acme.client.data.datatypes.Money;
 import acme.client.data.models.Dataset;
 import acme.client.services.AbstractService;
 import acme.entities.project.Project;
-import acme.entities.project.UserStoryAssign;
 import acme.roles.Manager;
+import acme.utils.MoneyExchangeRepository;
+import spamDetector.SpamDetector;
 
 @Service
 public class ManagerProjectUpdateService extends AbstractService<Manager, Project> {
@@ -29,7 +29,10 @@ public class ManagerProjectUpdateService extends AbstractService<Manager, Projec
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private ManagerProjectRepository repository;
+	private ManagerProjectRepository	repository;
+
+	@Autowired
+	private MoneyExchangeRepository		exchangeRepository;
 
 	// AbstractService interface ----------------------------------------------
 
@@ -78,33 +81,36 @@ public class ManagerProjectUpdateService extends AbstractService<Manager, Projec
 
 			super.state(object.getCost().getAmount() >= 0., "cost", "manager.project.form.error.cost.negative");
 		}
+
+		if (!super.getBuffer().getErrors().hasErrors("title"))
+			super.state(!SpamDetector.checkTextValue(object.getTitle()), "title", "manager.project.form.error.spam-in-title");
+
+		if (!super.getBuffer().getErrors().hasErrors("abstractField"))
+			super.state(!SpamDetector.checkTextValue(object.getAbstractField()), "abstractField", "manager.project.form.error.spam-in-abstract-field");
 	}
 
 	@Override
 	public void perform(final Project object) {
 		assert object != null;
 
-		Collection<UserStoryAssign> relationships;
-
 		this.repository.save(object);
-
-		relationships = this.repository.findManyUserStoryAssignsByProjectId(object.getId());
-
-		for (UserStoryAssign rel : relationships) {
-			rel.setProject(object);
-			this.repository.save(rel);
-		}
 	}
 
 	@Override
 	public void unbind(final Project object) {
 		assert object != null;
 
+		Money exchangedCost;
 		Dataset dataset;
 
 		dataset = super.unbind(object, "code", "title", "abstractField", "hasFatalErrors", "cost", "optionalLink", "draftMode");
 		dataset.put("masterId", object.getId());
 		dataset.put("readOnlyCode", true);
+
+		dataset.put("showExchangedCost", !this.exchangeRepository.findSystemCurrency().equals(object.getCost().getCurrency()));
+
+		exchangedCost = this.exchangeRepository.exchangeMoney(object.getCost());
+		dataset.put("exchangedCost", exchangedCost);
 
 		super.getResponse().addData(dataset);
 	}

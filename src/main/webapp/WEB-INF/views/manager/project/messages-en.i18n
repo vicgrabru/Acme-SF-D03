@@ -13,7 +13,6 @@ manager.project.list.title = Listing of projects
 
 manager.project.list.label.code = Code
 manager.project.list.label.title = Title
-manager.project.list.label.abstract = Abstract
 manager.project.list.label.draft-mode = Draft Mode?
 
 manager.project.form.label.code = Code
@@ -21,6 +20,7 @@ manager.project.form.label.title = Title
 manager.project.form.label.abstract-field = Abstract
 manager.project.form.label.has-fatal-errors = Has any fatal errors?
 manager.project.form.label.cost = Cost
+manager.project.form.label.exchanged-cost = Cost (Exchanged to System currency)
 manager.project.form.label.optional-link = Optional Link
 manager.project.form.label.draft-mode = Draft Mode?
 
@@ -37,3 +37,5 @@ manager.project.form.error.no-user-stories = The project has no user stories
 manager.project.form.error.has-draft-user-story = The project has user stories in draft mode
 manager.project.form.error.has-fatal-errors = A project with fatal errors can't be published
 manager.project.form.error.code-duplicated = A project with that code already exists
+manager.project.form.error.spam-in-title = There is spam in the title
+manager.project.form.error.spam-in-abstract-field = There is spam in the Abstract

@@ -30,3 +30,4 @@ administrator.banner.form.button.delete = Delete
 
 administrator.banner.form.error.period-start.not-after-instantiation = The display period must start after the Instantiation/Update moment
 administrator.banner.form.error.period-too-short = The display period is too short. It must last at least one week
+administrator.banner.form.error.spam-in-slogan = There is spam in the slogan

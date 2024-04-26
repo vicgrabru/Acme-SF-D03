@@ -24,7 +24,6 @@ import acme.entities.contract.Contract;
 import acme.entities.contract.ProgressLog;
 import acme.entities.project.Project;
 import acme.roles.Client;
-import acme.roles.Provider;
 
 @Service
 public class ClientContractDeleteService extends AbstractService<Client, Contract> {
@@ -92,21 +91,15 @@ public class ClientContractDeleteService extends AbstractService<Client, Contrac
 
 		Dataset dataset;
 		SelectChoices choicesProject;
-		SelectChoices choicesProvider;
 
-		Collection<Provider> providers;
 		Collection<Project> projects;
 
-		providers = this.repository.findAllProviders();
 		projects = this.repository.findPublishedProjects();
 
-		choicesProvider = SelectChoices.from(providers, "userAccount.identity.name", object.getProvider());
 		choicesProject = SelectChoices.from(projects, "title", object.getProject());
 
-		dataset = super.unbind(object, "code", "goals", "budget", "customerName", "instantiationMoment", "draftMode");
-		dataset.put("provider", choicesProvider.getSelected().getKey());
-		dataset.put("providers", choicesProvider);
-		dataset.put("project", choicesProject.getSelected().getKey());
+		dataset = super.unbind(object, "code", "goals", "budget", "customerName", "providerName", "instantiationMoment", "draftMode");
+		dataset.put("project", choicesProject.getSelected());
 		dataset.put("projects", choicesProject);
 
 		super.getResponse().addData(dataset);
