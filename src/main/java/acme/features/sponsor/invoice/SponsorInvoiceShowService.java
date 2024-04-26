@@ -36,7 +36,7 @@ public class SponsorInvoiceShowService extends AbstractService<Sponsor, Invoice>
 		masterId = super.getRequest().getData("id", int.class);
 		invoice = this.repository.findOneInvoiceById(masterId);
 		sponsorship = invoice == null ? null : invoice.getSponsorship();
-		status = invoice != null && invoice.isDraftMode() && super.getRequest().getPrincipal().hasRole(sponsorship.getSponsor());
+		status = invoice != null && super.getRequest().getPrincipal().hasRole(sponsorship.getSponsor());
 
 		super.getResponse().setAuthorised(status);
 	}
