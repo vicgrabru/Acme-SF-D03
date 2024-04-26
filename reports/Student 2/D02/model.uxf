@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.1">
-  <zoom_level>7</zoom_level>
+  <zoom_level>9</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>392</x>
-      <y>287</y>
-      <w>315</w>
-      <h>105</h>
+      <x>198</x>
+      <y>180</y>
+      <w>405</w>
+      <h>135</h>
     </coordinates>
     <panel_attributes>bg=green
 &lt;&lt;Entity&gt;&gt;
@@ -24,10 +24,10 @@ Contract
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>798</x>
-      <y>315</y>
-      <w>84</w>
-      <h>56</h>
+      <x>720</x>
+      <y>216</y>
+      <w>108</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>bg=green
 &lt;&lt;Entity&gt;&gt;
@@ -40,10 +40,10 @@ Project
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>700</x>
-      <y>329</y>
-      <w>112</w>
-      <h>35</h>
+      <x>594</x>
+      <y>234</y>
+      <w>144</w>
+      <h>45</h>
     </coordinates>
     <panel_attributes>lt=&lt;-x
 m1=1
@@ -54,10 +54,10 @@ m2=0..n
   <element>
     <id>Text</id>
     <coordinates>
-      <x>735</x>
-      <y>343</y>
-      <w>70</w>
-      <h>49</h>
+      <x>639</x>
+      <y>252</y>
+      <w>90</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>+project
 style=wordwrap</panel_attributes>
@@ -66,10 +66,10 @@ style=wordwrap</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>378</x>
-      <y>448</y>
-      <w>343</w>
-      <h>91</h>
+      <x>180</x>
+      <y>387</y>
+      <w>441</w>
+      <h>117</h>
     </coordinates>
     <panel_attributes>bg=green
 &lt;&lt;Entity&gt;&gt;
@@ -86,10 +86,10 @@ ProgressLog
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>539</x>
-      <y>385</y>
-      <w>35</w>
-      <h>77</h>
+      <x>387</x>
+      <y>306</y>
+      <w>45</w>
+      <h>99</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-x
 m2=0..n</panel_attributes>
@@ -98,10 +98,10 @@ m2=0..n</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>385</x>
-      <y>567</y>
-      <w>315</w>
-      <h>91</h>
+      <x>198</x>
+      <y>0</y>
+      <w>405</w>
+      <h>117</h>
     </coordinates>
     <panel_attributes>bg=green
 &lt;&lt;Role&gt;&gt;
@@ -109,18 +109,18 @@ Client
 --
 +identification: String {Unique, NotBlank, Pattern(regexp = CLI-[0-9]{4})}
 +companyName: String {NotBlank, Length(max=75)}
-+type: String {NotBlank, Pattern(regexp = company|individual)}
++type: ClientType {NotNull}
 +email: String {NotBlank, Email}
-+link: String (URL)</panel_attributes>
+-link: String (URL)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>763</x>
-      <y>448</y>
-      <w>315</w>
-      <h>126</h>
+      <x>675</x>
+      <y>387</y>
+      <w>405</w>
+      <h>162</h>
     </coordinates>
     <panel_attributes>bg=green
 &lt;&lt;Form&gt;&gt;
@@ -139,10 +139,10 @@ ClientDashboard
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>952</x>
-      <y>385</y>
-      <w>98</w>
-      <h>35</h>
+      <x>918</x>
+      <y>306</y>
+      <w>126</w>
+      <h>45</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 Serializable
@@ -153,10 +153,10 @@ bg=white
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>994</x>
-      <y>413</y>
-      <w>21</w>
-      <h>49</h>
+      <x>972</x>
+      <y>342</y>
+      <w>27</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
@@ -164,10 +164,10 @@ bg=white
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>245</x>
-      <y>357</y>
-      <w>133</w>
-      <h>42</h>
+      <x>9</x>
+      <y>270</y>
+      <w>171</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>bg=green
 budget must be less than
@@ -178,13 +178,58 @@ project cost</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>371</x>
-      <y>364</y>
-      <w>35</w>
-      <h>28</h>
+      <x>171</x>
+      <y>279</y>
+      <w>45</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>lt=..
 </panel_attributes>
     <additional_attributes>10.0;20.0;30.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>396</x>
+      <y>108</y>
+      <w>63</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-x
+m1=1
+m2=0..n
+&lt; Has</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>360</x>
+      <y>135</y>
+      <w>90</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>+client
+
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>657</x>
+      <y>45</y>
+      <w>108</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>bg=green
+&lt;&lt;Enum&gt;&gt;
+ClientType
+--
++COMPANY
++INDIVIDUAL
+
+</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>
