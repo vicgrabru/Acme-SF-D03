@@ -25,6 +25,7 @@ import acme.entities.project.Project;
 import acme.entities.project.UserStory;
 import acme.entities.project.UserStoryAssign;
 import acme.roles.Manager;
+import spamDetector.SpamDetector;
 
 @Service
 public class ManagerUserStoryUpdateService extends AbstractService<Manager, UserStory> {
@@ -78,31 +79,30 @@ public class ManagerUserStoryUpdateService extends AbstractService<Manager, User
 	@Override
 	public void validate(final UserStory object) {
 		assert object != null;
+
+		if (!super.getBuffer().getErrors().hasErrors("title"))
+			super.state(!SpamDetector.checkTextValue(object.getTitle()), "title", "manager.user-story.form.error.spam-in-title");
+
+		if (!super.getBuffer().getErrors().hasErrors("description"))
+			super.state(!SpamDetector.checkTextValue(object.getDescription()), "description", "manager.user-story.form.error.spam-in-description");
+
+		if (!super.getBuffer().getErrors().hasErrors("acceptanceCriteria"))
+			super.state(!SpamDetector.checkTextValue(object.getAcceptanceCriteria()), "acceptanceCriteria", "manager.user-story.form.error.spam-in-acceptance-criteria");
 	}
 
 	@Override
 	public void perform(final UserStory object) {
 		assert object != null;
 
-		Collection<UserStoryAssign> relationships;
-
 		this.repository.save(object);
-
-		relationships = this.repository.findManyUserStoryAssignsByUserStoryId(object.getId());
-
-		for (UserStoryAssign rel : relationships) {
-			rel.setUserStory(object);
-			this.repository.save(rel);
-		}
-
 	}
 
 	@Override
 	public void unbind(final UserStory object) {
 		assert object != null;
 
-		Collection<Project> draftModeProjects;
 		Collection<Project> draftModeProjectsAssigned;
+		Collection<Project> draftModeProjectsUnassigned;
 		SelectChoices choices;
 		Dataset dataset;
 
@@ -118,13 +118,10 @@ public class ManagerUserStoryUpdateService extends AbstractService<Manager, User
 		dataset.put("priorities", choices);
 
 		draftModeProjectsAssigned = this.repository.findManyDraftModeProjectsWithUserStoryAssignedByUserStoryId(userStoryId);
-		draftModeProjects = this.repository.findManyDraftModeProjectsByManagerId(managerId);
+		draftModeProjectsUnassigned = this.repository.findManyDraftModeProjectsWithoutUserStoryByManagerIdAndUserStoryId(managerId, userStoryId);
 
-		if (!draftModeProjectsAssigned.isEmpty())
-			draftModeProjects.removeIf(draftModeProjectsAssigned::contains);
-
-		dataset.put("showAssignButton", draftModeProjects.size() > 0);
-		dataset.put("showUnassignButton", draftModeProjectsAssigned.size() > 0);
+		dataset.put("showAssignButton", !draftModeProjectsUnassigned.isEmpty());
+		dataset.put("showUnassignButton", !draftModeProjectsAssigned.isEmpty());
 
 		super.getResponse().addData(dataset);
 	}

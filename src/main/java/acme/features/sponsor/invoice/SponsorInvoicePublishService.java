@@ -6,12 +6,14 @@ import java.time.temporal.ChronoUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import acme.client.data.datatypes.Money;
 import acme.client.data.models.Dataset;
 import acme.client.helpers.MomentHelper;
 import acme.client.services.AbstractService;
 import acme.entities.sponsorship.Invoice;
 import acme.entities.sponsorship.Sponsorship;
 import acme.roles.Sponsor;
+import acme.utils.MoneyExchangeRepository;
 
 @Service
 public class SponsorInvoicePublishService extends AbstractService<Sponsor, Invoice> {
@@ -19,7 +21,10 @@ public class SponsorInvoicePublishService extends AbstractService<Sponsor, Invoi
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private SponsorInvoiceRepository repository;
+	private SponsorInvoiceRepository	repository;
+
+	@Autowired
+	private MoneyExchangeRepository		exchangeRepo;
 
 	// AbstractService interface ----------------------------------------------
 
@@ -80,6 +85,9 @@ public class SponsorInvoicePublishService extends AbstractService<Sponsor, Invoi
 
 		dataset = super.unbind(object, "code", "registrationTime", "dueDate", "quantity", "tax", "link", "draftMode");
 		dataset.put("masterId", object.getSponsorship().getId());
+
+		Money eb = this.exchangeRepo.exchangeMoney(object.getQuantity());
+		dataset.put("exchangedQuantity", eb);
 
 		super.getResponse().addData(dataset);
 	}

@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import acme.client.data.accounts.Any;
+import acme.client.data.datatypes.Money;
 import acme.client.data.models.Dataset;
 import acme.client.services.AbstractService;
 import acme.client.views.SelectChoices;
 import acme.entities.project.Project;
 import acme.entities.sponsorship.Sponsorship;
 import acme.entities.sponsorship.Type;
+import acme.utils.MoneyExchangeRepository;
 
 @Service
 public class AnySponsorshipShowService extends AbstractService<Any, Sponsorship> {
@@ -20,14 +22,25 @@ public class AnySponsorshipShowService extends AbstractService<Any, Sponsorship>
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private AnySponsorshipRepository repository;
+	private AnySponsorshipRepository	repository;
+
+	@Autowired
+	private MoneyExchangeRepository		exchangeRepo;
 
 	// AbstractService interface ----------------------------------------------
 
 
 	@Override
 	public void authorise() {
-		super.getResponse().setAuthorised(true);
+		boolean status;
+		int id;
+		Sponsorship sponsorship;
+
+		id = super.getRequest().getData("id", int.class);
+		sponsorship = this.repository.findOneSponsorshipById(id);
+		status = sponsorship != null;
+
+		super.getResponse().setAuthorised(status);
 	}
 
 	@Override
@@ -57,6 +70,9 @@ public class AnySponsorshipShowService extends AbstractService<Any, Sponsorship>
 		dataset.put("project", choicesProject.getSelected().getKey());
 		dataset.put("projects", choicesProject);
 		dataset.put("types", choicesType);
+
+		Money eb = this.exchangeRepo.exchangeMoney(object.getAmount());
+		dataset.put("exchangedAmount", eb);
 
 		super.getResponse().addData(dataset);
 	}

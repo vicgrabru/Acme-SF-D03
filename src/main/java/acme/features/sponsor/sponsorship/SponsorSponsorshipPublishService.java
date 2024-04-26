@@ -7,6 +7,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import acme.client.data.datatypes.Money;
 import acme.client.data.models.Dataset;
 import acme.client.helpers.MomentHelper;
 import acme.client.services.AbstractService;
@@ -16,6 +17,7 @@ import acme.entities.sponsorship.Invoice;
 import acme.entities.sponsorship.Sponsorship;
 import acme.entities.sponsorship.Type;
 import acme.roles.Sponsor;
+import acme.utils.MoneyExchangeRepository;
 
 @Service
 public class SponsorSponsorshipPublishService extends AbstractService<Sponsor, Sponsorship> {
@@ -23,7 +25,10 @@ public class SponsorSponsorshipPublishService extends AbstractService<Sponsor, S
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private SponsorSponsorshipRepository repository;
+	private SponsorSponsorshipRepository	repository;
+
+	@Autowired
+	private MoneyExchangeRepository			exchangeRepo;
 
 	// AbstractService interface ----------------------------------------------
 
@@ -70,6 +75,8 @@ public class SponsorSponsorshipPublishService extends AbstractService<Sponsor, S
 
 	@Override
 	public void validate(final Sponsorship object) {
+		Collection<Invoice> invoices;
+		invoices = this.repository.findManyInvoicesBySponsorshipId(object.getId());
 
 		if (!super.getBuffer().getErrors().hasErrors("startDuration"))
 			super.state(MomentHelper.isAfter(object.getStartDuration(), object.getMoment()), "startDuration", "sponsor.sponsorship.form.error.durationAfter");
@@ -78,11 +85,11 @@ public class SponsorSponsorshipPublishService extends AbstractService<Sponsor, S
 			super.state(MomentHelper.isLongEnough(object.getStartDuration(), object.getEndDuration(), 1, ChronoUnit.MONTHS), "endDuration", "sponsor.sponsorship.form.error.atLeast1MonthLong");
 
 		if (!super.getBuffer().getErrors().hasErrors("amount")) {
-			Collection<Invoice> invoices;
-			invoices = this.repository.findManyInvoicesBySponsorshipId(object.getId());
 			Double totalAmount = invoices.stream().mapToDouble(i -> i.totalAmount().getAmount()).sum();
 			super.state(object.getAmount().getAmount().equals(totalAmount), "amount", "sponsor.sponsorship.form.error.notEqualAmount");
 		}
+		if (!super.getBuffer().getErrors().hasErrors("draftMode"))
+			super.state(invoices.stream().allMatch(i -> !i.isDraftMode()), "draftMode", "sponsor.sponsorship.form.error.AllInvoicesMustBePublished");
 
 	}
 
@@ -109,6 +116,9 @@ public class SponsorSponsorshipPublishService extends AbstractService<Sponsor, S
 		dataset.put("project", choicesProject.getSelected().getKey());
 		dataset.put("projects", choicesProject);
 		dataset.put("types", choicesType);
+
+		Money eb = this.exchangeRepo.exchangeMoney(object.getAmount());
+		dataset.put("exchangedAmount", eb);
 
 		super.getResponse().addData(dataset);
 	}

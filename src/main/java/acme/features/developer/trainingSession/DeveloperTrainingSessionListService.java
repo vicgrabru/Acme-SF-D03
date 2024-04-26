@@ -52,7 +52,10 @@ public class DeveloperTrainingSessionListService extends AbstractService<Develop
 		Dataset dataset;
 
 		dataset = super.unbind(object, "code", "startPeriod", "endPeriod", "location", "instructor", "contactEmail", "link", "draftMode");
-
+		if (object.isDraftMode())
+			dataset.put("draftMode", "✓");
+		else
+			dataset.put("draftMode", "✗");
 		super.getResponse().addData(dataset);
 	}
 

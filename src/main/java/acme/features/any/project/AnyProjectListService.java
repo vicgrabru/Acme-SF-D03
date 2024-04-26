@@ -52,7 +52,7 @@ public class AnyProjectListService extends AbstractService<Any, Project> {
 
 		Dataset dataset;
 
-		dataset = super.unbind(object, "code", "title", "abstractField");
+		dataset = super.unbind(object, "code", "title");
 		dataset.put("managerUsername", object.getManager().getUserAccount().getUsername());
 
 		super.getResponse().addData(dataset);

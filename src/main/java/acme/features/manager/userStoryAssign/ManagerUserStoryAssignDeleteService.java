@@ -59,8 +59,7 @@ public class ManagerUserStoryAssignDeleteService extends AbstractService<Manager
 		Collection<UserStoryAssign> options;
 
 		userStoryId = super.getRequest().getData("userStoryId", int.class);
-		options = this.repository.findManyUserStoryAssignsByUserStoryId(userStoryId);
-		options.removeIf(x -> !x.getProject().isDraftMode());
+		options = this.repository.findManyUserStoryAssignsWithDraftModeProjectByUserStoryId(userStoryId);
 
 		if (options.isEmpty()) {
 			userStory = this.repository.findOneUserStoryById(userStoryId);
@@ -112,7 +111,11 @@ public class ManagerUserStoryAssignDeleteService extends AbstractService<Manager
 	public void perform(final UserStoryAssign object) {
 		assert object != null;
 
-		this.repository.delete(object);
+		UserStoryAssign toDelete;
+
+		toDelete = this.repository.findOneUserStoryAssignByUserStoryIdAndProjectId(object.getUserStory().getId(), object.getProject().getId());
+
+		this.repository.delete(toDelete);
 	}
 
 	@Override

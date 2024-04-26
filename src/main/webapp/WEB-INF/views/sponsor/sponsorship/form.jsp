@@ -21,6 +21,9 @@
 	<acme:input-moment code="sponsor.sponsorship.form.label.startDuration" path="startDuration"/>
 	<acme:input-moment code="sponsor.sponsorship.form.label.endDuration" path="endDuration"/>
 	<acme:input-money code="sponsor.sponsorship.form.label.amount" path="amount"/>
+	<jstl:if test="${acme:anyOf(_command, 'show|update|publish')}">
+		<acme:input-money readonly="true" code="sponsor.invoice.form.label.exchanged-amount" path="exchangedAmount"/>
+	</jstl:if>
 	<acme:input-select code="sponsor.sponsorship.form.label.type" path="type" choices="${types}" readonly="${acme:anyOf(status, 'FINANCIAL|IN_KIND')}"/>
 	<acme:input-email code="sponsor.sponsorship.form.label.email" path="email"/>
 	<acme:input-url code="sponsor.sponsorship.form.label.link" path="link"/>
@@ -32,6 +35,7 @@
 			<acme:button code="sponsor.sponsorship.form.button.invoices" action="/sponsor/invoice/list?masterId=${id}"/>			
 		</jstl:when>
 		<jstl:when test="${acme:anyOf(_command, 'show|update|delete|publish') && draftMode == true}">
+			<acme:button code="sponsor.sponsorship.form.button.invoices" action="/sponsor/invoice/list?masterId=${id}"/>			
 			<acme:submit code="sponsor.sponsorship.form.button.update" action="/sponsor/sponsorship/update"/>
 			<acme:submit code="sponsor.sponsorship.form.button.delete" action="/sponsor/sponsorship/delete"/>
 			<acme:submit code="sponsor.sponsorship.form.button.publish" action="/sponsor/sponsorship/publish"/>

@@ -13,6 +13,7 @@
 package acme.features.manager.managerDashboard;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import acme.client.services.AbstractService;
 import acme.entities.configuration.SystemConfiguration;
 import acme.forms.ManagerDashboard;
 import acme.roles.Manager;
+import acme.utils.MoneyExchangeRepository;
 import acme.utils.MoneyUtils;
 
 @Service
@@ -31,7 +33,10 @@ public class ManagerManagerDashboardShowService extends AbstractService<Manager,
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private ManagerManagerDashboardRepository repository;
+	private ManagerManagerDashboardRepository	repository;
+
+	@Autowired
+	private MoneyExchangeRepository				exchangeRepository;
 
 	// AbstractService interface ----------------------------------------------
 
@@ -63,6 +68,8 @@ public class ManagerManagerDashboardShowService extends AbstractService<Manager,
 		Money stdCostOfProjects;
 
 		Collection<Money> costOfProjects;
+		List<Money> costOfProjectsExchanged;
+
 		SystemConfiguration systemConfiguration;
 
 		managerId = super.getRequest().getPrincipal().getActiveRoleId();
@@ -77,14 +84,32 @@ public class ManagerManagerDashboardShowService extends AbstractService<Manager,
 		maxEstimatedCostOfUserStories = this.repository.maxEstimatedCostOfUserStoriesByManagerId(managerId);
 		stdEstimatedCostOfUserStories = this.repository.stdEstimatedCostOfUserStoriesByManagerId(managerId);
 
+		avgEstimatedCostOfUserStories = avgEstimatedCostOfUserStories == null ? 0.0 : avgEstimatedCostOfUserStories;
+		minEstimatedCostOfUserStories = minEstimatedCostOfUserStories == null ? 0 : minEstimatedCostOfUserStories;
+		maxEstimatedCostOfUserStories = maxEstimatedCostOfUserStories == null ? 0 : maxEstimatedCostOfUserStories;
+		stdEstimatedCostOfUserStories = stdEstimatedCostOfUserStories == null ? 0.0 : stdEstimatedCostOfUserStories;
+
 		costOfProjects = this.repository.getCostOfAllProjectsByManagerId(managerId);
 		systemConfiguration = this.repository.getSystemConfiguration();
 
-		avgCostOfProjects = MoneyUtils.getAvg(costOfProjects, systemConfiguration.getSystemCurrency());
-		minCostOfProjects = MoneyUtils.getMin(costOfProjects, systemConfiguration.getSystemCurrency());
-		maxCostOfProjects = MoneyUtils.getMax(costOfProjects, systemConfiguration.getSystemCurrency());
-		stdCostOfProjects = MoneyUtils.getStd(costOfProjects, systemConfiguration.getSystemCurrency());
+		if (costOfProjects.isEmpty()) {
+			Money dummy = new Money();
+			dummy.setAmount(0.0);
+			dummy.setCurrency(systemConfiguration.getSystemCurrency());
 
+			avgCostOfProjects = dummy;
+			minCostOfProjects = dummy;
+			maxCostOfProjects = dummy;
+			stdCostOfProjects = dummy;
+
+		} else {
+			costOfProjectsExchanged = costOfProjects.stream().map(x -> this.exchangeRepository.exchangeMoney(x)).toList();
+
+			avgCostOfProjects = MoneyUtils.getAvg(costOfProjectsExchanged, systemConfiguration.getSystemCurrency());
+			minCostOfProjects = MoneyUtils.getMin(costOfProjectsExchanged, systemConfiguration.getSystemCurrency());
+			maxCostOfProjects = MoneyUtils.getMax(costOfProjectsExchanged, systemConfiguration.getSystemCurrency());
+			stdCostOfProjects = MoneyUtils.getStd(costOfProjectsExchanged, systemConfiguration.getSystemCurrency());
+		}
 		dashboard = new ManagerDashboard();
 
 		dashboard.setTotalNumberOfUserStoriesWithMustPriority(totalNumberOfUserStoriesWithMustPriority);

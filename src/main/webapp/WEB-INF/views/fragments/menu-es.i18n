@@ -43,6 +43,7 @@ master.menu.administrator = Administrador
 master.menu.administrator.dashboard = Panel de indicadores
 master.menu.administrator.system-configuration-show = Configuración del Sistema
 master.menu.administrator.banner-list = Lista de banners
+master.menu.administrator.risk-list = Lista de riesgos
 master.menu.administrator.user-accounts = Cuentas de usuario
 master.menu.administrator.populate-initial = Poblar BD (inicial)
 master.menu.administrator.populate-sample = Poblar BD (ejemplos)
@@ -82,6 +83,11 @@ master.menu.client.client-dashboard = Panel de indicadores de Cliente
 master.menu.auditor = Auditor
 master.menu.auditor.code-audit = Auditorías de código
 
+# master.menu.developer ##########################################################
+master.menu.developer=Desarrollador
+master.menu.developer.training-module-list=Módulos de entrenamiento
+master.menu.developer.developer-dashboard=Panel de desarrollador
+
 # master.menu.user-account ####################################################
 
 master.menu.user-account = Cuenta
@@ -96,3 +102,8 @@ master.menu.user-account.manager = Datos de manager
 master.menu.user-account.become-manager = Hazte manager
 master.menu.user-account.client = Datos de cliente
 master.menu.user-account.become-client = Hazte cliente
+master.menu.user-account.become-developer= Hazte desarrollador
+master.menu.user-account.developer= Datos de desarrollador
+
+master.menu.authenticated.objective-list = Lista de Objetivos
+master.menu.administrator.create-objective=Crear Objetivo

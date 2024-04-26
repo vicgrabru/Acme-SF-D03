@@ -22,6 +22,7 @@ import acme.client.data.models.Dataset;
 import acme.client.helpers.PrincipalHelper;
 import acme.client.services.AbstractService;
 import acme.roles.Manager;
+import spamDetector.SpamDetector;
 
 @Service
 public class AuthenticatedManagerCreateService extends AbstractService<Authenticated, Manager> {
@@ -36,7 +37,11 @@ public class AuthenticatedManagerCreateService extends AbstractService<Authentic
 
 	@Override
 	public void authorise() {
-		super.getResponse().setAuthorised(true);
+		boolean status;
+
+		status = !super.getRequest().getPrincipal().hasRole(Manager.class);
+
+		super.getResponse().setAuthorised(status);
 	}
 
 	@Override
@@ -66,6 +71,15 @@ public class AuthenticatedManagerCreateService extends AbstractService<Authentic
 	@Override
 	public void validate(final Manager object) {
 		assert object != null;
+
+		if (!super.getBuffer().getErrors().hasErrors("degree"))
+			super.state(!SpamDetector.checkTextValue(object.getDegree()), "degree", "authenticated.manager.form.error.spam-in-degree");
+
+		if (!super.getBuffer().getErrors().hasErrors("overview"))
+			super.state(!SpamDetector.checkTextValue(object.getOverview()), "overview", "authenticated.manager.form.error.spam-in-overview");
+
+		if (!super.getBuffer().getErrors().hasErrors("certifications"))
+			super.state(!SpamDetector.checkTextValue(object.getCertifications()), "certifications", "authenticated.manager.form.error.spam-in-certifications");
 	}
 
 	@Override
