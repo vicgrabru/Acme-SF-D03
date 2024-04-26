@@ -1,4 +1,3 @@
-
 package spamDetector;
 
 import java.util.ArrayList;
@@ -9,8 +8,8 @@ import java.util.stream.Collectors;
 
 public class SpamDetector {
 
-	private static List<String>	spamList	= List.of("sex[,\\s]+", "viagra[,\\s]+", "cialis[,\\s]+", "one\\s+million[,\\s]+", "you\\s+won[,\\s]+", "nigeria[,\\s]+", "sexo[,\\s]+", "un\\s+millon[,\\s]+", "has\\s+ganado[,\\s]+", "sex$", "viagra$",
-		"cialis$", "one\\s+million$", "you\\s+won$", "nigeria$", "sexo$", "un\\s+millón$", "has\\s+ganado$");
+	private static List<String>	spamList	= List.of("[,\\s]+sex[,\\s]+", "[,\\s]+viagra[,\\s]+", "[,\\s]+cialis[,\\s]+", "[,\\s]+one\\s+million[,\\s]+", "[,\\s]+you\\s+won[,\\s]+", "[,\\s]+nigeria[,\\s]+", "[,\\s]+sexo[,\\s]+",
+		"[,\\s]+un\\s+millon[,\\s]+", "[,\\s]+has\\s+ganado[,\\s]+", "[,\\s]+sex$", "[,\\s]+viagra$", "[,\\s]+cialis$", "[,\\s]+one\\s+million$", "[,\\s]+you\\s+won$", "[,\\s]+nigeria$", "[,\\s]+sexo$", "[,\\s]+un\\s+millón$", "[,\\s]+has\\s+ganado$");
 	private static int			threshold	= 10;
 
 
@@ -19,26 +18,17 @@ public class SpamDetector {
 		text = text.toLowerCase();
 		int spamPoints = 0;
 		for (String spam : spamList) {
-			long pointsToAdd = SpamDetector.getValidCharsOfText(spam);
 			Pattern pattern = Pattern.compile(spam);
 			Matcher matcher = pattern.matcher(text);
-			while (matcher.find())
-				spamPoints += pointsToAdd;
+			StringBuffer result = new StringBuffer();
+			while (matcher.find()) {
+				matcher.appendReplacement(result, "");
+				spamPoints++;
+			}
+			if (!result.toString().isEmpty())
+				text = result.toString();
 		}
-		return SpamDetector.threshold < (double) spamPoints / SpamDetector.getValidCharsOfText(text) * 100;
-	}
-	private static int getValidCharsOfText(String text) {
-		if (SpamDetector.spamList.contains(text)) {
-			text = text.replace("[,\\s]+", "");
-			text = text.replace("\\s+", "");
-			if (text.endsWith("$"))
-				text = text.substring(0, text.length() - 1);
-		}
-		int count = 0;
-		for (Character c : text.toCharArray())
-			if (!c.equals(' '))
-				count++;
-		return count;
+		return SpamDetector.threshold < (double) spamPoints / (text.split(" ").length + spamPoints) * 100;
 	}
 	public static void setSpamList(final List<String> spamList) {
 		if (spamList == null)
@@ -65,15 +55,15 @@ public class SpamDetector {
 		if (text == null)
 			return;
 		String replacedSpam = text.toLowerCase().replace(" ", "\\s+");
-		SpamDetector.spamList.add(replacedSpam + "[,\\s]+");
-		SpamDetector.spamList.add(replacedSpam + "$");
+		SpamDetector.spamList.add("[,\\s]+" + replacedSpam + "[,\\s]+");
+		SpamDetector.spamList.add("[,\\s]+" + replacedSpam + "$");
 	}
 	public static void deleteSpam(final String text) {
 		if (text == null)
 			return;
 		String replacedSpam = text.toLowerCase().replace(" ", "\\s+");
-		SpamDetector.spamList.remove(replacedSpam + "[,\\s]+");
-		SpamDetector.spamList.remove(replacedSpam + "$");
+		SpamDetector.spamList.remove("[,\\s]+" + replacedSpam + "[,\\s]+");
+		SpamDetector.spamList.remove("[,\\s]+" + replacedSpam + "$");
 	}
 	public static void setThreshold(final int threshold) {
 		if (threshold < 0 || threshold > 100)

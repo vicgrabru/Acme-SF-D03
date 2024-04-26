@@ -87,6 +87,11 @@ master.menu.client = Client
 master.menu.client.client-dashboard = Client Dashboard
 master.menu.client.contract = Contract list
 
+# master.menu.developer ##########################################################
+master.menu.developer=Developer
+master.menu.developer.training-module-list=Training Modules
+master.menu.developer.developer-dashboard=Developer Dashboard
+
 # master.menu.user-account ####################################################
 
 master.menu.user-account = Account
@@ -101,3 +106,5 @@ master.menu.user-account.manager = Manager data
 master.menu.user-account.become-manager= Become a manager
 master.menu.user-account.client = Client data
 master.menu.user-account.become-client = Become a client
+master.menu.user-account.become-developer= Become a developer
+master.menu.user-account.developer= Developer data
