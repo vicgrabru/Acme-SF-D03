@@ -12,7 +12,6 @@ import acme.client.services.AbstractService;
 import acme.entities.sponsorship.Invoice;
 import acme.entities.sponsorship.Sponsorship;
 import acme.roles.Sponsor;
-import acme.utils.MoneyExchangeRepository;
 import spamDetector.SpamDetector;
 
 @Service
@@ -21,10 +20,7 @@ public class SponsorInvoiceCreateService extends AbstractService<Sponsor, Invoic
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private SponsorInvoiceRepository	repository;
-
-	@Autowired
-	private MoneyExchangeRepository		exchangeRepo;
+	private SponsorInvoiceRepository repository;
 
 	// AbstractService interface ---------------------------------------------------------
 

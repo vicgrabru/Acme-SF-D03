@@ -15,7 +15,6 @@ import acme.entities.project.Project;
 import acme.entities.sponsorship.Sponsorship;
 import acme.entities.sponsorship.Type;
 import acme.roles.Sponsor;
-import acme.utils.MoneyExchangeRepository;
 import spamDetector.SpamDetector;
 
 @Service
@@ -24,10 +23,7 @@ public class SponsorSponsorshipCreateService extends AbstractService<Sponsor, Sp
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private SponsorSponsorshipRepository	repository;
-
-	@Autowired
-	private MoneyExchangeRepository			exchangeRepo;
+	private SponsorSponsorshipRepository repository;
 
 	// AbstractService interface ---------------------------------------------------------
 
