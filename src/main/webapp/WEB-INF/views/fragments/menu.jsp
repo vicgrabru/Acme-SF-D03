@@ -37,6 +37,7 @@
 		<acme:menu-option code="master.menu.authenticated" access="isAuthenticated()">
 			<acme:menu-suboption code="master.menu.authenticated.risk" action="/authenticated/risk/list"/>
 			<acme:menu-suboption code="master.menu.authenticated.notice" action="/authenticated/notice/list"/>
+			<acme:menu-suboption code="master.menu.authenticated.objective-list" action="/authenticated/objective/list"/>
 		</acme:menu-option>
     
 		<acme:menu-option code="master.menu.administrator" access="hasRole('Administrator')">
@@ -44,6 +45,7 @@
 			<acme:menu-suboption code="master.menu.administrator.system-configuration-show" action="/administrator/system-configuration/show"/>
 			<acme:menu-suboption code="master.menu.administrator.banner-list" action="/administrator/banner/list"/>
 			<acme:menu-suboption code="master.menu.administrator.risk-list" action="/administrator/risk/list"/>
+			<acme:menu-suboption code="master.menu.administrator.create-objective" action="/administrator/objective/create"/>
 			<acme:menu-separator/>
 			<acme:menu-suboption code="master.menu.administrator.user-accounts" action="/administrator/user-account/list"/>
 			<acme:menu-separator/>

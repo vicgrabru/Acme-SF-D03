@@ -8,8 +8,9 @@ import java.util.stream.Collectors;
 
 public class SpamDetector {
 
-	private static List<String>	spamList	= List.of("[,\\s]+sex[,\\s]+", "[,\\s]+viagra[,\\s]+", "[,\\s]+cialis[,\\s]+", "[,\\s]+one\\s+million[,\\s]+", "[,\\s]+you\\s+won[,\\s]+", "[,\\s]+nigeria[,\\s]+", "[,\\s]+sexo[,\\s]+",
-		"[,\\s]+un\\s+millon[,\\s]+", "[,\\s]+has\\s+ganado[,\\s]+", "[,\\s]+sex$", "[,\\s]+viagra$", "[,\\s]+cialis$", "[,\\s]+one\\s+million$", "[,\\s]+you\\s+won$", "[,\\s]+nigeria$", "[,\\s]+sexo$", "[,\\s]+un\\s+millón$", "[,\\s]+has\\s+ganado$");
+	private static List<String>	spamList	= List.of("([,\\s]+)?sex([,\\s]+)", "([,\\s]+)?viagra([,\\s]+)", "([,\\s]+)?cialis([,\\s]+)", "([,\\s]+)?one\\s+million([,\\s]+)", "([,\\s]+)?you\\s+won([,\\s]+)", "([,\\s]+)?nigeria([,\\s]+)",
+		"([,\\s]+)?sexo([,\\s]+)", "([,\\s]+)?un\\s+millon([,\\s]+)", "([,\\s]+)?has\\s+ganado([,\\s]+)", "([,\\s]+)?sex$", "([,\\s]+)?viagra$", "([,\\s]+)?cialis$", "([,\\s]+)?one\\s+million$", "([,\\s]+)?you\\s+won$", "([,\\s]+)?nigeria$",
+		"([,\\s]+)?sexo$", "([,\\s]+)?un\\s+millon$", "([,\\s]+)?has\\s+ganado$");
 	private static int			threshold	= 10;
 
 
@@ -27,7 +28,15 @@ public class SpamDetector {
 			}
 			if (!result.toString().isEmpty())
 				text = result.toString();
+			StringBuffer result = new StringBuffer();
+			while (matcher.find()) {
+				matcher.appendReplacement(result, "");
+				spamPoints++;
+			}
+			if (!result.toString().isEmpty())
+				text = result.toString();
 		}
+		return SpamDetector.threshold < (double) spamPoints / (text.split(" ").length + spamPoints) * 100;
 		return SpamDetector.threshold < (double) spamPoints / (text.split(" ").length + spamPoints) * 100;
 	}
 	public static void setSpamList(final List<String> spamList) {
@@ -42,8 +51,9 @@ public class SpamDetector {
 		return new ArrayList<>(SpamDetector.spamList.stream().map(spam -> {
 			String replacedSpam = spam.toLowerCase().replace("\\s+", " ");
 			replacedSpam = spam.toLowerCase().replace("[,\\s]+", " ");
+			replacedSpam = spam.toLowerCase().replace("([,\\s]+)?", " ");
 			if (replacedSpam.endsWith("$"))
-				replacedSpam = replacedSpam.substring(0, replacedSpam.length() - 1);
+				replacedSpam = replacedSpam.substring(0, replacedSpam.length());
 			return replacedSpam;
 		}).collect(Collectors.toSet()));
 	}
@@ -55,15 +65,15 @@ public class SpamDetector {
 		if (text == null)
 			return;
 		String replacedSpam = text.toLowerCase().replace(" ", "\\s+");
-		SpamDetector.spamList.add("[,\\s]+" + replacedSpam + "[,\\s]+");
-		SpamDetector.spamList.add("[,\\s]+" + replacedSpam + "$");
+		SpamDetector.spamList.add("([,\\s]+)?" + replacedSpam + "([,\\s]+)");
+		SpamDetector.spamList.add("([,\\s]+)?" + replacedSpam + "$");
 	}
 	public static void deleteSpam(final String text) {
 		if (text == null)
 			return;
 		String replacedSpam = text.toLowerCase().replace(" ", "\\s+");
-		SpamDetector.spamList.remove("[,\\s]+" + replacedSpam + "[,\\s]+");
-		SpamDetector.spamList.remove("[,\\s]+" + replacedSpam + "$");
+		SpamDetector.spamList.remove("([,\\s]+)?" + replacedSpam + "([,\\s]+)");
+		SpamDetector.spamList.remove("([,\\s]+)?" + replacedSpam + "$");
 	}
 	public static void setThreshold(final int threshold) {
 		if (threshold < 0 || threshold > 100)
