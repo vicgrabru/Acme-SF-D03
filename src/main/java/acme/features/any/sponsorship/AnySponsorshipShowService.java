@@ -32,7 +32,15 @@ public class AnySponsorshipShowService extends AbstractService<Any, Sponsorship>
 
 	@Override
 	public void authorise() {
-		super.getResponse().setAuthorised(true);
+		boolean status;
+		int id;
+		Sponsorship sponsorship;
+
+		id = super.getRequest().getData("id", int.class);
+		sponsorship = this.repository.findOneSponsorshipById(id);
+		status = sponsorship != null;
+
+		super.getResponse().setAuthorised(status);
 	}
 
 	@Override
