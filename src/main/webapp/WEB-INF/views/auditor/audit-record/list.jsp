@@ -16,9 +16,9 @@
 <%@taglib prefix="acme" uri="http://acme-framework.org/"%>
 
 <acme:list>	
-	<acme:list-column code="auditor.audit-record.list.label.code" path="recordId"/>
+	<acme:list-column code="auditor.audit-record.list.label.code" path="code"/>
 	<acme:list-column code="auditor.audit-record.list.label.mark" path="mark"/>
 	<acme:list-column code="auditor.audit-record.list.label.draft-mode" path="draftMode"/>
 </acme:list>
 
-<acme:button test="${showCreate}" code="auditor.audit-record.button.create" action="/auditor/audit-record/create?codeAuditId=${codeAuditId}"/>
+<acme:button test="${showCreate}" code="auditor.audit-record.list.button.create" action="/auditor/audit-record/create?codeAuditId=${codeAuditId}"/>

@@ -45,6 +45,8 @@ public class AuditorAuditRecordUpdateService extends AbstractService<Auditor, Au
 		status = auditRecord != null && //
 			auditRecord.isDraftMode() && //
 			super.getRequest().getPrincipal().hasRole(auditRecord.getCodeAudit().getAuditor());
+
+		super.getResponse().setAuthorised(status);
 	}
 
 	@Override

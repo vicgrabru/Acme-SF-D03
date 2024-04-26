@@ -20,7 +20,7 @@
 	<acme:input-moment code="auditor.audit-record.form.label.period-start" path="periodStart"/>
 	<acme:input-moment code="auditor.audit-record.form.label.period-end" path="periodEnd"/>
 	<acme:input-select code="auditor.audit-record.form.label.mark" path="mark" choices="${marks}"/>
-	<acme:input-url readonly="true" code="auditor.audit-record.form.label.link" path="link"/>
+	<acme:input-url code="auditor.audit-record.form.label.link" path="link"/>
 	<acme:input-checkbox readonly="true" code="auditor.audit-record.form.label.draft-mode" path="draftMode"/>
 	
 	<jstl:choose>

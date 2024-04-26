@@ -83,7 +83,7 @@ public class AuditorAuditRecordCreateService extends AbstractService<Auditor, Au
 
 			boolean duplicatedCode = this.repository.findAllAuditRecords().stream() //
 				.anyMatch(ar -> ar.getCode().equals(object.getCode()));
-			super.state(duplicatedCode, "code", "auditor.audit-record-form-error.duplicated-record-id");
+			super.state(!duplicatedCode, "code", "auditor.audit-record-form-error.duplicated-code");
 
 			super.state(!SpamDetector.checkTextValue(object.getCode()), //
 				"code", "auditor.audit-record.form.error.spam");

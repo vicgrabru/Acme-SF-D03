@@ -12,6 +12,8 @@
 
 package acme.features.auditor.auditRecord;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -45,6 +47,7 @@ public class AuditorAuditRecordController extends AbstractController<Auditor, Au
 	// Constructors -----------------------------------------------------------
 
 
+	@PostConstruct
 	protected void initialise() {
 		super.addBasicCommand("list", this.listService);
 		super.addBasicCommand("show", this.showService);
