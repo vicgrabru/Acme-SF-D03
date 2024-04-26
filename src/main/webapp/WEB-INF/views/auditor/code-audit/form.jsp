@@ -29,7 +29,7 @@
 		<jstl:when test="${acme:anyOf(_command, 'show|update|publish')}">
 			<acme:input-select readonly="true" code="auditor.code-audit.form.label.project" path="project" choices="${projects}"/>
 			<acme:button code="auditor.code-audit.form.button.project" action="/any/project/show?id=${projectId}"/>
-			<acme:button code="auditor.code-audit.form.button.audit-record.list" action="/client/audit-record/list?codeAuditId=${codeAuditId}"/>
+			<acme:button code="auditor.code-audit.form.button.audit-record.list" action="/auditor/audit-record/list?codeAuditId=${codeAuditId}"/>
 		</jstl:when>
 		<jstl:when test="${acme:matches(_command, 'create')}">
 			<acme:input-select code="auditor.code-audit.form.label.project" path="project" choices="${projects}"/>
