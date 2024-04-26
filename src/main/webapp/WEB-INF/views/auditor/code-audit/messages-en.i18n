@@ -35,3 +35,4 @@ auditor.code-audit.list.button.create = Create
 
 auditor.code-audit.form.error.minimum-mark-not-reached = For a code audit to be published, the mark must be, at least, “C”
 auditor.code-audit.form.error.duplicated-code = Duplicated code
+auditor.code-audit.form.error.spam = The submitted text contains words marked as spam

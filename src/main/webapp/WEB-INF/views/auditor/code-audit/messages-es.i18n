@@ -35,3 +35,4 @@ auditor.code-audit.list.button.create = Crear
 
 auditor.code-audit.form.error.minimum-mark-not-reached = Para que una auditoría de códito sea publicada, la nota debe ser, al menos, "C"
 auditor.code-audit.form.error.duplicated-code = Código duplicado
+auditor.code-audit.form.error.spam = El texto introducido contiene palabras reconocidas como spam

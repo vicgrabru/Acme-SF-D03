@@ -25,6 +25,7 @@ import acme.entities.codeAudit.Mark;
 import acme.entities.codeAudit.Type;
 import acme.entities.project.Project;
 import acme.roles.Auditor;
+import spamDetector.SpamDetector;
 
 @Service
 public class AuditorCodeAuditUpdateService extends AbstractService<Auditor, CodeAudit> {
@@ -70,6 +71,18 @@ public class AuditorCodeAuditUpdateService extends AbstractService<Auditor, Code
 	@Override
 	public void validate(final CodeAudit object) {
 		assert object != null;
+
+		if (!super.getBuffer().getErrors().hasErrors("code"))
+			super.state(!SpamDetector.checkTextValue(object.getCode()), //
+				"code", "auditor.code-audit.form.error.spam");
+
+		if (!super.getBuffer().getErrors().hasErrors("correctiveActions"))
+			super.state(!SpamDetector.checkTextValue(object.getCorrectiveActions()), //
+				"correctiveActions", "auditor.code-audit.form.error.spam");
+
+		if (!super.getBuffer().getErrors().hasErrors("link"))
+			super.state(!SpamDetector.checkTextValue(object.getLink()), //
+				"link", "auditor.code-audit.form.error.spam");
 	}
 
 	@Override

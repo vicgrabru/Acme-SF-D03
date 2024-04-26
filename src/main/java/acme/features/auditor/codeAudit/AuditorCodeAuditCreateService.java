@@ -25,6 +25,7 @@ import acme.entities.codeAudit.CodeAudit;
 import acme.entities.codeAudit.Type;
 import acme.entities.project.Project;
 import acme.roles.Auditor;
+import spamDetector.SpamDetector;
 
 @Service
 public class AuditorCodeAuditCreateService extends AbstractService<Auditor, CodeAudit> {
@@ -70,9 +71,21 @@ public class AuditorCodeAuditCreateService extends AbstractService<Auditor, Code
 		assert object != null;
 
 		if (!super.getBuffer().getErrors().hasErrors("code")) {
+
 			boolean duplicatedCode = this.repository.findAllCodeAudits().stream().anyMatch(ca -> ca.getCode().equals(object.getCode()));
 			super.state(!duplicatedCode, "code", "auditor.code-audit.form.error.duplicated-code");
+
+			super.state(!SpamDetector.checkTextValue(object.getCode()), //
+				"code", "auditor.code-audit.form.error.spam");
 		}
+
+		if (!super.getBuffer().getErrors().hasErrors("correctiveActions"))
+			super.state(!SpamDetector.checkTextValue(object.getCorrectiveActions()), //
+				"correctiveActions", "auditor.code-audit.form.error.spam");
+
+		if (!super.getBuffer().getErrors().hasErrors("link"))
+			super.state(!SpamDetector.checkTextValue(object.getLink()), //
+				"link", "auditor.code-audit.form.error.spam");
 	}
 
 	@Override
