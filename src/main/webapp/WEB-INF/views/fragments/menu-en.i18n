@@ -21,6 +21,7 @@ master.menu.any.claim-list = Claims list
 master.menu.any.project-list = List of published projects
 master.menu.any.contract-list = List of published contracts
 master.menu.any.sponsorship-list = Sponsorship List
+master.menu.any.training-module-list= List of published training modules
 
 # master.menu.anonymous #######################################################
 

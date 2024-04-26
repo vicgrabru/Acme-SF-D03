@@ -33,6 +33,7 @@
 			<acme:menu-suboption code="master.menu.any.project-list" action="/any/project/list"/>
 			<acme:menu-suboption code="master.menu.any.contract-list" action="/any/contract/list"/>
       		<acme:menu-suboption code="master.menu.any.sponsorship-list" action="/any/sponsorship/list"/>
+      		<acme:menu-suboption code="master.menu.any.training-module-list" action="/any/training-module/list"/>
 		</acme:menu-option>
     
 		<acme:menu-option code="master.menu.authenticated" access="isAuthenticated()">
