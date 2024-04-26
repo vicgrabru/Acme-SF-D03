@@ -12,7 +12,7 @@
 administrator.objective.form.error.startDateDuration.not-after-instantiation = La fecha del comienzo de la duración debe empezar después del momento de creación/actualización
 administrator.objective.form.error.endDateDuration.not-after-startDateDuration = La fecha del final de la duración debe empezar después del la fecha del comienzo
 
-administrator.objective.list.button.create= Crear Objetivo
+administrator.objective.form.title=Crear Objetivo
 
 administrator.objective.form.label.title = Título
 administrator.objective.form.label.instantiation-moment= Momento de iniciación
@@ -23,3 +23,10 @@ administrator.objective.form.label.startDateDuration= Fecha de inicio
 administrator.objective.form.label.endDateDuration= Fecha de finalización
 administrator.objective.form.label.link= Link
 
+administrator.objective.form.label.confirm=Confirmar
+
+administrator.objective.form.button.create=Crear Objetivo
+
+administrator.objective.form.error.spam=Spam Detectado
+
+administrator.objective.form.notConfirmed=No Confirmado

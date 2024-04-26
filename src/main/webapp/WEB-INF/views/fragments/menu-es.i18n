@@ -101,3 +101,4 @@ master.menu.user-account.client = Datos de cliente
 master.menu.user-account.become-client = Hazte cliente
 
 master.menu.authenticated.objective-list = Lista de Objetivos
+master.menu.administrator.create-objective=Crear Objetivo

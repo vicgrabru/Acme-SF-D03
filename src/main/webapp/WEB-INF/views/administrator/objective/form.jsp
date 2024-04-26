@@ -19,8 +19,8 @@
 	<acme:input-textbox code="administrator.objective.form.label.title" path="title"/>
 	<acme:input-textbox code="administrator.objective.form.label.instantiation-moment" path="instantiationMoment"/>
 	<acme:input-textbox code="administrator.objective.form.label.description" path="description"/>
-	<acme:input-textbox code="administrator.objective.form.label.priority" path="priority"/>
-	<acme:input-textbox code="administrator.objective.form.label.isCritical" path="isCritical"/>
+	<acme:input-select code="administrator.objective.form.label.priority" path="priority" choices="${priorities}"/>
+	<acme:input-checkbox code="administrator.objective.form.label.isCritical" path="isCritical"/>
 	<acme:input-moment code="administrator.objective.form.label.startDateDuration" path="startDateDuration"/>
 	<acme:input-moment code="administrator.objective.form.label.endDateDuration" path="endDateDuration"/>
 	<acme:input-url code="administrator.objective.form.label.link" path="link"/>

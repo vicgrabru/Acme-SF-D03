@@ -8,6 +8,10 @@
 # purposes.  The copyright owner does not offer any warranties or representations, nor do
 # they accept any liabilities with respect to them.
 
+authenticated.objective.list.title= Lista de objetivos
+
+authenticated.objective.form.title=Datos de objetivo
+
 authenticated.objective.list.label.title = Título
 authenticated.objective.list.label.instantiation-moment= Momento de iniciación
 authenticated.objective.list.label.description= Descripción
