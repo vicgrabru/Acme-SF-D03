@@ -1,4 +1,3 @@
-
 package spamDetector;
 
 import java.util.ArrayList;
@@ -29,7 +28,15 @@ public class SpamDetector {
 			}
 			if (!result.toString().isEmpty())
 				text = result.toString();
+			StringBuffer result = new StringBuffer();
+			while (matcher.find()) {
+				matcher.appendReplacement(result, "");
+				spamPoints++;
+			}
+			if (!result.toString().isEmpty())
+				text = result.toString();
 		}
+		return SpamDetector.threshold < (double) spamPoints / (text.split(" ").length + spamPoints) * 100;
 		return SpamDetector.threshold < (double) spamPoints / (text.split(" ").length + spamPoints) * 100;
 	}
 	public static void setSpamList(final List<String> spamList) {
