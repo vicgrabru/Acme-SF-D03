@@ -84,16 +84,32 @@ public class ManagerManagerDashboardShowService extends AbstractService<Manager,
 		maxEstimatedCostOfUserStories = this.repository.maxEstimatedCostOfUserStoriesByManagerId(managerId);
 		stdEstimatedCostOfUserStories = this.repository.stdEstimatedCostOfUserStoriesByManagerId(managerId);
 
+		avgEstimatedCostOfUserStories = avgEstimatedCostOfUserStories == null ? 0.0 : avgEstimatedCostOfUserStories;
+		minEstimatedCostOfUserStories = minEstimatedCostOfUserStories == null ? 0 : minEstimatedCostOfUserStories;
+		maxEstimatedCostOfUserStories = maxEstimatedCostOfUserStories == null ? 0 : maxEstimatedCostOfUserStories;
+		stdEstimatedCostOfUserStories = stdEstimatedCostOfUserStories == null ? 0.0 : stdEstimatedCostOfUserStories;
+
 		costOfProjects = this.repository.getCostOfAllProjectsByManagerId(managerId);
 		systemConfiguration = this.repository.getSystemConfiguration();
 
-		costOfProjectsExchanged = costOfProjects.stream().map(x -> this.exchangeRepository.exchangeMoney(x)).toList();
+		if (costOfProjects.isEmpty()) {
+			Money dummy = new Money();
+			dummy.setAmount(0.0);
+			dummy.setCurrency(systemConfiguration.getSystemCurrency());
 
-		avgCostOfProjects = MoneyUtils.getAvg(costOfProjectsExchanged, systemConfiguration.getSystemCurrency());
-		minCostOfProjects = MoneyUtils.getMin(costOfProjectsExchanged, systemConfiguration.getSystemCurrency());
-		maxCostOfProjects = MoneyUtils.getMax(costOfProjectsExchanged, systemConfiguration.getSystemCurrency());
-		stdCostOfProjects = MoneyUtils.getStd(costOfProjectsExchanged, systemConfiguration.getSystemCurrency());
+			avgCostOfProjects = dummy;
+			minCostOfProjects = dummy;
+			maxCostOfProjects = dummy;
+			stdCostOfProjects = dummy;
 
+		} else {
+			costOfProjectsExchanged = costOfProjects.stream().map(x -> this.exchangeRepository.exchangeMoney(x)).toList();
+
+			avgCostOfProjects = MoneyUtils.getAvg(costOfProjectsExchanged, systemConfiguration.getSystemCurrency());
+			minCostOfProjects = MoneyUtils.getMin(costOfProjectsExchanged, systemConfiguration.getSystemCurrency());
+			maxCostOfProjects = MoneyUtils.getMax(costOfProjectsExchanged, systemConfiguration.getSystemCurrency());
+			stdCostOfProjects = MoneyUtils.getStd(costOfProjectsExchanged, systemConfiguration.getSystemCurrency());
+		}
 		dashboard = new ManagerDashboard();
 
 		dashboard.setTotalNumberOfUserStoriesWithMustPriority(totalNumberOfUserStoriesWithMustPriority);
