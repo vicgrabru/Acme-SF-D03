@@ -23,6 +23,7 @@ import acme.client.services.AbstractService;
 import acme.entities.banner.Banner;
 import acme.entities.training.TrainingSession;
 import acme.roles.Developer;
+import spamDetector.SpamDetector;
 
 @Service
 public class DeveloperTrainingSessionCreateService extends AbstractService<Developer, TrainingSession> {
@@ -63,7 +64,16 @@ public class DeveloperTrainingSessionCreateService extends AbstractService<Devel
 	@Override
 	public void validate(final TrainingSession object) {
 		assert object != null;
-
+		if (!super.getBuffer().getErrors().hasErrors("code"))
+			super.state(!SpamDetector.checkTextValue(super.getRequest().getData("code", String.class)), "code", "developer.training-session.form.error.spam");
+		if (!super.getBuffer().getErrors().hasErrors("location"))
+			super.state(!SpamDetector.checkTextValue(super.getRequest().getData("location", String.class)), "location", "developer.training-session.form.error.spam");
+		if (!super.getBuffer().getErrors().hasErrors("instructor"))
+			super.state(!SpamDetector.checkTextValue(super.getRequest().getData("instructor", String.class)), "instructor", "developer.training-session.form.error.spam");
+		if (!super.getBuffer().getErrors().hasErrors("contactEmail"))
+			super.state(!SpamDetector.checkTextValue(super.getRequest().getData("contactEmail", String.class)), "contactEmail", "developer.training-session.form.error.spam");
+		if (!super.getBuffer().getErrors().hasErrors("link"))
+			super.state(!SpamDetector.checkTextValue(super.getRequest().getData("link", String.class)), "link", "developer.training-session.form.error.spam");
 		if (!super.getBuffer().getErrors().hasErrors("endPeriod"))
 			super.state(object.getEndPeriod().after(object.getStartPeriod()), "startPeriod", "developer.training-session.form.error.endPeriod.not-after-startPeriod");
 	}
