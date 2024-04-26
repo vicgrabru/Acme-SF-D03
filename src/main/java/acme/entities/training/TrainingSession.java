@@ -58,6 +58,8 @@ public class TrainingSession extends AbstractEntity {
 	@URL
 	private String				link;
 
+	private boolean				draftMode;
+
 	@NotNull
 	@Valid
 	@ManyToOne(optional = false)
