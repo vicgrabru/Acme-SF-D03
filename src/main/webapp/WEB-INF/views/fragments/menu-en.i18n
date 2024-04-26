@@ -51,6 +51,7 @@ master.menu.administrator = Administrator
 master.menu.administrator.dashboard = Dashboard
 master.menu.administrator.system-configuration-show = System Configuration
 master.menu.administrator.banner-list = Banner list
+master.menu.administrator.risk-list = Risk list
 master.menu.administrator.user-accounts = User accounts
 master.menu.administrator.populate-initial = Populate DB (initial)
 master.menu.administrator.populate-sample = Populate DB (samples)

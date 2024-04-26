@@ -43,6 +43,7 @@
 			<acme:menu-suboption code="master.menu.administrator.dashboard" action="/administrator/administrator-dashboard/show"/>
 			<acme:menu-suboption code="master.menu.administrator.system-configuration-show" action="/administrator/system-configuration/show"/>
 			<acme:menu-suboption code="master.menu.administrator.banner-list" action="/administrator/banner/list"/>
+			<acme:menu-suboption code="master.menu.administrator.risk-list" action="/administrator/risk/list"/>
 			<acme:menu-separator/>
 			<acme:menu-suboption code="master.menu.administrator.user-accounts" action="/administrator/user-account/list"/>
 			<acme:menu-separator/>

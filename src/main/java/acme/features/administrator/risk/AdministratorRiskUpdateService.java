@@ -10,28 +10,28 @@
  * they accept any liabilities with respect to them.
  */
 
-package acme.features.client.contract;
+package acme.features.administrator.risk;
 
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import acme.client.data.accounts.Administrator;
 import acme.client.data.models.Dataset;
 import acme.client.services.AbstractService;
 import acme.client.views.SelectChoices;
-import acme.entities.contract.Contract;
-import acme.entities.contract.ProgressLog;
 import acme.entities.project.Project;
-import acme.roles.Client;
+import acme.entities.risk.Risk;
+import spamDetector.SpamDetector;
 
 @Service
-public class ClientContractDeleteService extends AbstractService<Client, Contract> {
+public class AdministratorRiskUpdateService extends AbstractService<Administrator, Risk> {
 
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private ClientContractRepository repository;
+	private AdministratorRiskRepository repository;
 
 	// AbstractService interface ----------------------------------------------
 
@@ -39,66 +39,65 @@ public class ClientContractDeleteService extends AbstractService<Client, Contrac
 	@Override
 	public void authorise() {
 		boolean status;
-		int contractId;
-		Contract contract;
+		int bannerId;
+		Risk banner;
 
-		contractId = super.getRequest().getData("id", int.class);
-		contract = this.repository.findContractById(contractId);
-		status = contract != null && //
-			contract.isDraftMode() && //
-			super.getRequest().getPrincipal().hasRole(contract.getClient());
+		bannerId = super.getRequest().getData("id", int.class);
+		banner = this.repository.findOneRiskById(bannerId);
+		status = banner != null;
 
 		super.getResponse().setAuthorised(status);
 	}
 
 	@Override
 	public void load() {
-		Contract object;
+		Risk object;
 		int id;
 
 		id = super.getRequest().getData("id", int.class);
-		object = this.repository.findContractById(id);
+		object = this.repository.findOneRiskById(id);
 
 		super.getBuffer().addData(object);
 	}
 
 	@Override
-	public void bind(final Contract object) {
+	public void bind(final Risk object) {
 		assert object != null;
+
+		super.bind(object, "identificationDate", "impact", "probability", "description", "link");
 	}
 
 	@Override
-	public void validate(final Contract object) {
+	public void validate(final Risk object) {
 		assert object != null;
+
+		if (!super.getBuffer().getErrors().hasErrors("description"))
+			super.state(!SpamDetector.checkTextValue(object.getDescription()), "description", "administrator.risk.form.error.spam-in-description");
 	}
 
 	@Override
-	public void perform(final Contract object) {
+	public void perform(final Risk object) {
 		assert object != null;
-		Collection<ProgressLog> relationships;
 
-		relationships = this.repository.findProgressLogsByContractId(object.getId());
-
-		if (!relationships.isEmpty())
-			this.repository.deleteAll(relationships);
-
-		this.repository.delete(object);
+		this.repository.save(object);
 	}
 
 	@Override
-	public void unbind(final Contract object) {
+	public void unbind(final Risk object) {
 		assert object != null;
 
 		Dataset dataset;
 		SelectChoices choicesProject;
-
 		Collection<Project> projects;
 
 		projects = this.repository.findPublishedProjects();
-
 		choicesProject = SelectChoices.from(projects, "title", object.getProject());
 
-		dataset = super.unbind(object, "code", "goals", "budget", "customerName", "providerName", "instantiationMoment", "draftMode");
+		dataset = super.unbind(object, "reference", "identificationDate", "impact", "probability", "description", "link");
+		dataset.put("riskValue", object.getValue());
+		dataset.put("readOnlyReference", true);
+		dataset.put("riskId", object.getId());
+		dataset.put("projectId", object.getProject().getId());
 		dataset.put("project", choicesProject.getSelected());
 		dataset.put("projects", choicesProject);
 
