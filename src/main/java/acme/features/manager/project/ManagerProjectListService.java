@@ -61,7 +61,7 @@ public class ManagerProjectListService extends AbstractService<Manager, Project>
 		else
 			isDraftMode = "✗";
 
-		dataset = super.unbind(object, "code", "title", "abstractField");
+		dataset = super.unbind(object, "code", "title");
 		dataset.put("isDraftMode", isDraftMode);
 
 		super.getResponse().addData(dataset);

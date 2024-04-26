@@ -25,17 +25,17 @@ import acme.entities.project.UserStoryAssign;
 @Repository
 public interface ManagerUserStoryAssignRepository extends AbstractRepository {
 
-	@Query("select p from Project p where p.manager.id = :id and p.draftMode = true")
-	Collection<Project> findManyDraftModeProjectsByManagerId(int id);
-
-	@Query("select usa.project from UserStoryAssign usa where usa.userStory.id = :id and usa.project.draftMode = true")
-	Collection<Project> findManyDraftModeProjectsWithUserStoryAssignedByUserStoryId(int id);
+	@Query("select p from Project p where p.manager.id = :managerId and p.draftMode = true and not exists(select usa from UserStoryAssign usa where usa.userStory.id = :userStoryId and usa.project.id = p.id)")
+	Collection<Project> findManyDraftModeProjectsWithoutUserStoryByManagerIdAndUserStoryId(int managerId, int userStoryId);
 
 	@Query("select usa.project from UserStoryAssign usa where usa.userStory.id = :id")
 	Collection<Project> findManyProjectsWithUserStoryAssignedByUserStoryId(int id);
 
-	@Query("select usa from UserStoryAssign usa where usa.userStory.id = :id")
-	Collection<UserStoryAssign> findManyUserStoryAssignsByUserStoryId(int id);
+	@Query("select usa from UserStoryAssign usa where usa.userStory.id = :id and usa.project.draftMode = true")
+	Collection<UserStoryAssign> findManyUserStoryAssignsWithDraftModeProjectByUserStoryId(int id);
+
+	@Query("select usa from UserStoryAssign usa where usa.userStory.id = :userStoryId and usa.project.id = :projectId")
+	UserStoryAssign findOneUserStoryAssignByUserStoryIdAndProjectId(int userStoryId, int projectId);
 
 	@Query("select p from Project p where p.id = :id")
 	Project findOneProjectById(int id);

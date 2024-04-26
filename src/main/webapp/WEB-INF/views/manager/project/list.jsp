@@ -17,9 +17,8 @@
 
 <acme:list>
 	<acme:list-column code="manager.project.list.label.code" path="code" width="10%"/>
-	<acme:list-column code="manager.project.list.label.title" path="title" width="20%"/>
-	<acme:list-column code="manager.project.list.label.abstract" path="abstractField" width="60%"/>
-	<acme:list-column code="manager.project.list.label.draft-mode" path="isDraftMode" width="10%"/>
+	<acme:list-column code="manager.project.list.label.title" path="title" width="60%"/>
+	<acme:list-column code="manager.project.list.label.draft-mode" path="isDraftMode" width="30%"/>
 </acme:list>
 
 <acme:button code="manager.project.list.button.create" action="/manager/project/create"/>

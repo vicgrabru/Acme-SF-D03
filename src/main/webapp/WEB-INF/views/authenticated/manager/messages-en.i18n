@@ -17,3 +17,7 @@ authenticated.manager.form.label.optional-link = Optional Link
 
 authenticated.manager.form.button.create = Register
 authenticated.manager.form.button.update = Update
+
+authenticated.manager.form.error.spam-in-degree = There is spam in the degree
+authenticated.manager.form.error.spam-in-overview = There is spam in the overview
+authenticated.manager.form.error.spam-in-certifications = There is spam in the certifications
