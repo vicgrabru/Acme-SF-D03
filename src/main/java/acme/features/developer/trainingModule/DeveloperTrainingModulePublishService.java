@@ -1,3 +1,14 @@
+/*
+ * DeveloperTrainingModulePublishService.java
+ *
+ * Copyright (C) 2012-2024 Rafael Corchuelo.
+ *
+ * In keeping with the traditional purpose of furthering education and research, it is
+ * the policy of the copyright owner to permit non-commercial use and redistribution of
+ * this software. It has been tested carefully, but it is not guaranteed for any particular
+ * purposes. The copyright owner does not offer any warranties or representations, nor do
+ * they accept any liabilities with respect to them.
+ */
 
 package acme.features.developer.trainingModule;
 
@@ -6,19 +17,20 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import acme.client.data.models.Dataset;
 import acme.client.helpers.MomentHelper;
 import acme.client.services.AbstractService;
-import acme.client.views.SelectChoices;
-import acme.entities.training.Difficulty;
 import acme.entities.training.TrainingModule;
 import acme.roles.Developer;
+import acme.utils.SpamRepository;
 
 @Service
 public class DeveloperTrainingModulePublishService extends AbstractService<Developer, TrainingModule> {
 
 	@Autowired
-	private DeveloperTrainingModuleRepository repository;
+	private DeveloperTrainingModuleRepository	repository;
+
+	@Autowired
+	private SpamRepository						spamRepository;
 
 	// AbstractService interface ----------------------------------------------
 
@@ -26,12 +38,9 @@ public class DeveloperTrainingModulePublishService extends AbstractService<Devel
 	@Override
 	public void authorise() {
 		boolean status;
-		int trainingModuleId;
-		TrainingModule trainingModule;
-
-		trainingModuleId = super.getRequest().getData("id", int.class);
-		trainingModule = this.repository.findTrainingModuleById(trainingModuleId);
-		status = trainingModule != null;
+		int moduleId = super.getRequest().getData("id", int.class);
+		TrainingModule module = this.repository.findTrainingModuleById(moduleId);
+		status = module != null && module.isDraftMode() && super.getRequest().getPrincipal().hasRole(module.getDeveloper());
 
 		super.getResponse().setAuthorised(status);
 	}
@@ -54,7 +63,7 @@ public class DeveloperTrainingModulePublishService extends AbstractService<Devel
 
 		updateMoment = MomentHelper.getCurrentMoment();
 
-		super.bind(object, "code", "creationMoment", "details", "difficulty", "updateMoment", "startTotalTime", "endTotalTime", "link", "draftMode");
+		super.bind(object, "code", "creationMoment", "details", "difficulty", "updateMoment", "totalTime", "link", "project");
 		object.setUpdateMoment(updateMoment);
 	}
 
@@ -63,11 +72,15 @@ public class DeveloperTrainingModulePublishService extends AbstractService<Devel
 		assert object != null;
 		if (!super.getBuffer().getErrors().hasErrors("draftMode"))
 			super.state(!this.repository.findTrainingSessionsOfTrainingModule(object.getId()).isEmpty(), "draftMode", "developer.training-module.form.error.emptyTrainingSessions");
-		if (!super.getBuffer().getErrors().hasErrors("startTotalTime")) {
-			super.state(object.getStartTotalTime().after(object.getCreationMoment()), "startTotalTime", "developer.training-module.form.error.startTotalTime.not-after-creationMoment");
-			if (!super.getBuffer().getErrors().hasErrors("endTotalTime"))
-				super.state(object.getEndTotalTime().after(object.getStartTotalTime()), "endTotalTime", "developer.training-module.form.error.endTotalTime.not-after-startTotalTime");
-		}
+		if (!super.getBuffer().getErrors().hasErrors("code"))
+			super.state(!this.spamRepository.checkTextValue(super.getRequest().getData("code", String.class)), "code", "developer.training-module.form.error.spam");
+		if (!super.getBuffer().getErrors().hasErrors("details"))
+			super.state(!this.spamRepository.checkTextValue(super.getRequest().getData("details", String.class)), "details", "developer.training-module.form.error.spam");
+		if (!super.getBuffer().getErrors().hasErrors("difficulty"))
+			super.state(!this.spamRepository.checkTextValue(super.getRequest().getData("difficulty", String.class)), "difficulty", "developer.training-module.form.error.spam");
+		if (!super.getBuffer().getErrors().hasErrors("link"))
+			super.state(!this.spamRepository.checkTextValue(super.getRequest().getData("link", String.class)), "link", "developer.training-module.form.error.spam");
+
 	}
 
 	@Override
@@ -75,19 +88,5 @@ public class DeveloperTrainingModulePublishService extends AbstractService<Devel
 		assert object != null;
 		object.setDraftMode(false);
 		this.repository.save(object);
-	}
-
-	@Override
-	public void unbind(final TrainingModule object) {
-		assert object != null;
-
-		Dataset dataset;
-
-		dataset = super.unbind(object, "code", "creationMoment", "details", "difficulty", "updateMoment", "startTotalTime", "endTotalTime", "link", "draftMode");
-		final SelectChoices choices;
-		choices = SelectChoices.from(Difficulty.class, object.getDifficulty());
-		dataset.put("difficulty", choices.getSelected().getKey());
-		dataset.put("difficulties", choices);
-		super.getResponse().addData(dataset);
 	}
 }

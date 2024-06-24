@@ -1,5 +1,5 @@
 /*
- * EmployerApplicationUpdateService.java
+ * ManagerProjectDeleteService.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -94,12 +94,17 @@ public class ManagerProjectDeleteService extends AbstractService<Manager, Projec
 
 		Money exchangedCost;
 		Dataset dataset;
+		boolean isAcceptedCurrency;
+		boolean isSystemCurrency;
 
 		dataset = super.unbind(object, "code", "title", "abstractField", "hasFatalErrors", "cost", "optionalLink", "draftMode");
 		dataset.put("masterId", object.getId());
 		dataset.put("readOnlyCode", true);
 
-		dataset.put("showExchangedCost", !this.exchangeRepository.findSystemCurrency().equals(object.getCost().getCurrency()));
+		isSystemCurrency = this.exchangeRepository.findSystemCurrency().equals(object.getCost().getCurrency());
+		isAcceptedCurrency = this.repository.findAcceptedCurrenciesInSystem().contains(object.getCost().getCurrency());
+
+		dataset.put("showExchangedCost", isAcceptedCurrency && !isSystemCurrency);
 
 		exchangedCost = this.exchangeRepository.exchangeMoney(object.getCost());
 		dataset.put("exchangedCost", exchangedCost);

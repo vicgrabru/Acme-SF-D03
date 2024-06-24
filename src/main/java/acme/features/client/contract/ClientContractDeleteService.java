@@ -1,5 +1,5 @@
 /*
- * EmployerApplicationUpdateService.java
+ * ClientContractDeleteService.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -12,18 +12,20 @@
 
 package acme.features.client.contract;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import acme.client.data.datatypes.Money;
 import acme.client.data.models.Dataset;
 import acme.client.services.AbstractService;
 import acme.client.views.SelectChoices;
 import acme.entities.contract.Contract;
-import acme.entities.contract.ProgressLog;
 import acme.entities.project.Project;
 import acme.roles.Client;
+import acme.utils.MoneyExchangeRepository;
 
 @Service
 public class ClientContractDeleteService extends AbstractService<Client, Contract> {
@@ -31,7 +33,10 @@ public class ClientContractDeleteService extends AbstractService<Client, Contrac
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private ClientContractRepository repository;
+	private ClientContractRepository	repository;
+
+	@Autowired
+	private MoneyExchangeRepository		exchangeRepo;
 
 	// AbstractService interface ----------------------------------------------
 
@@ -44,9 +49,7 @@ public class ClientContractDeleteService extends AbstractService<Client, Contrac
 
 		contractId = super.getRequest().getData("id", int.class);
 		contract = this.repository.findContractById(contractId);
-		status = contract != null && //
-			contract.isDraftMode() && //
-			super.getRequest().getPrincipal().hasRole(contract.getClient());
+		status = contract != null && contract.isDraftMode() && super.getRequest().getPrincipal().hasRole(contract.getClient());
 
 		super.getResponse().setAuthorised(status);
 	}
@@ -75,12 +78,6 @@ public class ClientContractDeleteService extends AbstractService<Client, Contrac
 	@Override
 	public void perform(final Contract object) {
 		assert object != null;
-		Collection<ProgressLog> relationships;
-
-		relationships = this.repository.findProgressLogsByContractId(object.getId());
-
-		if (!relationships.isEmpty())
-			this.repository.deleteAll(relationships);
 
 		this.repository.delete(object);
 	}
@@ -94,13 +91,28 @@ public class ClientContractDeleteService extends AbstractService<Client, Contrac
 
 		Collection<Project> projects;
 
-		projects = this.repository.findPublishedProjects();
+		projects = new ArrayList<>();
+		projects.add(object.getProject());
 
 		choicesProject = SelectChoices.from(projects, "title", object.getProject());
 
 		dataset = super.unbind(object, "code", "goals", "budget", "customerName", "providerName", "instantiationMoment", "draftMode");
 		dataset.put("project", choicesProject.getSelected());
 		dataset.put("projects", choicesProject);
+
+		dataset.put("projectId", object.getProject().getId());
+		dataset.put("readOnlyCode", true);
+
+		Money eb = this.exchangeRepo.exchangeMoney(object.getBudget());
+		dataset.put("exchangedBudget", eb);
+
+		int projectId = object.getProject().getId();
+		Money projectCost = this.exchangeRepo.exchangeMoney(object.getProject().getCost());
+		double remainingCost = projectCost.getAmount() - this.repository.findPublishedContractsByProjectId(projectId).stream().map(c -> this.exchangeRepo.exchangeMoney(c.getBudget()).getAmount()).reduce(0.0, Double::sum);
+		Money rCost = new Money();
+		rCost.setAmount(remainingCost);
+		rCost.setCurrency(projectCost.getCurrency());
+		dataset.put("remainingCost", rCost);
 
 		super.getResponse().addData(dataset);
 	}

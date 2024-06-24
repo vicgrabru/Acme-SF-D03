@@ -1,3 +1,14 @@
+/*
+ * TrainingModule.java
+ *
+ * Copyright (C) 2012-2024 Rafael Corchuelo.
+ *
+ * In keeping with the traditional purpose of furthering education and research, it is
+ * the policy of the copyright owner to permit non-commercial use and redistribution of
+ * this software. It has been tested carefully, but it is not guaranteed for any particular
+ * purposes. The copyright owner does not offer any warranties or representations, nor do
+ * they accept any liabilities with respect to them.
+ */
 
 package acme.entities.training;
 
@@ -9,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -19,6 +31,7 @@ import org.hibernate.validator.constraints.URL;
 
 import acme.client.data.AbstractEntity;
 import acme.entities.project.Project;
+import acme.roles.Developer;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -51,12 +64,12 @@ public class TrainingModule extends AbstractEntity {
 	@Past
 	private Date				updateMoment;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date				startTotalTime;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date				endTotalTime;
+	@NotNull
+	@Min(1)
+	private Integer				totalTime;
 
 	@URL
+	@Length(max = 255)
 	private String				link;
 
 	private boolean				draftMode;
@@ -65,5 +78,10 @@ public class TrainingModule extends AbstractEntity {
 	@Valid
 	@ManyToOne(optional = false)
 	protected Project			project;
+
+	@NotNull
+	@Valid
+	@ManyToOne(optional = false)
+	protected Developer			developer;
 
 }

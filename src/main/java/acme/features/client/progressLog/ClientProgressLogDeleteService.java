@@ -1,5 +1,5 @@
 /*
- * EmployerApplicationUpdateService.java
+ * ClientProgressLogDeleteService.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -39,9 +39,7 @@ public class ClientProgressLogDeleteService extends AbstractService<Client, Prog
 
 		progressLogId = super.getRequest().getData("id", int.class);
 		progressLog = this.repository.findProgressLogById(progressLogId);
-		status = progressLog != null && //
-			progressLog.isDraftMode() && //
-			super.getRequest().getPrincipal().hasRole(progressLog.getContract().getClient());
+		status = progressLog != null && progressLog.isDraftMode() && super.getRequest().getPrincipal().hasRole(progressLog.getContract().getClient());
 
 		super.getResponse().setAuthorised(status);
 	}
@@ -81,6 +79,7 @@ public class ClientProgressLogDeleteService extends AbstractService<Client, Prog
 		Dataset dataset;
 
 		dataset = super.unbind(object, "recordId", "completeness", "comment", "registrationMoment", "responsiblePerson", "draftMode");
+		dataset.put("readOnlyCode", true);
 
 		super.getResponse().addData(dataset);
 	}

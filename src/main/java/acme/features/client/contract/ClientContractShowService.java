@@ -1,5 +1,5 @@
 /*
- * EmployerApplicationShowService.java
+ * ClientContractShowService.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -82,19 +82,20 @@ public class ClientContractShowService extends AbstractService<Client, Contract>
 		dataset.put("projects", choicesProject);
 
 		dataset.put("projectId", object.getProject().getId());
-		dataset.put("contractId", object.getId());
 		dataset.put("readOnlyCode", true);
 
 		Money eb = this.exchangeRepo.exchangeMoney(object.getBudget());
 		dataset.put("exchangedBudget", eb);
 
-		int projectId = object.getProject().getId();
-		Money projectCost = this.exchangeRepo.exchangeMoney(object.getProject().getCost());
-		double remainingCost = projectCost.getAmount() - this.repository.findPublishedContractsByProjectId(projectId).stream().map(c -> this.exchangeRepo.exchangeMoney(c.getBudget()).getAmount()).reduce(0.0, Double::sum);
-		Money rCost = new Money();
-		rCost.setAmount(remainingCost);
-		rCost.setCurrency(projectCost.getCurrency());
-		dataset.put("remainingCost", rCost);
+		if (object.isDraftMode()) {
+			int projectId = object.getProject().getId();
+			Money projectCost = this.exchangeRepo.exchangeMoney(object.getProject().getCost());
+			double remainingCost = projectCost.getAmount() - this.repository.findPublishedContractsByProjectId(projectId).stream().map(c -> this.exchangeRepo.exchangeMoney(c.getBudget()).getAmount()).reduce(0.0, Double::sum);
+			Money rCost = new Money();
+			rCost.setAmount(remainingCost);
+			rCost.setCurrency(projectCost.getCurrency());
+			dataset.put("remainingCost", rCost);
+		}
 
 		super.getResponse().addData(dataset);
 	}

@@ -1,5 +1,5 @@
 /*
- * EmployerApplicationListService.java
+ * AuthenticatedObjectiveListService.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -53,7 +53,7 @@ public class AuthenticatedObjectiveListService extends AbstractService<Authentic
 
 		Dataset dataset;
 
-		dataset = super.unbind(object, "instantiationMoment", "title", "description", "priority", "isCritical", "startDateDuration", "endDateDuration", "link");
+		dataset = super.unbind(object, "instantiationMoment", "title", "priority", "isCritical");
 		if (object.isCritical())
 			dataset.put("isCritical", "✓");
 		else

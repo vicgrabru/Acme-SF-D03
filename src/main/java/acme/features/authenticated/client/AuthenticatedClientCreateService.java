@@ -1,5 +1,5 @@
 /*
- * AuthenticatedConsumerCreateService.java
+ * AuthenticatedClientCreateService.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -24,6 +24,7 @@ import acme.client.services.AbstractService;
 import acme.client.views.SelectChoices;
 import acme.roles.Client;
 import acme.roles.ClientType;
+import acme.utils.SpamRepository;
 
 @Service
 public class AuthenticatedClientCreateService extends AbstractService<Authenticated, Client> {
@@ -31,7 +32,10 @@ public class AuthenticatedClientCreateService extends AbstractService<Authentica
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private AuthenticatedClientRepository repository;
+	private AuthenticatedClientRepository	repository;
+
+	@Autowired
+	private SpamRepository					spamRepository;
 
 	// AbstractService<Authenticated, Manager> ---------------------------
 
@@ -79,12 +83,16 @@ public class AuthenticatedClientCreateService extends AbstractService<Authentica
 			super.state(existing == null, "identification", "authenticated.client.form.error.duplicated-identification");
 		}
 
+		if (!super.getBuffer().getErrors().hasErrors("companyName"))
+			super.state(!this.spamRepository.checkTextValue(object.getCompanyName()), "companyName", "authenticated.client.form.error.spam");
+
 	}
 
 	@Override
 	public void perform(final Client object) {
 		assert object != null;
 
+		object.setId(0);
 		this.repository.save(object);
 	}
 

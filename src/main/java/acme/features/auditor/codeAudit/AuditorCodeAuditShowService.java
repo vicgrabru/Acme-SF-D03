@@ -13,6 +13,7 @@
 package acme.features.auditor.codeAudit;
 
 import java.util.Collection;
+import java.util.Comparator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ import acme.client.services.AbstractService;
 import acme.client.views.SelectChoices;
 import acme.entities.codeAudit.CodeAudit;
 import acme.entities.codeAudit.Mark;
-import acme.entities.codeAudit.Type;
+import acme.entities.codeAudit.AuditType;
 import acme.entities.project.Project;
 import acme.roles.Auditor;
 
@@ -75,10 +76,13 @@ public class AuditorCodeAuditShowService extends AbstractService<Auditor, CodeAu
 		projects = this.repository.findAllPublishedProjects();
 
 		mark = this.repository.findOrderedMarkAmountsByCodeAuditId(object.getId()) //
-			.stream().findFirst().orElse(Mark.None);
+			.stream() //
+			.sorted(Comparator.comparingInt(Mark::ordinal)) //
+			.findFirst() //
+			.orElse(Mark.None);
 
 		choicesProject = SelectChoices.from(projects, "title", object.getProject());
-		choicesType = SelectChoices.from(Type.class, object.getType());
+		choicesType = SelectChoices.from(AuditType.class, object.getType());
 
 		dataset = super.unbind(object, "code", "executionDate", "correctiveActions", "link", "auditor", "draftMode");
 		dataset.put("project", choicesProject.getSelected().getKey());

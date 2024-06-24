@@ -1,5 +1,5 @@
 /*
- * Consumer.java
+ * Manager.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -46,6 +46,7 @@ public class Manager extends AbstractRole {
 	private String				certifications;
 
 	@URL
+	@Length(max = 255)
 	private String				optionalLink;
 
 	// Derived attributes -----------------------------------------------------
