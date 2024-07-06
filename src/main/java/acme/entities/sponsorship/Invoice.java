@@ -39,7 +39,6 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-
 public class Invoice extends AbstractEntity {
 
 	// Serialisation identifier -----------------------------------------------

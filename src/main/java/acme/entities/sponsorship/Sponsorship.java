@@ -39,7 +39,6 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-
 public class Sponsorship extends AbstractEntity {
 
 	// Serialisation identifier -----------------------------------------------
@@ -71,7 +70,7 @@ public class Sponsorship extends AbstractEntity {
 	private Money				amount;
 
 	@NotNull
-	private SponsorshipType				type;
+	private SponsorshipType		type;
 
 	@Email
 	@Length(max = 255)

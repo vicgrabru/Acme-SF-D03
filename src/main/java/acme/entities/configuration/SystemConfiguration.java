@@ -16,6 +16,7 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import acme.client.data.AbstractEntity;
@@ -42,6 +43,7 @@ public class SystemConfiguration extends AbstractEntity {
 	private String				acceptedCurrencies;
 
 	@NotBlank
+	@Length(max = 255)
 	private String				spamTerms;
 
 	@Range(min = 0, max = 1)
