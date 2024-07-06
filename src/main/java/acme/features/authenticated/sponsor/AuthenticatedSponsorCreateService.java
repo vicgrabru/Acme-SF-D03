@@ -1,5 +1,5 @@
 /*
- * AuthenticatedConsumerCreateService.java
+ * AuthenticatedSponsorCreateService.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -75,6 +75,7 @@ public class AuthenticatedSponsorCreateService extends AbstractService<Authentic
 	@Override
 	public void perform(final Sponsor object) {
 		assert object != null;
+		object.setId(0);
 
 		this.repository.save(object);
 	}

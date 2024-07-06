@@ -25,14 +25,17 @@ developer.training-module.form.label.creationMoment= Creation moment
 developer.training-module.form.label.details= Details
 developer.training-module.form.label.difficulty=Difficulty
 developer.training-module.form.label.updateMoment= Update moment
-developer.training-module.form.label.startTotalTime=Start of total time
-developer.training-module.form.label.endTotalTime= End of total time
+developer.training-module.form.label.totalTime=Total Time
 developer.training-module.form.label.link= Link
 developer.training-module.form.label.draftMode= Is DraftMode
+developer.training-module.form.label.projects=Project
 
 developer.training-module.form.training-session=Training sessions
 
 developer.training-module.form.error.spam=Spam Detected
+developer.training-module.form.error.duplicatedCode=Duplicated Code
 
-developer.training-module.form.error.startTotalTime.not-after-creationMoment=Start of total time date must be after creation moment date
-developer.training-module.form.error.endTotalTime.not-after-startTotalTime=End of total time date must be after start of total time date
+
+developer.training-module.form.error.emptyTrainingSessions= You do not have any Training Session associated
+developer.training-module.deletingWithTrainingSessions=You cannot delete a Training Module with Training Sessions associated
+developer.training-module.publishingWithTrainingSessions=You cannot publish a Training Module without Training Sessions associated

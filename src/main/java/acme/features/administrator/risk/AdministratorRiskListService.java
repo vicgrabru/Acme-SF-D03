@@ -1,5 +1,5 @@
 /*
- * EmployerApplicationListService.java
+ * AdministratorRiskListService.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -53,8 +53,7 @@ public class AdministratorRiskListService extends AbstractService<Administrator,
 
 		Dataset dataset;
 
-		dataset = super.unbind(object, "reference", "identificationDate");
-		dataset.put("riskValue", object.getValue());
+		dataset = super.unbind(object, "reference", "identificationDate", "value");
 
 		super.getResponse().addData(dataset);
 	}

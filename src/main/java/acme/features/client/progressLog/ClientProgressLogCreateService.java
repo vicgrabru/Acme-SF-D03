@@ -1,5 +1,5 @@
 /*
- * EmployerApplicationUpdateService.java
+ * ClientProgressLogCreateService.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -21,7 +21,7 @@ import acme.client.services.AbstractService;
 import acme.entities.contract.Contract;
 import acme.entities.contract.ProgressLog;
 import acme.roles.Client;
-import spamDetector.SpamDetector;
+import acme.utils.SpamRepository;
 
 @Service
 public class ClientProgressLogCreateService extends AbstractService<Client, ProgressLog> {
@@ -29,7 +29,10 @@ public class ClientProgressLogCreateService extends AbstractService<Client, Prog
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private ClientProgressLogRepository repository;
+	private ClientProgressLogRepository	repository;
+
+	@Autowired
+	private SpamRepository				spamRepository;
 
 	// AbstractService interface ----------------------------------------------
 
@@ -40,9 +43,9 @@ public class ClientProgressLogCreateService extends AbstractService<Client, Prog
 		int contractId;
 		Contract contract;
 
-		contractId = super.getRequest().getData("contractId", int.class);
+		contractId = super.getRequest().getData("masterId", int.class);
 		contract = this.repository.findContractById(contractId);
-		status = contract != null && super.getRequest().getPrincipal().hasRole(contract.getClient());
+		status = contract != null && !contract.isDraftMode() && super.getRequest().getPrincipal().hasRole(contract.getClient());
 
 		super.getResponse().setAuthorised(status);
 	}
@@ -53,7 +56,7 @@ public class ClientProgressLogCreateService extends AbstractService<Client, Prog
 		int contractId;
 		Contract contract;
 
-		contractId = super.getRequest().getData("contractId", int.class);
+		contractId = super.getRequest().getData("masterId", int.class);
 		contract = this.repository.findContractById(contractId);
 
 		object = new ProgressLog();
@@ -81,18 +84,17 @@ public class ClientProgressLogCreateService extends AbstractService<Client, Prog
 			super.state(existing == null, "recordId", "client.progress-log.form.error.duplicated-record-id");
 		}
 
-		if (!super.getBuffer().getErrors().hasErrors("recordId"))
-			super.state(!SpamDetector.checkTextValue(object.getRecordId()), "recordId", "client.progress-log.form.error.spam");
 		if (!super.getBuffer().getErrors().hasErrors("comment"))
-			super.state(!SpamDetector.checkTextValue(object.getComment()), "comment", "client.progress-log.form.error.spam");
+			super.state(!this.spamRepository.checkTextValue(object.getComment()), "comment", "client.progress-log.form.error.spam");
 		if (!super.getBuffer().getErrors().hasErrors("responsiblePerson"))
-			super.state(!SpamDetector.checkTextValue(object.getResponsiblePerson()), "responsiblePerson", "client.progress-log.form.error.spam");
+			super.state(!this.spamRepository.checkTextValue(object.getResponsiblePerson()), "responsiblePerson", "client.progress-log.form.error.spam");
 	}
 
 	@Override
 	public void perform(final ProgressLog object) {
 		assert object != null;
 
+		object.setId(0);
 		this.repository.save(object);
 	}
 
@@ -104,9 +106,9 @@ public class ClientProgressLogCreateService extends AbstractService<Client, Prog
 		int contractId;
 
 		dataset = super.unbind(object, "recordId", "completeness", "comment", "registrationMoment", "responsiblePerson", "draftMode");
-		contractId = super.getRequest().getData("contractId", int.class);
+		contractId = super.getRequest().getData("masterId", int.class);
 
-		dataset.put("contractId", contractId);
+		dataset.put("masterId", contractId);
 		dataset.put("readOnlyCode", false);
 
 		super.getResponse().addData(dataset);

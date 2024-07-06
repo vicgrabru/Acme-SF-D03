@@ -1,5 +1,5 @@
 /*
- * EmployerApplicationUpdateService.java
+ * ManagerProjectUpdateService.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -21,7 +21,7 @@ import acme.client.services.AbstractService;
 import acme.entities.project.Project;
 import acme.roles.Manager;
 import acme.utils.MoneyExchangeRepository;
-import spamDetector.SpamDetector;
+import acme.utils.SpamRepository;
 
 @Service
 public class ManagerProjectUpdateService extends AbstractService<Manager, Project> {
@@ -34,6 +34,9 @@ public class ManagerProjectUpdateService extends AbstractService<Manager, Projec
 	@Autowired
 	private MoneyExchangeRepository		exchangeRepository;
 
+	@Autowired
+	private SpamRepository				spamRepository;
+
 	// AbstractService interface ----------------------------------------------
 
 
@@ -45,9 +48,7 @@ public class ManagerProjectUpdateService extends AbstractService<Manager, Projec
 
 		projectId = super.getRequest().getData("id", int.class);
 		project = this.repository.findOneProjectById(projectId);
-		status = project != null && //
-			project.isDraftMode() && //
-			super.getRequest().getPrincipal().hasRole(project.getManager());
+		status = project != null && project.isDraftMode() && super.getRequest().getPrincipal().hasRole(project.getManager());
 
 		super.getResponse().setAuthorised(status);
 	}
@@ -83,10 +84,10 @@ public class ManagerProjectUpdateService extends AbstractService<Manager, Projec
 		}
 
 		if (!super.getBuffer().getErrors().hasErrors("title"))
-			super.state(!SpamDetector.checkTextValue(object.getTitle()), "title", "manager.project.form.error.spam-in-title");
+			super.state(!this.spamRepository.checkTextValue(object.getTitle()), "title", "manager.project.form.error.spam-in-title");
 
 		if (!super.getBuffer().getErrors().hasErrors("abstractField"))
-			super.state(!SpamDetector.checkTextValue(object.getAbstractField()), "abstractField", "manager.project.form.error.spam-in-abstract-field");
+			super.state(!this.spamRepository.checkTextValue(object.getAbstractField()), "abstractField", "manager.project.form.error.spam-in-abstract-field");
 	}
 
 	@Override
@@ -107,9 +108,14 @@ public class ManagerProjectUpdateService extends AbstractService<Manager, Projec
 		dataset.put("masterId", object.getId());
 		dataset.put("readOnlyCode", true);
 
-		dataset.put("showExchangedCost", !this.exchangeRepository.findSystemCurrency().equals(object.getCost().getCurrency()));
+		if (!super.getBuffer().getErrors().hasErrors("cost"))
+			exchangedCost = this.exchangeRepository.exchangeMoney(object.getCost());
+		else {
+			exchangedCost = new Money();
+			exchangedCost.setAmount(0.0);
+			exchangedCost.setCurrency(this.exchangeRepository.findSystemCurrency());
+		}
 
-		exchangedCost = this.exchangeRepository.exchangeMoney(object.getCost());
 		dataset.put("exchangedCost", exchangedCost);
 
 		super.getResponse().addData(dataset);

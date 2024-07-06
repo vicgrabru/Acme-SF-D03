@@ -1,5 +1,5 @@
 /*
- * EmployerApplicationController.java
+ * DeveloperTrainingModuleController.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -40,6 +40,7 @@ public class DeveloperTrainingModuleController extends AbstractController<Develo
 
 	@Autowired
 	private DeveloperTrainingModuleDeleteService	deleteService;
+
 	@Autowired
 	private DeveloperTrainingModulePublishService	publishService;
 

@@ -1,5 +1,5 @@
 /*
- * AnyClaimShoeService.java
+ * AnyClaimShowService.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -61,7 +61,7 @@ public class AnyClaimShowService extends AbstractService<Any, Claim> {
 
 		Dataset dataset;
 
-		dataset = super.unbind(object, "code", "instantiationMoment", "heading", "description", "department", "email", "link", "draftMode");
+		dataset = super.unbind(object, "code", "instantiationMoment", "heading", "description", "department", "email", "link");
 
 		super.getResponse().addData(dataset);
 	}

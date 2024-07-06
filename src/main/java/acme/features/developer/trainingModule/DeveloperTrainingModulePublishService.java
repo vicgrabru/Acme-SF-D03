@@ -1,21 +1,35 @@
+/*
+ * DeveloperTrainingModulePublishService.java
+ *
+ * Copyright (C) 2012-2024 Rafael Corchuelo.
+ *
+ * In keeping with the traditional purpose of furthering education and research, it is
+ * the policy of the copyright owner to permit non-commercial use and redistribution of
+ * this software. It has been tested carefully, but it is not guaranteed for any particular
+ * purposes. The copyright owner does not offer any warranties or representations, nor do
+ * they accept any liabilities with respect to them.
+ */
 
 package acme.features.developer.trainingModule;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import acme.client.data.models.Dataset;
-import acme.client.helpers.MomentHelper;
 import acme.client.services.AbstractService;
 import acme.client.views.SelectChoices;
 import acme.entities.training.Difficulty;
 import acme.entities.training.TrainingModule;
+import acme.entities.training.TrainingSession;
 import acme.roles.Developer;
 
 @Service
 public class DeveloperTrainingModulePublishService extends AbstractService<Developer, TrainingModule> {
+
+	// Internal state ---------------------------------------------------------
 
 	@Autowired
 	private DeveloperTrainingModuleRepository repository;
@@ -26,12 +40,9 @@ public class DeveloperTrainingModulePublishService extends AbstractService<Devel
 	@Override
 	public void authorise() {
 		boolean status;
-		int trainingModuleId;
-		TrainingModule trainingModule;
-
-		trainingModuleId = super.getRequest().getData("id", int.class);
-		trainingModule = this.repository.findTrainingModuleById(trainingModuleId);
-		status = trainingModule != null;
+		int moduleId = super.getRequest().getData("id", int.class);
+		TrainingModule module = this.repository.findTrainingModuleById(moduleId);
+		status = module != null && module.isDraftMode() && super.getRequest().getPrincipal().hasRole(module.getDeveloper());
 
 		super.getResponse().setAuthorised(status);
 	}
@@ -50,24 +61,13 @@ public class DeveloperTrainingModulePublishService extends AbstractService<Devel
 	@Override
 	public void bind(final TrainingModule object) {
 		assert object != null;
-		Date updateMoment;
-
-		updateMoment = MomentHelper.getCurrentMoment();
-
-		super.bind(object, "code", "creationMoment", "details", "difficulty", "updateMoment", "startTotalTime", "endTotalTime", "link", "draftMode");
-		object.setUpdateMoment(updateMoment);
 	}
 
 	@Override
 	public void validate(final TrainingModule object) {
 		assert object != null;
-		if (!super.getBuffer().getErrors().hasErrors("draftMode"))
-			super.state(!this.repository.findTrainingSessionsOfTrainingModule(object.getId()).isEmpty(), "draftMode", "developer.training-module.form.error.emptyTrainingSessions");
-		if (!super.getBuffer().getErrors().hasErrors("startTotalTime")) {
-			super.state(object.getStartTotalTime().after(object.getCreationMoment()), "startTotalTime", "developer.training-module.form.error.startTotalTime.not-after-creationMoment");
-			if (!super.getBuffer().getErrors().hasErrors("endTotalTime"))
-				super.state(object.getEndTotalTime().after(object.getStartTotalTime()), "endTotalTime", "developer.training-module.form.error.endTotalTime.not-after-startTotalTime");
-		}
+		List<TrainingSession> sessions = new ArrayList<>(this.repository.findTrainingSessionsOfTrainingModule(object.getId()));
+		super.state(!sessions.isEmpty(), "*", "developer.training-module.publishingWithTrainingSessions");
 	}
 
 	@Override
@@ -76,18 +76,21 @@ public class DeveloperTrainingModulePublishService extends AbstractService<Devel
 		object.setDraftMode(false);
 		this.repository.save(object);
 	}
-
 	@Override
 	public void unbind(final TrainingModule object) {
 		assert object != null;
 
 		Dataset dataset;
 
-		dataset = super.unbind(object, "code", "creationMoment", "details", "difficulty", "updateMoment", "startTotalTime", "endTotalTime", "link", "draftMode");
-		final SelectChoices choices;
-		choices = SelectChoices.from(Difficulty.class, object.getDifficulty());
-		dataset.put("difficulty", choices.getSelected().getKey());
-		dataset.put("difficulties", choices);
+		dataset = super.unbind(object, "code", "creationMoment", "details", "difficulty", "updateMoment", "totalTime", "link", "draftMode", "project");
+		final SelectChoices difficultyChoices;
+		final SelectChoices projectChoices;
+		difficultyChoices = SelectChoices.from(Difficulty.class, object.getDifficulty());
+		dataset.put("difficulty", difficultyChoices.getSelected().getKey());
+		dataset.put("difficulties", difficultyChoices);
+		projectChoices = SelectChoices.from(this.repository.findProjects(), "title", object.getProject());
+		dataset.put("project", projectChoices.getSelected().getKey());
+		dataset.put("projects", projectChoices);
 		super.getResponse().addData(dataset);
 	}
 }

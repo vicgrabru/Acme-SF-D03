@@ -1,5 +1,5 @@
 /*
- * Consumer.java
+ * Sponsor.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -43,9 +43,11 @@ public class Sponsor extends AbstractRole {
 	private String				benefits;
 
 	@URL
+	@Length(max = 255)
 	private String				webPage;
 
 	@Email
+	@Length(max = 255)
 	private String				email;
 
 	// Derived attributes -----------------------------------------------------

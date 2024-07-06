@@ -1,5 +1,5 @@
 /*
- * Advertisement.java
+ * UserStory.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -55,9 +55,10 @@ public class UserStory extends AbstractEntity {
 	private String				acceptanceCriteria;
 
 	@NotNull
-	private Priority			priority;
+	private UserStoryPriority			priority;
 
 	@URL
+	@Length(max = 255)
 	private String				optionalLink;
 
 	private boolean				draftMode;

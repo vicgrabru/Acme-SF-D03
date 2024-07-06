@@ -1,5 +1,5 @@
 /*
- * EmployerApplicationListService.java
+ * DeveloperTrainingModuleListService.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -41,8 +41,7 @@ public class DeveloperTrainingModuleListService extends AbstractService<Develope
 	@Override
 	public void load() {
 		Collection<TrainingModule> objects;
-
-		objects = this.repository.findTrainingModules();
+		objects = this.repository.findTrainingModules(super.getRequest().getPrincipal().getActiveRoleId());
 
 		super.getBuffer().addData(objects);
 	}
@@ -53,7 +52,7 @@ public class DeveloperTrainingModuleListService extends AbstractService<Develope
 
 		Dataset dataset;
 
-		dataset = super.unbind(object, "code", "creationMoment", "details", "difficulty", "updateMoment", "startTotalTime", "endTotalTime", "link", "draftMode");
+		dataset = super.unbind(object, "code", "creationMoment", "draftMode");
 		if (object.isDraftMode())
 			dataset.put("draftMode", "✓");
 		else

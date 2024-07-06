@@ -1,5 +1,5 @@
 /*
- * EmployerApplicationUpdateService.java
+ * DeveloperTrainingSessionPublishService.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -34,12 +34,9 @@ public class DeveloperTrainingSessionPublishService extends AbstractService<Deve
 	@Override
 	public void authorise() {
 		boolean status;
-		int trainingSessionId;
-		TrainingSession trainingSession;
-
-		trainingSessionId = super.getRequest().getData("id", int.class);
-		trainingSession = this.repository.findTrainingSessionById(trainingSessionId);
-		status = trainingSession != null;
+		int sessionId = super.getRequest().getData("id", int.class);
+		TrainingSession session = this.repository.findTrainingSessionById(sessionId);
+		status = session != null && session.isDraftMode() && super.getRequest().getPrincipal().hasRole(session.getTrainingModule().getDeveloper());
 
 		super.getResponse().setAuthorised(status);
 	}
@@ -58,15 +55,11 @@ public class DeveloperTrainingSessionPublishService extends AbstractService<Deve
 	@Override
 	public void bind(final TrainingSession object) {
 		assert object != null;
-		super.bind(object, "code", "startPeriod", "endPeriod", "location", "instructor", "contactEmail", "link", "draftMode");
 	}
 
 	@Override
 	public void validate(final TrainingSession object) {
 		assert object != null;
-
-		if (!super.getBuffer().getErrors().hasErrors("endPeriod"))
-			super.state(object.getEndPeriod().after(object.getStartPeriod()), "startPeriod", "developer.training-session.form.error.endPeriod.not-after-startPeriod");
 	}
 
 	@Override
@@ -75,16 +68,13 @@ public class DeveloperTrainingSessionPublishService extends AbstractService<Deve
 		object.setDraftMode(false);
 		this.repository.save(object);
 	}
-
 	@Override
 	public void unbind(final TrainingSession object) {
 		assert object != null;
-
 		Dataset dataset;
 
 		dataset = super.unbind(object, "code", "startPeriod", "endPeriod", "location", "instructor", "contactEmail", "link", "draftMode");
 
 		super.getResponse().addData(dataset);
 	}
-
 }

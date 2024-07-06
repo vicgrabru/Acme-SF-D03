@@ -1,5 +1,5 @@
 /*
- * AdvertisementRepository.java
+ * BannerRepository.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -12,37 +12,32 @@
 
 package acme.components;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import acme.client.helpers.RandomHelper;
 import acme.client.repositories.AbstractRepository;
 import acme.entities.banner.Banner;
 
 @Repository
 public interface BannerRepository extends AbstractRepository {
 
-	@Query("select count(b) from Banner b where b.periodStart <= current_timestamp() and b.periodEnd >= current_timestamp()")
-	int countDisplayableBanners();
-
 	@Query("select b from Banner b where b.periodStart <= current_timestamp() and b.periodEnd >= current_timestamp()")
-	Banner[] findAllDisplayableBanners();
+	Banner[] findDisplayableBanners();
 
 	default Banner getRandomBanner() {
 		Banner result;
-		int count, index;
-		ThreadLocalRandom random;
+		int count;
+		int index;
 		Banner[] banners;
 
-		count = this.countDisplayableBanners();
+		banners = this.findDisplayableBanners();
+		count = banners.length;
 		if (count == 0)
 			result = null;
 		else {
-			random = ThreadLocalRandom.current();
-			index = random.nextInt(0, count);
-			banners = this.findAllDisplayableBanners();
-			result = banners.length == 0 ? null : banners[index];
+			index = RandomHelper.nextInt(0, count);
+			result = banners[index];
 		}
 
 		return result;

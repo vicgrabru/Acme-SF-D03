@@ -1,5 +1,5 @@
 /*
- * EmployerApplicationUpdateService.java
+ * DeveloperTrainingSessionDeleteService.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -34,12 +34,9 @@ public class DeveloperTrainingSessionDeleteService extends AbstractService<Devel
 	@Override
 	public void authorise() {
 		boolean status;
-		int trainingSessionId;
-		TrainingSession trainingSession;
-
-		trainingSessionId = super.getRequest().getData("id", int.class);
-		trainingSession = this.repository.findTrainingSessionById(trainingSessionId);
-		status = trainingSession != null;
+		int sessionId = super.getRequest().getData("id", int.class);
+		TrainingSession session = this.repository.findTrainingSessionById(sessionId);
+		status = session != null && session.isDraftMode() && super.getRequest().getPrincipal().hasRole(session.getTrainingModule().getDeveloper());
 
 		super.getResponse().setAuthorised(status);
 	}
@@ -71,16 +68,13 @@ public class DeveloperTrainingSessionDeleteService extends AbstractService<Devel
 
 		this.repository.delete(object);
 	}
-
 	@Override
 	public void unbind(final TrainingSession object) {
 		assert object != null;
-
 		Dataset dataset;
 
-		dataset = super.unbind(object, "code", "startPeriod", "endPeriod", "location", "instructor", "contactEmail", "link", "draftMode", "draftMode");
+		dataset = super.unbind(object, "code", "startPeriod", "endPeriod", "location", "instructor", "contactEmail", "link", "draftMode");
 
 		super.getResponse().addData(dataset);
 	}
-
 }

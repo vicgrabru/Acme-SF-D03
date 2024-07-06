@@ -1,5 +1,5 @@
 /*
- * EmployerApplicationRepository.java
+ * MoneyExchangeRepository.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -81,10 +81,11 @@ public interface MoneyExchangeRepository extends AbstractRepository {
 
 	private double getExchangeRate(final String source, final String target) {
 		Double result;
+
 		try {
 			RestTemplate api = new RestTemplate();
 			HttpHeaders headers = new HttpHeaders();
-			headers.set("apikey", "gosbR4UgNOwcVY3AnfgUhYCnrz95oxFf");
+			headers.set("apikey", "gmLPUQdRBtFyAg2zzuw4lQxj4PmEE4kO");
 			HttpEntity<?> entity = new HttpEntity<>(headers);
 			String uri = "https://api.apilayer.com/exchangerates_data/convert?to=" + target + "&from=" + source + "&amount=1";
 			result = api.exchange(uri, HttpMethod.GET, entity, Rate.class).getBody().getResult();

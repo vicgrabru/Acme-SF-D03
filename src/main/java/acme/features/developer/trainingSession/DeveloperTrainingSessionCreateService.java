@@ -1,5 +1,5 @@
 /*
- * EmployerApplicationUpdateService.java
+ * DeveloperTrainingSessionCreateService.java
  *
  * Copyright (C) 2012-2024 Rafael Corchuelo.
  *
@@ -12,18 +12,15 @@
 
 package acme.features.developer.trainingSession;
 
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import acme.client.data.models.Dataset;
-import acme.client.helpers.MomentHelper;
 import acme.client.services.AbstractService;
-import acme.entities.banner.Banner;
+import acme.entities.training.TrainingModule;
 import acme.entities.training.TrainingSession;
 import acme.roles.Developer;
-import spamDetector.SpamDetector;
+import acme.utils.SpamRepository;
 
 @Service
 public class DeveloperTrainingSessionCreateService extends AbstractService<Developer, TrainingSession> {
@@ -31,57 +28,74 @@ public class DeveloperTrainingSessionCreateService extends AbstractService<Devel
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private DeveloperTrainingSessionRepository repository;
+	private DeveloperTrainingSessionRepository	repository;
+
+	@Autowired
+	private SpamRepository						spamRepository;
 
 	// AbstractService interface ----------------------------------------------
 
 
 	@Override
 	public void authorise() {
-		super.getResponse().setAuthorised(true);
+		boolean status;
+
+		int moduleId = super.getRequest().getData("masterId", int.class);
+		TrainingModule module = this.repository.findTrainingModuleById(moduleId);
+		status = module != null && super.getRequest().getPrincipal().hasRole(module.getDeveloper());
+
+		super.getResponse().setAuthorised(status);
 	}
 
 	@Override
 	public void load() {
-		Banner object;
-		Date instantiationMoment;
+		TrainingSession session;
+		TrainingModule module;
+		int id;
 
-		instantiationMoment = MomentHelper.getCurrentMoment();
+		id = super.getRequest().getData("masterId", int.class);
+		module = this.repository.findTrainingModuleById(id);
+		super.getResponse().addGlobal("masterId", id);
+		session = new TrainingSession();
+		session.setTrainingModule(module);
+		session.setDraftMode(true);
 
-		object = new Banner();
-		object.setInstantiationMoment(instantiationMoment);
-
-		super.getBuffer().addData(object);
+		super.getBuffer().addData(session);
 	}
 
 	@Override
 	public void bind(final TrainingSession object) {
 		assert object != null;
 
-		super.bind(object, "code", "startPeriod", "endPeriod", "location", "instructor", "contactEmail", "link", "draftMode");
+		super.bind(object, "code", "startPeriod", "endPeriod", "location", "instructor", "contactEmail", "link");
 	}
 
 	@Override
 	public void validate(final TrainingSession object) {
 		assert object != null;
-		if (!super.getBuffer().getErrors().hasErrors("code"))
-			super.state(!SpamDetector.checkTextValue(super.getRequest().getData("code", String.class)), "code", "developer.training-session.form.error.spam");
+		if (!super.getBuffer().getErrors().hasErrors("code")) {
+			boolean duplicatedCode = this.repository.findTrainingSessions().stream().anyMatch(ts -> ts.getCode().equals(object.getCode()));
+			super.state(!duplicatedCode, "code", "developer.training-session.form.error.duplicatedCode");
+		}
 		if (!super.getBuffer().getErrors().hasErrors("location"))
-			super.state(!SpamDetector.checkTextValue(super.getRequest().getData("location", String.class)), "location", "developer.training-session.form.error.spam");
+			super.state(!this.spamRepository.checkTextValue(super.getRequest().getData("location", String.class)), "location", "developer.training-session.form.error.spam");
 		if (!super.getBuffer().getErrors().hasErrors("instructor"))
-			super.state(!SpamDetector.checkTextValue(super.getRequest().getData("instructor", String.class)), "instructor", "developer.training-session.form.error.spam");
-		if (!super.getBuffer().getErrors().hasErrors("contactEmail"))
-			super.state(!SpamDetector.checkTextValue(super.getRequest().getData("contactEmail", String.class)), "contactEmail", "developer.training-session.form.error.spam");
-		if (!super.getBuffer().getErrors().hasErrors("link"))
-			super.state(!SpamDetector.checkTextValue(super.getRequest().getData("link", String.class)), "link", "developer.training-session.form.error.spam");
-		if (!super.getBuffer().getErrors().hasErrors("endPeriod"))
+			super.state(!this.spamRepository.checkTextValue(super.getRequest().getData("instructor", String.class)), "instructor", "developer.training-session.form.error.spam");
+		long weekSeconds = 7 * 24 * 60 * 60;
+		if (!super.getBuffer().getErrors().hasErrors("endPeriod")) {
 			super.state(object.getEndPeriod().after(object.getStartPeriod()), "startPeriod", "developer.training-session.form.error.endPeriod.not-after-startPeriod");
+			super.state((object.getEndPeriod().getTime() - object.getStartPeriod().getTime()) / 1000 >= weekSeconds, "endPeriod", "developer.training-session.form.error.periodNotDuringOneWeek");
+		}
+		int moduleId = super.getRequest().getData("masterId", int.class);
+		TrainingModule module = this.repository.findTrainingModuleById(moduleId);
+		if (!super.getBuffer().getErrors().hasErrors("startPeriod"))
+			super.state((object.getStartPeriod().getTime() - module.getCreationMoment().getTime()) / 1000 >= weekSeconds, "startPeriod", "developer.training-session.form.error.periodNotStartAWeekAfterCreationMoment");
 	}
 
 	@Override
 	public void perform(final TrainingSession object) {
 		assert object != null;
-
+		object.setId(0);
 		this.repository.save(object);
 	}
 
@@ -91,7 +105,7 @@ public class DeveloperTrainingSessionCreateService extends AbstractService<Devel
 
 		Dataset dataset;
 
-		dataset = super.unbind(object, "code", "startPeriod", "endPeriod", "location", "instructor", "contactEmail", "link", "draftMode");
+		dataset = super.unbind(object, "code", "startPeriod", "endPeriod", "location", "instructor", "contactEmail", "link");
 
 		super.getResponse().addData(dataset);
 	}
